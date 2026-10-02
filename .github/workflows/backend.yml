@@ -1,0 +1,31 @@
+name: Backend
+on:
+  push:
+    paths-ignore: ['frontend/**']
+  pull_request:
+    paths-ignore: ['frontend/**']
+permissions:
+  contents: read
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:18.6-alpine
+        env:
+          POSTGRES_USER: tourneyhub
+          POSTGRES_PASSWORD: test_password
+          POSTGRES_DB: tourneyhub_test
+        ports: ['5432:5432']
+        options: --health-cmd "pg_isready -U tourneyhub -d tourneyhub_test" --health-interval 2s --health-timeout 3s --health-retries 30
+    env:
+      TEST_DATABASE_URL: postgres://tourneyhub:test_password@localhost:5432/tourneyhub_test?sslmode=disable
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+          cache: true
+      - run: make check build docs
+      - run: make migration-test
+      - run: docker compose config --quiet

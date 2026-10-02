@@ -1,0 +1,6 @@
+package: api
+generate:
+  models: true
+  echo-server: true
+  embedded-spec: true
+output: pkg/api/v1/api.gen.go
