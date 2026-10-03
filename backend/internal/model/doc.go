@@ -1,9 +1,8 @@
-// Package model describes TourneyHub domain values independently of HTTP and SQL.
+// Package model описывает доменные значения TourneyHub независимо от HTTP и SQL.
 //
-// # Documentation example for laboratory work 2
-//
-// EloRating demonstrates a documented Go type, its fields, constructor, method,
-// input constraints and return values. MatchRating embeds EloRating and demonstrates
-// composition: Go uses embedding rather than class inheritance.
-// The implementation and documentation live in rating.go.
+// TourneyHub — платформа для проведения командных и индивидуальных турниров.
+// EloRating хранит рейтинг команды в дисциплине, а MatchRating — результат
+// его изменения после подтверждённого матча. Встраивание EloRating в MatchRating
+// позволяет повторно использовать поля и методы через композицию типов.
+// Расчёт, ограничения входных данных и возвращаемые значения описаны в rating.go.
 package model

@@ -28,7 +28,7 @@ func NewServer(db Database, corsOrigins ...string) (*echo.Echo, error) {
 	if err := spec.Validate(context.Background()); err != nil {
 		return nil, fmt.Errorf("validate contract: %w", err)
 	}
-	// The validator receives the full HTTP path; generator registers on a group.
+	// Валидатор получает полный HTTP-путь; сгенерированные маршруты регистрируются в группе.
 	spec.Servers = nil
 	paths := openapi3.NewPaths()
 	for path, item := range spec.Paths.Map() {
@@ -56,7 +56,7 @@ func NewServer(db Database, corsOrigins ...string) (*echo.Echo, error) {
 	group := server.Group(BaseURL)
 	group.Use(oapimiddleware.OapiRequestValidatorWithOptions(spec, &oapimiddleware.Options{
 		Options: openapi3filter.Options{AuthenticationFunc: func(context.Context, *openapi3filter.AuthenticationInput) error {
-			// Fail closed until authentication is implemented; never accept arbitrary tokens.
+			// До реализации аутентификации доступ закрыт: произвольные токены не принимаются.
 			return echo.NewHTTPError(http.StatusNotImplemented, "authentication is not implemented")
 		}},
 	}))

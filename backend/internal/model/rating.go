@@ -1,5 +1,4 @@
-// File rating.go implements the Elo value and a documented composition example.
-// It is linked from the generated project documentation.
+// rating.go реализует рейтинг Эло и его изменение после подтверждённого матча.
 package model
 
 import (
@@ -7,57 +6,58 @@ import (
 	"math"
 )
 
-// InitialRating is the Elo value assigned to a team before its first match.
+// InitialRating — начальный рейтинг команды до первого матча.
 const InitialRating = 1500.0
 
-// RatingK is the adjustment coefficient from requirement FR-35.
+// RatingK — коэффициент изменения рейтинга после матча.
 const RatingK = 32.0
 
-// EloRating is a team's rating in one discipline.
+// EloRating — рейтинг команды в одной дисциплине.
 //
-// Ratings start at InitialRating. Each confirmed match changes the value using
-// coefficient RatingK. Values stay unrounded in storage; the interface may round
-// them for display. A bye does not constitute a rated match.
+// Начальное значение равно InitialRating. Каждый подтверждённый матч меняет
+// рейтинг с коэффициентом RatingK. В БД значение хранится без округления;
+// интерфейс может округлить его при показе. Проход без соперника рейтинг не меняет.
 type EloRating struct {
-	// TeamID identifies the team whose rating is being calculated.
+	// TeamID — идентификатор команды, для которой рассчитывается рейтинг.
 	TeamID string
-	// DisciplineID scopes the rating to a single competition discipline.
+	// DisciplineID — идентификатор дисциплины, в которой учитывается рейтинг.
 	DisciplineID string
-	// Value is the current, unrounded Elo value.
+	// Value — текущее значение Эло без округления.
 	Value float64
 }
 
-// MatchRating describes the rating after a confirmed match.
+// MatchRating описывает рейтинг после подтверждённого матча.
 //
-// It embeds EloRating to reuse the team, discipline and resulting value.
-// This is Go composition, the analogue used here for the assignment's derived type.
+// Встраивание EloRating позволяет использовать идентификаторы команды,
+// дисциплины и итоговое значение. В Go это композиция типов.
 type MatchRating struct {
-	// EloRating contains the resulting team rating and its identifiers.
+	// EloRating содержит итоговый рейтинг команды и её идентификаторы.
 	EloRating
-	// Before is the value before the match.
+	// Before — значение рейтинга до матча.
 	Before float64
-	// Delta is the signed adjustment: Value minus Before.
+	// Delta — изменение со знаком: Value минус Before.
 	Delta float64
 }
 
-// NewEloRating returns an initial rating for a team in a discipline.
+// NewEloRating возвращает начальный рейтинг команды в дисциплине.
 //
-// teamID and disciplineID are domain identifiers supplied by the caller.
-// The returned EloRating has Value equal to 1500 and does not perform persistence.
+// teamID и disciplineID — идентификаторы команды и дисциплины.
+// Возвращённый EloRating имеет Value равное 1500. Функция не записывает данные в БД.
 func NewEloRating(teamID, disciplineID string) EloRating {
 	return EloRating{TeamID: teamID, DisciplineID: disciplineID, Value: InitialRating}
 }
 
-// AfterMatch calculates a new rating without changing the receiver.
+// AfterMatch рассчитывает новый рейтинг, сохраняя исходное значение.
 //
-// opponent is the opponent's unrounded rating before the match. score must be
-// 1 for a win, 0.5 for a draw, or 0 for a loss. Both ratings must be finite.
-// The returned MatchRating contains the old value, signed delta and new value.
-// An invalid score or non-finite rating returns a zero MatchRating and an error.
+// opponent — рейтинг соперника до матча без округления; оба рейтинга должны
+// быть конечными числами. score равен 1 при победе, 0.5 при ничьей и 0 при поражении.
+// Результат MatchRating содержит исходное значение, изменение со знаком и итог.
+// При недопустимом score или бесконечном рейтинге возвращаются нулевой MatchRating
+// и ошибка. NaN также считается недопустимым значением.
 //
-// The caller calculates both opponents from their original ratings and persists
-// the result in the same transaction as the confirmed match. Their adjustments
-// are equal and opposite. The method does not validate tournament draw rules.
+// Вызывающий код рассчитывает обоих соперников по исходным рейтингам и сохраняет
+// результаты в одной транзакции с подтверждением матча. Изменения равны по модулю
+// и противоположны по знаку. Допустимость ничьей проверяется регламентом турнира.
 func (r EloRating) AfterMatch(opponent, score float64) (MatchRating, error) {
 	if math.IsNaN(r.Value) || math.IsInf(r.Value, 0) || math.IsNaN(opponent) || math.IsInf(opponent, 0) {
 		return MatchRating{}, errors.New("ratings must be finite")

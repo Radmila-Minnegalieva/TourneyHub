@@ -14,7 +14,7 @@ type Container struct {
 }
 
 func New(ctx context.Context, cfg config.Config) (*Container, error) {
-	pool, err := pgxpool.New(ctx, cfg.DatabaseURL)
+	pool, err := pgxpool.New(ctx, cfg.Database.URL())
 	if err != nil {
 		return nil, fmt.Errorf("create database pool: %w", err)
 	}

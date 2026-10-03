@@ -8,6 +8,7 @@ require (
 	github.com/labstack/echo/v4 v4.15.1
 	github.com/oapi-codegen/runtime v1.4.0
 	github.com/pressly/goose/v3 v3.27.0
+	gopkg.in/yaml.v3 v3.0.1
 )
 
 tool github.com/oapi-codegen/oapi-codegen/v2/cmd/oapi-codegen
@@ -54,5 +55,4 @@ require (
 	golang.org/x/time v0.14.0 // indirect
 	golang.org/x/tools v0.41.0 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
-	gopkg.in/yaml.v3 v3.0.1 // indirect
 )

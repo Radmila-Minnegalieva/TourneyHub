@@ -1,13 +1,14 @@
 GO ?= go
 COMPOSE ?= docker compose
+PANDOC ?= pandoc
 
 -include .env
-export DATABASE_URL HTTP_ADDRESS CORS_ALLOWED_ORIGINS
+export CONFIG_PATH DB_USER DB_PASSWORD DB_HOST DB_PORT HTTP_ADDRESS CORS_ALLOWED_ORIGINS
 
-.PHONY: help generate generate-check build test vet check fmt up down logs migrate-up migrate-down migrate-status migration-test docs docs-serve run
+.PHONY: help generate generate-check build test vet check fmt up down logs migrate-up migrate-down migrate-status migration-test docs docs-export docs-serve run
 
 help:
-	@printf '%s\n' 'generate       Generate Echo interface, models, embedded OpenAPI' 'check          Check generated code, Go tests and vet' 'up             Start PostgreSQL -> migrations -> API -> Swagger UI' 'down           Stop containers (preserve database volume)' 'run            Apply migrations and run API locally (DATABASE_URL required)' 'migration-test Test up/down/up in an isolated database (TEST_DATABASE_URL required)' 'docs           Generate GoDoc example in HTML, RTF and text' 'docs-serve     Generate and view docs on localhost:6060'
+	@printf '%s\n' 'generate       Генерация моделей и HTTP-интерфейса Echo из OpenAPI' 'check          Проверка генерации, тесты Go и vet' 'up             Запуск PostgreSQL → миграций → API → Swagger UI' 'down           Остановка контейнеров с сохранением БД' 'run            Миграции и запуск API локально (DB_USER и DB_PASSWORD обязательны)' 'migration-test Проверка миграций в отдельной БД (TEST_DATABASE_URL обязателен)' 'docs           Документация модели встроенной командой go doc' 'docs-export    Экспорт документации в HTML и RTF через Pandoc' 'docs-serve     Просмотр HTML на localhost:6060 (нужен Python 3)'
 
 generate:
 	$(GO) tool oapi-codegen -config pkg/api/v1/oapi-codegen.yaml pkg/api/v1/openapi.yaml
@@ -30,9 +31,9 @@ vet:
 check: generate-check test vet
 
 fmt:
-	gofmt -w cmd internal migrations pkg/api/v1/spec.go
+	gofmt -w cmd internal pkg/api/v1/spec.go
 
-# Sequential recipes also preserve dependency order under make -j.
+# Последовательные команды сохраняют порядок запуска даже при make -j.
 up:
 	$(COMPOSE) up -d --wait postgres
 	$(COMPOSE) build api migrate
@@ -61,7 +62,16 @@ migration-test:
 	$(GO) test -tags=integration -count=1 ./internal/migration
 
 docs:
-	$(GO) run ./cmd/docgen
+	mkdir -p build/docs
+	$(GO) doc -all ./internal/model > build/docs/example.txt
 
-docs-serve:
-	$(GO) run ./cmd/docgen -serve 127.0.0.1:6060
+docs-export: docs
+	@command -v $(PANDOC) >/dev/null || { printf '%s\n' 'Для экспорта HTML и RTF установите Pandoc.'; exit 1; }
+	@{ printf '%s\n' '# TourneyHub — доменная модель' '' '[Исходный файл rating.go](_source/rating.go) · [Скачать RTF](example.rtf)' '' '```text'; cat build/docs/example.txt; printf '%s\n' '```'; } > build/docs/example.md
+	mkdir -p build/docs/_source
+	cp internal/model/rating.go build/docs/_source/rating.go
+	$(PANDOC) build/docs/example.md --standalone --metadata lang=ru --metadata pagetitle='TourneyHub — доменная модель' --to=html --output=build/docs/index.html
+	$(PANDOC) build/docs/example.md --standalone --to=rtf --output=build/docs/example.rtf
+
+docs-serve: docs-export
+	python3 -m http.server 6060 --bind 127.0.0.1 --directory build/docs

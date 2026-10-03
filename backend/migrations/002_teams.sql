@@ -18,7 +18,7 @@ CREATE TABLE team_members (
     joined_at timestamptz NOT NULL DEFAULT now(),
     PRIMARY KEY (team_id, user_id)
 );
--- Team and its captain membership are inserted/transferred in one transaction.
+-- Команда и членство капитана создаются или изменяются в одной транзакции.
 ALTER TABLE teams ADD CONSTRAINT teams_captain_membership_fk
     FOREIGN KEY (id, captain_id) REFERENCES team_members(team_id, user_id)
     DEFERRABLE INITIALLY DEFERRED;

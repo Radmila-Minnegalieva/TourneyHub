@@ -40,7 +40,7 @@ CREATE TABLE tournaments (
     qualifiers_per_group integer CHECK (qualifiers_per_group BETWEEN 1 AND 128),
     wildcard_count integer NOT NULL DEFAULT 0 CHECK (wildcard_count BETWEEN 0 AND 128),
     wildcard_place integer CHECK (wildcard_place BETWEEN 2 AND 128),
-    -- Snapshot protects active tournaments from discipline edits.
+    -- Снимок регламента защищает активные турниры от изменения дисциплины.
     min_roster_size integer NOT NULL CHECK (min_roster_size BETWEEN 1 AND 100),
     max_roster_size integer NOT NULL CHECK (max_roster_size BETWEEN 1 AND 100),
     allows_draw boolean NOT NULL,
@@ -94,8 +94,8 @@ CREATE TABLE application_players (
     UNIQUE (application_id, tournament_id, user_id),
     FOREIGN KEY (application_id, tournament_id) REFERENCES applications(id, tournament_id)
 );
--- Insert for pending/accepted; delete when rejected/withdrawn, in the same transaction.
--- Separate from the immutable roster snapshot so historical entries do not reserve a player.
+-- Резерв создаётся для pending/accepted и удаляется при rejected/withdrawn в той же транзакции.
+-- Исторический снимок состава хранится отдельно и не резервирует игрока.
 CREATE TABLE tournament_player_claims (
     tournament_id uuid NOT NULL,
     user_id uuid NOT NULL,

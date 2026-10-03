@@ -1,9 +1,9 @@
 name: Backend
 on:
   push:
-    paths: ['backend/**', '.github/workflows/backend.yml']
+    paths: ['backend/**', 'Makefile', '.github/workflows/backend.yml']
   pull_request:
-    paths: ['backend/**', '.github/workflows/backend.yml']
+    paths: ['backend/**', 'Makefile', '.github/workflows/backend.yml']
 permissions:
   contents: read
 jobs:
@@ -32,4 +32,4 @@ jobs:
           cache-dependency-path: backend/go.sum
       - run: make check build docs
       - run: make migration-test
-      - run: docker compose config --quiet
+      - run: docker compose --env-file .env.example config --quiet

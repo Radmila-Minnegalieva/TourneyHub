@@ -1,4 +1,4 @@
-// Package api implements the HTTP handlers for TourneyHub v1.
+// Package api реализует HTTP-обработчики TourneyHub v1.
 package api
 
 import (
@@ -8,7 +8,7 @@ import (
 	"net/http"
 )
 
-// API is the contract-first handler scaffold. Add service dependencies here as features are implemented.
+// API реализует сгенерированный HTTP-интерфейс. Зависимости бизнес-логики добавляются при реализации операций.
 type API struct{}
 
 var _ contract.ServerInterface = (*API)(nil)

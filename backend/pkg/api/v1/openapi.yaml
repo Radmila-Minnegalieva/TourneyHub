@@ -2,11 +2,14 @@ openapi: 3.0.3
 info:
   title: TourneyHub Backend API
   version: 0.1.0
-  description: 'Контракты по ТЗ ЛР1. Первый PR содержит каркас: бизнес-операции возвращают 501. UUID для идентификаторов;
-    даты RFC3339 UTC. Пагинация limit/offset, стабильная сортировка created_at DESC, id ASC, если не указано иное.
-    Роли являются набором; кроме роли проверяется отношение к объекту. x-required-roles и x-requirements — документация,
-    не автоматическая авторизация. Обновления используют version и дают 409 при конфликте. OpenAPI 3.0.3 выбран
-    для закреплённого oapi-codegen v2.6.0.'
+  description: >-
+    API платформы TourneyHub для управления аккаунтами, командами, турнирами,
+    заявками, расписанием матчей, результатами, спорами, рейтингами и уведомлениями.
+    Идентификаторы передаются в формате UUID; даты — RFC3339 UTC.
+    Пагинация использует limit/offset. По умолчанию сортировка стабильна:
+    created_at DESC, id ASC. Доступ определяется ролями пользователя
+    и его отношением к объекту; x-required-roles описывает необходимые роли.
+    Обновления передают version и возвращают 409 при конфликте версий.
 servers:
 - url: /api/v1
 tags:
@@ -49,12 +52,7 @@ paths:
           $ref: '#/components/responses/429'
         '500':
           $ref: '#/components/responses/500'
-        '501':
-          $ref: '#/components/responses/501'
       security: []
-      x-requirements:
-      - FR-01
-      - FR-05
       requestBody:
         required: true
         content:
@@ -83,11 +81,7 @@ paths:
           $ref: '#/components/responses/429'
         '500':
           $ref: '#/components/responses/500'
-        '501':
-          $ref: '#/components/responses/501'
       security: []
-      x-requirements:
-      - FR-01
       requestBody:
         required: true
         content:
@@ -121,13 +115,9 @@ paths:
           $ref: '#/components/responses/429'
         '500':
           $ref: '#/components/responses/500'
-        '501':
-          $ref: '#/components/responses/501'
         '401':
           $ref: '#/components/responses/401'
       security: []
-      x-requirements:
-      - FR-02
       requestBody:
         required: true
         content:
@@ -160,13 +150,9 @@ paths:
           $ref: '#/components/responses/429'
         '500':
           $ref: '#/components/responses/500'
-        '501':
-          $ref: '#/components/responses/501'
         '401':
           $ref: '#/components/responses/401'
       security: []
-      x-requirements:
-      - FR-02
       requestBody:
         required: true
         content:
@@ -195,11 +181,7 @@ paths:
           $ref: '#/components/responses/429'
         '500':
           $ref: '#/components/responses/500'
-        '501':
-          $ref: '#/components/responses/501'
       security: []
-      x-requirements:
-      - FR-02
       requestBody:
         required: true
         content:
@@ -228,11 +210,7 @@ paths:
           $ref: '#/components/responses/429'
         '500':
           $ref: '#/components/responses/500'
-        '501':
-          $ref: '#/components/responses/501'
       security: []
-      x-requirements:
-      - FR-03
       requestBody:
         required: true
         content:
@@ -261,11 +239,7 @@ paths:
           $ref: '#/components/responses/429'
         '500':
           $ref: '#/components/responses/500'
-        '501':
-          $ref: '#/components/responses/501'
       security: []
-      x-requirements:
-      - FR-03
       requestBody:
         required: true
         content:
@@ -296,10 +270,6 @@ paths:
           $ref: '#/components/responses/404'
         '500':
           $ref: '#/components/responses/500'
-        '501':
-          $ref: '#/components/responses/501'
-      x-requirements:
-      - FR-04
     patch:
       operationId: updateProfile
       tags:
@@ -327,10 +297,6 @@ paths:
           $ref: '#/components/responses/422'
         '500':
           $ref: '#/components/responses/500'
-        '501':
-          $ref: '#/components/responses/501'
-      x-requirements:
-      - FR-04
       requestBody:
         required: true
         content:
@@ -361,10 +327,6 @@ paths:
           $ref: '#/components/responses/404'
         '500':
           $ref: '#/components/responses/500'
-        '501':
-          $ref: '#/components/responses/501'
-      x-requirements:
-      - FR-07
       parameters:
       - $ref: '#/components/parameters/Limit'
       - $ref: '#/components/parameters/Offset'
@@ -395,11 +357,7 @@ paths:
           $ref: '#/components/responses/404'
         '500':
           $ref: '#/components/responses/500'
-        '501':
-          $ref: '#/components/responses/501'
       security: []
-      x-requirements:
-      - FR-39
       parameters:
       - $ref: '#/components/parameters/Limit'
       - $ref: '#/components/parameters/Offset'
@@ -423,8 +381,6 @@ paths:
           $ref: '#/components/responses/404'
         '500':
           $ref: '#/components/responses/500'
-        '501':
-          $ref: '#/components/responses/501'
       security: []
       parameters:
       - $ref: '#/components/parameters/Limit'
@@ -462,12 +418,8 @@ paths:
           $ref: '#/components/responses/422'
         '500':
           $ref: '#/components/responses/500'
-        '501':
-          $ref: '#/components/responses/501'
       x-required-roles:
       - participant
-      x-requirements:
-      - FR-06
       requestBody:
         required: true
         content:
@@ -498,8 +450,6 @@ paths:
           $ref: '#/components/responses/404'
         '500':
           $ref: '#/components/responses/500'
-        '501':
-          $ref: '#/components/responses/501'
       parameters:
       - $ref: '#/components/parameters/Limit'
       - $ref: '#/components/parameters/Offset'
@@ -523,8 +473,6 @@ paths:
           $ref: '#/components/responses/404'
         '500':
           $ref: '#/components/responses/500'
-        '501':
-          $ref: '#/components/responses/501'
       security: []
       parameters:
       - name: team_id
@@ -560,10 +508,6 @@ paths:
           $ref: '#/components/responses/422'
         '500':
           $ref: '#/components/responses/500'
-        '501':
-          $ref: '#/components/responses/501'
-      x-requirements:
-      - FR-06
       parameters:
       - name: team_id
         in: path
@@ -601,8 +545,6 @@ paths:
           $ref: '#/components/responses/422'
         '500':
           $ref: '#/components/responses/500'
-        '501':
-          $ref: '#/components/responses/501'
       parameters:
       - name: team_id
         in: path
@@ -638,8 +580,6 @@ paths:
           $ref: '#/components/responses/404'
         '500':
           $ref: '#/components/responses/500'
-        '501':
-          $ref: '#/components/responses/501'
       security: []
       parameters:
       - name: team_id
@@ -673,10 +613,6 @@ paths:
           $ref: '#/components/responses/422'
         '500':
           $ref: '#/components/responses/500'
-        '501':
-          $ref: '#/components/responses/501'
-      x-requirements:
-      - FR-08
       parameters:
       - name: team_id
         in: path
@@ -724,10 +660,6 @@ paths:
           $ref: '#/components/responses/422'
         '500':
           $ref: '#/components/responses/500'
-        '501':
-          $ref: '#/components/responses/501'
-      x-requirements:
-      - FR-08
       parameters:
       - name: team_id
         in: path
@@ -769,10 +701,6 @@ paths:
           $ref: '#/components/responses/422'
         '500':
           $ref: '#/components/responses/500'
-        '501':
-          $ref: '#/components/responses/501'
-      x-requirements:
-      - FR-07
       parameters:
       - name: team_id
         in: path
@@ -810,8 +738,6 @@ paths:
           $ref: '#/components/responses/404'
         '500':
           $ref: '#/components/responses/500'
-        '501':
-          $ref: '#/components/responses/501'
       parameters:
       - $ref: '#/components/parameters/Limit'
       - $ref: '#/components/parameters/Offset'
@@ -843,10 +769,6 @@ paths:
           $ref: '#/components/responses/422'
         '500':
           $ref: '#/components/responses/500'
-        '501':
-          $ref: '#/components/responses/501'
-      x-requirements:
-      - FR-07
       parameters:
       - name: invitation_id
         in: path
@@ -884,8 +806,6 @@ paths:
           $ref: '#/components/responses/422'
         '500':
           $ref: '#/components/responses/500'
-        '501':
-          $ref: '#/components/responses/501'
       parameters:
       - name: team_id
         in: path
@@ -920,11 +840,7 @@ paths:
           $ref: '#/components/responses/404'
         '500':
           $ref: '#/components/responses/500'
-        '501':
-          $ref: '#/components/responses/501'
       security: []
-      x-requirements:
-      - FR-36
       parameters:
       - $ref: '#/components/parameters/Limit'
       - $ref: '#/components/parameters/Offset'
@@ -989,16 +905,9 @@ paths:
           $ref: '#/components/responses/422'
         '500':
           $ref: '#/components/responses/500'
-        '501':
-          $ref: '#/components/responses/501'
       x-required-roles:
       - organizer
       - admin
-      x-requirements:
-      - FR-10
-      - FR-11
-      - FR-12
-      - FR-13
       requestBody:
         required: true
         content:
@@ -1029,8 +938,6 @@ paths:
           $ref: '#/components/responses/404'
         '500':
           $ref: '#/components/responses/500'
-        '501':
-          $ref: '#/components/responses/501'
       parameters:
       - $ref: '#/components/parameters/Limit'
       - $ref: '#/components/parameters/Offset'
@@ -1088,11 +995,7 @@ paths:
           $ref: '#/components/responses/404'
         '500':
           $ref: '#/components/responses/500'
-        '501':
-          $ref: '#/components/responses/501'
       security: []
-      x-requirements:
-      - FR-36
       parameters:
       - name: tournament_id
         in: path
@@ -1127,14 +1030,9 @@ paths:
           $ref: '#/components/responses/422'
         '500':
           $ref: '#/components/responses/500'
-        '501':
-          $ref: '#/components/responses/501'
       x-required-roles:
       - organizer
       - admin
-      x-requirements:
-      - FR-10
-      - FR-14
       parameters:
       - name: tournament_id
         in: path
@@ -1176,13 +1074,9 @@ paths:
           $ref: '#/components/responses/422'
         '500':
           $ref: '#/components/responses/500'
-        '501':
-          $ref: '#/components/responses/501'
       x-required-roles:
       - organizer
       - admin
-      x-requirements:
-      - FR-14
       parameters:
       - name: tournament_id
         in: path
@@ -1224,14 +1118,9 @@ paths:
           $ref: '#/components/responses/422'
         '500':
           $ref: '#/components/responses/500'
-        '501':
-          $ref: '#/components/responses/501'
       x-required-roles:
       - organizer
       - admin
-      x-requirements:
-      - FR-14
-      - FR-27
       parameters:
       - name: tournament_id
         in: path
@@ -1274,14 +1163,9 @@ paths:
           $ref: '#/components/responses/422'
         '500':
           $ref: '#/components/responses/500'
-        '501':
-          $ref: '#/components/responses/501'
       x-required-roles:
       - organizer
       - admin
-      x-requirements:
-      - FR-14
-      - FR-33
       parameters:
       - name: tournament_id
         in: path
@@ -1319,10 +1203,6 @@ paths:
           $ref: '#/components/responses/404'
         '500':
           $ref: '#/components/responses/500'
-        '501':
-          $ref: '#/components/responses/501'
-      x-requirements:
-      - FR-17
       parameters:
       - name: tournament_id
         in: path
@@ -1365,12 +1245,6 @@ paths:
           $ref: '#/components/responses/422'
         '500':
           $ref: '#/components/responses/500'
-        '501':
-          $ref: '#/components/responses/501'
-      x-requirements:
-      - FR-09
-      - FR-15
-      - FR-16
       parameters:
       - name: tournament_id
         in: path
@@ -1404,11 +1278,7 @@ paths:
           $ref: '#/components/responses/404'
         '500':
           $ref: '#/components/responses/500'
-        '501':
-          $ref: '#/components/responses/501'
       security: []
-      x-requirements:
-      - FR-36
       parameters:
       - name: tournament_id
         in: path
@@ -1442,8 +1312,6 @@ paths:
           $ref: '#/components/responses/404'
         '500':
           $ref: '#/components/responses/500'
-        '501':
-          $ref: '#/components/responses/501'
       parameters:
       - $ref: '#/components/parameters/Limit'
       - $ref: '#/components/parameters/Offset'
@@ -1475,14 +1343,9 @@ paths:
           $ref: '#/components/responses/422'
         '500':
           $ref: '#/components/responses/500'
-        '501':
-          $ref: '#/components/responses/501'
       x-required-roles:
       - organizer
       - admin
-      x-requirements:
-      - FR-17
-      - FR-27
       parameters:
       - name: tournament_id
         in: path
@@ -1530,10 +1393,6 @@ paths:
           $ref: '#/components/responses/422'
         '500':
           $ref: '#/components/responses/500'
-        '501':
-          $ref: '#/components/responses/501'
-      x-requirements:
-      - FR-18
       parameters:
       - name: tournament_id
         in: path
@@ -1583,17 +1442,9 @@ paths:
           $ref: '#/components/responses/422'
         '500':
           $ref: '#/components/responses/500'
-        '501':
-          $ref: '#/components/responses/501'
       x-required-roles:
       - organizer
       - admin
-      x-requirements:
-      - FR-19
-      - FR-20
-      - FR-21
-      - FR-22
-      - FR-24
       parameters:
       - name: tournament_id
         in: path
@@ -1637,14 +1488,9 @@ paths:
           $ref: '#/components/responses/422'
         '500':
           $ref: '#/components/responses/500'
-        '501':
-          $ref: '#/components/responses/501'
       x-required-roles:
       - organizer
       - admin
-      x-requirements:
-      - FR-23
-      - FR-24
       parameters:
       - name: tournament_id
         in: path
@@ -1678,11 +1524,7 @@ paths:
           $ref: '#/components/responses/404'
         '500':
           $ref: '#/components/responses/500'
-        '501':
-          $ref: '#/components/responses/501'
       security: []
-      x-requirements:
-      - FR-36
       parameters:
       - name: tournament_id
         in: path
@@ -1713,12 +1555,7 @@ paths:
           $ref: '#/components/responses/404'
         '500':
           $ref: '#/components/responses/500'
-        '501':
-          $ref: '#/components/responses/501'
       security: []
-      x-requirements:
-      - FR-23
-      - FR-34
       parameters:
       - name: tournament_id
         in: path
@@ -1746,12 +1583,7 @@ paths:
           $ref: '#/components/responses/404'
         '500':
           $ref: '#/components/responses/500'
-        '501':
-          $ref: '#/components/responses/501'
       security: []
-      x-requirements:
-      - FR-25
-      - FR-36
       parameters:
       - name: tournament_id
         in: path
@@ -1815,14 +1647,9 @@ paths:
           $ref: '#/components/responses/422'
         '500':
           $ref: '#/components/responses/500'
-        '501':
-          $ref: '#/components/responses/501'
       x-required-roles:
       - organizer
       - admin
-      x-requirements:
-      - FR-25
-      - FR-27
       parameters:
       - name: tournament_id
         in: path
@@ -1865,13 +1692,9 @@ paths:
           $ref: '#/components/responses/422'
         '500':
           $ref: '#/components/responses/500'
-        '501':
-          $ref: '#/components/responses/501'
       x-required-roles:
       - organizer
       - admin
-      x-requirements:
-      - FR-26
       parameters:
       - name: tournament_id
         in: path
@@ -1905,8 +1728,6 @@ paths:
           $ref: '#/components/responses/404'
         '500':
           $ref: '#/components/responses/500'
-        '501':
-          $ref: '#/components/responses/501'
       security: []
       parameters:
       - name: match_id
@@ -1943,14 +1764,9 @@ paths:
           $ref: '#/components/responses/422'
         '500':
           $ref: '#/components/responses/500'
-        '501':
-          $ref: '#/components/responses/501'
       x-required-roles:
       - organizer
       - admin
-      x-requirements:
-      - FR-25
-      - FR-27
       parameters:
       - name: match_id
         in: path
@@ -1992,13 +1808,9 @@ paths:
           $ref: '#/components/responses/422'
         '500':
           $ref: '#/components/responses/500'
-        '501':
-          $ref: '#/components/responses/501'
       x-required-roles:
       - organizer
       - admin
-      x-requirements:
-      - FR-26
       parameters:
       - name: match_id
         in: path
@@ -2038,8 +1850,6 @@ paths:
           $ref: '#/components/responses/404'
         '500':
           $ref: '#/components/responses/500'
-        '501':
-          $ref: '#/components/responses/501'
       parameters:
       - name: match_id
         in: path
@@ -2075,12 +1885,6 @@ paths:
           $ref: '#/components/responses/422'
         '500':
           $ref: '#/components/responses/500'
-        '501':
-          $ref: '#/components/responses/501'
-      x-requirements:
-      - FR-28
-      - FR-29
-      - FR-30
       parameters:
       - name: match_id
         in: path
@@ -2124,12 +1928,6 @@ paths:
           $ref: '#/components/responses/422'
         '500':
           $ref: '#/components/responses/500'
-        '501':
-          $ref: '#/components/responses/501'
-      x-requirements:
-      - FR-30
-      - FR-33
-      - FR-35
       parameters:
       - name: match_id
         in: path
@@ -2178,10 +1976,6 @@ paths:
           $ref: '#/components/responses/422'
         '500':
           $ref: '#/components/responses/500'
-        '501':
-          $ref: '#/components/responses/501'
-      x-requirements:
-      - FR-31
       parameters:
       - name: match_id
         in: path
@@ -2230,14 +2024,9 @@ paths:
           $ref: '#/components/responses/422'
         '500':
           $ref: '#/components/responses/500'
-        '501':
-          $ref: '#/components/responses/501'
       x-required-roles:
       - referee
       - admin
-      x-requirements:
-      - FR-32
-      - FR-33
       parameters:
       - name: match_id
         in: path
@@ -2275,8 +2064,6 @@ paths:
           $ref: '#/components/responses/404'
         '500':
           $ref: '#/components/responses/500'
-        '501':
-          $ref: '#/components/responses/501'
       parameters:
       - name: match_id
         in: path
@@ -2313,15 +2100,9 @@ paths:
           $ref: '#/components/responses/422'
         '500':
           $ref: '#/components/responses/500'
-        '501':
-          $ref: '#/components/responses/501'
       x-required-roles:
       - referee
       - admin
-      x-requirements:
-      - FR-31
-      - FR-33
-      - FR-41
       parameters:
       - name: match_id
         in: path
@@ -2359,8 +2140,6 @@ paths:
           $ref: '#/components/responses/404'
         '500':
           $ref: '#/components/responses/500'
-        '501':
-          $ref: '#/components/responses/501'
       x-required-roles:
       - referee
       - admin
@@ -2395,12 +2174,7 @@ paths:
           $ref: '#/components/responses/404'
         '500':
           $ref: '#/components/responses/500'
-        '501':
-          $ref: '#/components/responses/501'
       security: []
-      x-requirements:
-      - FR-35
-      - FR-36
       parameters:
       - $ref: '#/components/parameters/Limit'
       - $ref: '#/components/parameters/Offset'
@@ -2430,11 +2204,7 @@ paths:
           $ref: '#/components/responses/404'
         '500':
           $ref: '#/components/responses/500'
-        '501':
-          $ref: '#/components/responses/501'
       security: []
-      x-requirements:
-      - FR-35
       parameters:
       - name: team_id
         in: path
@@ -2483,10 +2253,6 @@ paths:
           $ref: '#/components/responses/422'
         '500':
           $ref: '#/components/responses/500'
-        '501':
-          $ref: '#/components/responses/501'
-      x-requirements:
-      - FR-28
       requestBody:
         required: true
         content:
@@ -2519,8 +2285,6 @@ paths:
           $ref: '#/components/responses/404'
         '500':
           $ref: '#/components/responses/500'
-        '501':
-          $ref: '#/components/responses/501'
       parameters:
       - name: file_id
         in: path
@@ -2552,10 +2316,6 @@ paths:
           $ref: '#/components/responses/404'
         '500':
           $ref: '#/components/responses/500'
-        '501':
-          $ref: '#/components/responses/501'
-      x-requirements:
-      - FR-27
       parameters:
       - $ref: '#/components/parameters/Limit'
       - $ref: '#/components/parameters/Offset'
@@ -2588,10 +2348,6 @@ paths:
           $ref: '#/components/responses/422'
         '500':
           $ref: '#/components/responses/500'
-        '501':
-          $ref: '#/components/responses/501'
-      x-requirements:
-      - FR-27
       parameters:
       - name: notification_id
         in: path
@@ -2607,7 +2363,7 @@ paths:
       summary: SSE обновления публичной страницы
       description: Видимый опубликованный турнир. События match_updated, standings_updated, bracket_updated, tournament_updated,
         resync_required. id монотонный; heartbeat каждые 15с; возобновление Last-Event-ID, при истёкшем replay —
-        resync_required. Клиент перечитывает REST-ресурсы; закрытие скрытого турнира. В каркасе 501.
+        resync_required. Клиент перечитывает REST-ресурсы; закрытие скрытого турнира.
       responses:
         '200':
           description: Успешно
@@ -2629,8 +2385,6 @@ paths:
           $ref: '#/components/responses/404'
         '500':
           $ref: '#/components/responses/500'
-        '501':
-          $ref: '#/components/responses/501'
       security: []
       parameters:
       - name: tournament_id
@@ -2669,11 +2423,7 @@ paths:
           $ref: '#/components/responses/404'
         '500':
           $ref: '#/components/responses/500'
-        '501':
-          $ref: '#/components/responses/501'
       security: []
-      x-requirements:
-      - FR-37
       parameters:
       - name: tournament_id
         in: path
@@ -2705,12 +2455,8 @@ paths:
           $ref: '#/components/responses/404'
         '500':
           $ref: '#/components/responses/500'
-        '501':
-          $ref: '#/components/responses/501'
       x-required-roles:
       - admin
-      x-requirements:
-      - FR-38
       parameters:
       - $ref: '#/components/parameters/Limit'
       - $ref: '#/components/parameters/Offset'
@@ -2748,14 +2494,8 @@ paths:
           $ref: '#/components/responses/422'
         '500':
           $ref: '#/components/responses/500'
-        '501':
-          $ref: '#/components/responses/501'
       x-required-roles:
       - admin
-      x-requirements:
-      - FR-05
-      - FR-38
-      - FR-41
       parameters:
       - name: user_id
         in: path
@@ -2797,12 +2537,8 @@ paths:
           $ref: '#/components/responses/422'
         '500':
           $ref: '#/components/responses/500'
-        '501':
-          $ref: '#/components/responses/501'
       x-required-roles:
       - admin
-      x-requirements:
-      - FR-38
       parameters:
       - name: user_id
         in: path
@@ -2844,12 +2580,8 @@ paths:
           $ref: '#/components/responses/422'
         '500':
           $ref: '#/components/responses/500'
-        '501':
-          $ref: '#/components/responses/501'
       x-required-roles:
       - admin
-      x-requirements:
-      - FR-39
       requestBody:
         required: true
         content:
@@ -2885,12 +2617,8 @@ paths:
           $ref: '#/components/responses/422'
         '500':
           $ref: '#/components/responses/500'
-        '501':
-          $ref: '#/components/responses/501'
       x-required-roles:
       - admin
-      x-requirements:
-      - FR-39
       parameters:
       - name: discipline_id
         in: path
@@ -2928,12 +2656,8 @@ paths:
           $ref: '#/components/responses/404'
         '500':
           $ref: '#/components/responses/500'
-        '501':
-          $ref: '#/components/responses/501'
       x-required-roles:
       - admin
-      x-requirements:
-      - FR-40
       parameters:
       - $ref: '#/components/parameters/Limit'
       - $ref: '#/components/parameters/Offset'
@@ -2999,13 +2723,8 @@ paths:
           $ref: '#/components/responses/422'
         '500':
           $ref: '#/components/responses/500'
-        '501':
-          $ref: '#/components/responses/501'
       x-required-roles:
       - admin
-      x-requirements:
-      - FR-40
-      - FR-41
       parameters:
       - name: tournament_id
         in: path
@@ -3043,12 +2762,8 @@ paths:
           $ref: '#/components/responses/422'
         '500':
           $ref: '#/components/responses/500'
-        '501':
-          $ref: '#/components/responses/501'
       x-required-roles:
       - admin
-      x-requirements:
-      - FR-40
       parameters:
       - name: tournament_id
         in: path
@@ -3086,12 +2801,8 @@ paths:
           $ref: '#/components/responses/404'
         '500':
           $ref: '#/components/responses/500'
-        '501':
-          $ref: '#/components/responses/501'
       x-required-roles:
       - admin
-      x-requirements:
-      - FR-41
       parameters:
       - $ref: '#/components/parameters/Limit'
       - $ref: '#/components/parameters/Offset'
@@ -3192,12 +2903,6 @@ components:
             minimum: 1
     '500':
       description: Внутренняя ошибка
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    '501':
-      description: Операция описана, но ещё не реализована в каркасе
       content:
         application/json:
           schema:

@@ -11,6 +11,8 @@ RUN apk add --no-cache ca-certificates tzdata \
     && addgroup -S tourneyhub && adduser -S -G tourneyhub tourneyhub
 WORKDIR /app
 COPY --from=builder /out/api /out/migrate /app/
+COPY --chown=tourneyhub:tourneyhub config /app/config
+COPY --chown=tourneyhub:tourneyhub migrations /app/migrations
 USER tourneyhub
 EXPOSE 8080
 CMD ["/app/api"]

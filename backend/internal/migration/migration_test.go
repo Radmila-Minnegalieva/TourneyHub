@@ -7,11 +7,11 @@ import (
 	"errors"
 	"fmt"
 	"os"
+	"path/filepath"
 	"testing"
 	"time"
 
 	"github.com/Radmila-Minnegalieva/TourneyHub/backend/internal/migration"
-	"github.com/Radmila-Minnegalieva/TourneyHub/backend/migrations"
 	"github.com/jackc/pgx/v5/pgconn"
 )
 
@@ -22,12 +22,12 @@ func TestMigrationLifecycleAndConstraints(t *testing.T) {
 	}
 	ctx, cancel := context.WithTimeout(context.Background(), 2*time.Minute)
 	defer cancel()
-	provider, db, err := migration.Open(ctx, dsn, migrations.Files)
+	provider, db, err := migration.Open(ctx, dsn, filepath.Join("..", "..", "migrations"))
 	if err != nil {
 		t.Fatal(err)
 	}
 	defer db.Close()
-	// Refuse a database containing application tables, even if someone supplied the wrong DSN.
+	// Не выполняем откат в БД с прикладными таблицами, даже если ошибочно указан её DSN.
 	var count int
 	if err := db.QueryRowContext(ctx, `SELECT count(*) FROM information_schema.tables WHERE table_schema='public' AND table_name <> 'goose_db_version'`).Scan(&count); err != nil {
 		t.Fatal(err)
@@ -48,7 +48,7 @@ func TestMigrationLifecycleAndConstraints(t *testing.T) {
 	if tableCount < 25 {
 		t.Fatalf("missing domain tables: %d", tableCount)
 	}
-	// Verify important DB constraints with real SQL; every probe is rolled back.
+	// Проверяем ограничения реальными SQL-запросами; каждую пробу откатываем.
 	for _, tc := range []struct{ name, sql, code string }{
 		{"file size", `INSERT INTO files(owner_id,purpose,storage_key,filename,content_type,size_bytes) VALUES ('00000000-0000-0000-0000-000000000001','match_protocol','oversize','test.pdf','application/pdf',5242881)`, "23514"},
 		{"duplicate nickname", `INSERT INTO users(id,email,password_hash,nickname,personal_data_consent_at) VALUES ('00000000-0000-0000-0000-000000000002','other@example.com','hash','PLAYER',now())`, "23505"},

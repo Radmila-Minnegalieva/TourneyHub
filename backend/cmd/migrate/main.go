@@ -11,7 +11,6 @@ import (
 
 	"github.com/Radmila-Minnegalieva/TourneyHub/backend/internal/config"
 	"github.com/Radmila-Minnegalieva/TourneyHub/backend/internal/migration"
-	"github.com/Radmila-Minnegalieva/TourneyHub/backend/migrations"
 )
 
 func run(ctx context.Context) error {
@@ -29,7 +28,7 @@ func run(ctx context.Context) error {
 	if err != nil {
 		return err
 	}
-	provider, db, err := migration.Open(ctx, cfg.DatabaseURL, migrations.Files)
+	provider, db, err := migration.Open(ctx, cfg.Database.URL(), cfg.Migrations.Directory)
 	if err != nil {
 		return err
 	}

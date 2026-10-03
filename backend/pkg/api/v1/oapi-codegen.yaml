@@ -4,3 +4,14 @@ generate:
   echo-server: true
   embedded-spec: true
 output: pkg/api/v1/api.gen.go
+output-options:
+  user-templates:
+    typedef.tmpl: pkg/api/v1/templates/typedef.tmpl
+    constants.tmpl: pkg/api/v1/templates/constants.tmpl
+    param-types.tmpl: pkg/api/v1/templates/param-types.tmpl
+    request-bodies.tmpl: pkg/api/v1/templates/request-bodies.tmpl
+    imports.tmpl: pkg/api/v1/templates/imports.tmpl
+    inline.tmpl: pkg/api/v1/templates/inline.tmpl
+    echo/echo-interface.tmpl: pkg/api/v1/templates/echo-interface.tmpl
+    echo/echo-register.tmpl: pkg/api/v1/templates/echo-register.tmpl
+    echo/echo-wrappers.tmpl: pkg/api/v1/templates/echo-wrappers.tmpl

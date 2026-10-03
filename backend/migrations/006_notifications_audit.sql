@@ -21,7 +21,7 @@ CREATE TABLE audit_entries (
 );
 CREATE INDEX audit_entries_entity_idx ON audit_entries(entity_id, created_at DESC, id);
 CREATE INDEX audit_entries_actor_idx ON audit_entries(actor_id, created_at DESC, id);
--- Written with the domain transaction; future workers deliver SMTP/SSE after commit.
+-- Запись создаётся в транзакции с доменными изменениями; отправка SMTP/SSE выполняется после commit.
 CREATE TABLE outbox_events (
     id bigint GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     topic text NOT NULL,
