@@ -1,4 +1,4 @@
-module github.com/Radmila-Minnegalieva/TourneyHub
+module github.com/Radmila-Minnegalieva/TourneyHub/backend
 
 go 1.25.0
 

@@ -2,7 +2,7 @@
 package api
 
 import (
-	contract "github.com/Radmila-Minnegalieva/TourneyHub/pkg/api/v1"
+	contract "github.com/Radmila-Minnegalieva/TourneyHub/backend/pkg/api/v1"
 	"github.com/labstack/echo/v4"
 	openapi_types "github.com/oapi-codegen/runtime/types"
 	"net/http"

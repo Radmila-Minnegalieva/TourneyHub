@@ -9,9 +9,9 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/Radmila-Minnegalieva/TourneyHub/internal/config"
-	"github.com/Radmila-Minnegalieva/TourneyHub/internal/migration"
-	"github.com/Radmila-Minnegalieva/TourneyHub/migrations"
+	"github.com/Radmila-Minnegalieva/TourneyHub/backend/internal/config"
+	"github.com/Radmila-Minnegalieva/TourneyHub/backend/internal/migration"
+	"github.com/Radmila-Minnegalieva/TourneyHub/backend/migrations"
 )
 
 func run(ctx context.Context) error {

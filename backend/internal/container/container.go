@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/Radmila-Minnegalieva/TourneyHub/internal/config"
+	"github.com/Radmila-Minnegalieva/TourneyHub/backend/internal/config"
 	"github.com/jackc/pgx/v5/pgxpool"
 )
 

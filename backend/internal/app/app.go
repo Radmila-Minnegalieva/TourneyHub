@@ -6,9 +6,9 @@ import (
 	"net/http"
 	"time"
 
-	handlers "github.com/Radmila-Minnegalieva/TourneyHub/internal/api/v1"
-	"github.com/Radmila-Minnegalieva/TourneyHub/internal/config"
-	"github.com/Radmila-Minnegalieva/TourneyHub/internal/container"
+	handlers "github.com/Radmila-Minnegalieva/TourneyHub/backend/internal/api/v1"
+	"github.com/Radmila-Minnegalieva/TourneyHub/backend/internal/config"
+	"github.com/Radmila-Minnegalieva/TourneyHub/backend/internal/container"
 )
 
 func Run(ctx context.Context, cfg config.Config) error {

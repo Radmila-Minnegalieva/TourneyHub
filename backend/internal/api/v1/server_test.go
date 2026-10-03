@@ -8,7 +8,7 @@ import (
 	"strings"
 	"testing"
 
-	contract "github.com/Radmila-Minnegalieva/TourneyHub/pkg/api/v1"
+	contract "github.com/Radmila-Minnegalieva/TourneyHub/backend/pkg/api/v1"
 )
 
 type fakeDatabase struct{ err error }

@@ -1,6 +1,5 @@
 .git
 .env
-frontend
 bin
 build
 coverage.out

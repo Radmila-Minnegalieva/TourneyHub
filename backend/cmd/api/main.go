@@ -7,8 +7,8 @@ import (
 	"os/signal"
 	"syscall"
 
-	"github.com/Radmila-Minnegalieva/TourneyHub/internal/app"
-	"github.com/Radmila-Minnegalieva/TourneyHub/internal/config"
+	"github.com/Radmila-Minnegalieva/TourneyHub/backend/internal/app"
+	"github.com/Radmila-Minnegalieva/TourneyHub/backend/internal/config"
 )
 
 func main() {

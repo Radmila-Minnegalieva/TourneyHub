@@ -8,7 +8,7 @@ import (
 	"net/http"
 	"time"
 
-	contract "github.com/Radmila-Minnegalieva/TourneyHub/pkg/api/v1"
+	contract "github.com/Radmila-Minnegalieva/TourneyHub/backend/pkg/api/v1"
 	"github.com/getkin/kin-openapi/openapi3"
 	"github.com/getkin/kin-openapi/openapi3filter"
 	"github.com/labstack/echo/v4"

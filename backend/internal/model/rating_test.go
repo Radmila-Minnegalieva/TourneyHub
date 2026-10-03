@@ -5,7 +5,7 @@ import (
 	"math"
 	"testing"
 
-	"github.com/Radmila-Minnegalieva/TourneyHub/internal/model"
+	"github.com/Radmila-Minnegalieva/TourneyHub/backend/internal/model"
 )
 
 func ExampleEloRating_AfterMatch() {

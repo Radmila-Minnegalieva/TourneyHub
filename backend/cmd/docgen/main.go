@@ -27,7 +27,7 @@ func run() error {
 	if err != nil {
 		return err
 	}
-	pkg := doc.New(packages["model"], "github.com/Radmila-Minnegalieva/TourneyHub/internal/model", doc.AllDecls|doc.PreserveAST)
+	pkg := doc.New(packages["model"], "github.com/Radmila-Minnegalieva/TourneyHub/backend/internal/model", doc.AllDecls|doc.PreserveAST)
 	var page, plain bytes.Buffer
 	page.WriteString("<!doctype html><html lang=\"en\"><meta charset=\"utf-8\"><title>TourneyHub — GoDoc example</title><style>body{max-width:960px;margin:40px auto;font:16px/1.6 system-ui;padding:0 24px}pre{white-space:pre-wrap;background:#f4f5f7;padding:16px}h2{border-bottom:1px solid #ddd}a{color:#185abc}</style><h1>TourneyHub — GoDoc example</h1>")
 	var printer comment.Printer

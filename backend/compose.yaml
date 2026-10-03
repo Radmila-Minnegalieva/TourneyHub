@@ -1,3 +1,5 @@
+name: tourneyhub
+
 services:
   postgres:
     image: postgres:18.6-alpine
