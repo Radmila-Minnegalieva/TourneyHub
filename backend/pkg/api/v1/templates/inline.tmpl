@@ -1,0 +1,80 @@
+// OpenAPI-спецификация в JSON, сжатая gzip и закодированная в base64.
+var swaggerSpec = []string{
+{{range .SpecParts}}
+    "{{.}}",{{end}}
+}
+
+// decodeSpec восстанавливает встроенную спецификацию или возвращает ошибку декодирования.
+func decodeSpec() ([]byte, error) {
+    zipped, err := base64.StdEncoding.DecodeString(strings.Join(swaggerSpec, ""))
+    if err != nil {
+        return nil, fmt.Errorf("error base64 decoding spec: %w", err)
+    }
+    zr, err := gzip.NewReader(bytes.NewReader(zipped))
+    if err != nil {
+        return nil, fmt.Errorf("error decompressing spec: %w", err)
+    }
+    var buf bytes.Buffer
+    _, err = buf.ReadFrom(zr)
+    if err != nil {
+        return nil, fmt.Errorf("error decompressing spec: %w", err)
+    }
+
+    return buf.Bytes(), nil
+}
+
+var rawSpec = decodeSpecCached()
+
+// Кеш декодированной OpenAPI-спецификации.
+func decodeSpecCached() func() ([]byte, error) {
+	data, err := decodeSpec()
+	return func() ([]byte, error) {
+		return data, err
+	}
+}
+
+// PathToRawSpec создаёт файловую систему для разрешения внешних ссылок OpenAPI.
+func PathToRawSpec(pathToFile string) map[string]func() ([]byte, error) {
+    res := make(map[string]func() ([]byte, error))
+    if len(pathToFile) > 0 {
+        res[pathToFile] = rawSpec
+    }
+    {{ range $key, $value := .ImportMapping }}{{- if ne $value.Path "-"}}
+    for rawPath, rawFunc := range {{ $value.Name }}.PathToRawSpec(path.Join(path.Dir(pathToFile), "{{ $key }}")) {
+        if _, ok := res[rawPath]; ok {
+            // Функции в Go нельзя сравнивать, поэтому прежнее значение заменяется.
+        }
+        res[rawPath] = rawFunc
+    }
+    {{- end }}{{- end }}
+    return res
+}
+
+// GetSwagger возвращает OpenAPI-спецификацию, соответствующую этому коду.
+// Внешние ссылки разрешаются через import-mapping и встроенные спецификации пакетов.
+func GetSwagger() (swagger *openapi3.T, err error) {
+    resolvePath := PathToRawSpec("")
+
+    loader := openapi3.NewLoader()
+    loader.IsExternalRefsAllowed = true
+    loader.ReadFromURIFunc = func(loader *openapi3.Loader, url *url.URL) ([]byte, error) {
+        pathToFile := url.String()
+        pathToFile = path.Clean(pathToFile)
+        getSpec, ok := resolvePath[pathToFile]
+        if !ok {
+            err1 := fmt.Errorf("path not found: %s", pathToFile)
+            return nil, err1
+        }
+        return getSpec()
+    }
+    var specData []byte
+    specData, err = rawSpec()
+    if err != nil {
+        return
+    }
+    swagger, err = loader.LoadFromData(specData)
+    if err != nil {
+        return
+    }
+    return
+}

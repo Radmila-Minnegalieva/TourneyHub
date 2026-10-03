@@ -1,0 +1,4926 @@
+openapi: 3.0.3
+info:
+  title: TourneyHub Backend API
+  version: 0.1.0
+  description: >-
+    API платформы TourneyHub для управления аккаунтами, командами, турнирами,
+    заявками, расписанием матчей, результатами, спорами, рейтингами и уведомлениями.
+    Идентификаторы передаются в формате UUID; даты — RFC3339 UTC.
+    Пагинация использует limit/offset. По умолчанию сортировка стабильна:
+    created_at DESC, id ASC. Доступ определяется ролями пользователя
+    и его отношением к объекту; x-required-roles описывает необходимые роли.
+    Обновления передают version и возвращают 409 при конфликте версий.
+servers:
+- url: /api/v1
+tags:
+- name: Auth
+- name: Users
+- name: Disciplines
+- name: Teams
+- name: Tournaments
+- name: Applications
+- name: Draw
+- name: Matches
+- name: Results
+- name: Ratings
+- name: Files
+- name: Notifications
+- name: Admin
+security:
+- BearerAuth: []
+paths:
+  /auth/register:
+    post:
+      operationId: register
+      tags:
+      - Auth
+      summary: Регистрация с согласием на обработку данных
+      description: Создаёт неподтверждённую учётную запись участника, отправляет одноразовую ссылку по e-mail. Роли
+        organizer/referee выдаёт только администратор.
+      responses:
+        '202':
+          description: Успешно
+        '400':
+          $ref: '#/components/responses/400'
+        '404':
+          $ref: '#/components/responses/404'
+        '409':
+          $ref: '#/components/responses/409'
+        '422':
+          $ref: '#/components/responses/422'
+        '429':
+          $ref: '#/components/responses/429'
+        '500':
+          $ref: '#/components/responses/500'
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegisterRequest'
+  /auth/verify-email:
+    post:
+      operationId: verifyEmail
+      tags:
+      - Auth
+      summary: Подтвердить e-mail
+      description: Подтвердить e-mail
+      responses:
+        '204':
+          description: Успешно
+        '400':
+          $ref: '#/components/responses/400'
+        '404':
+          $ref: '#/components/responses/404'
+        '409':
+          $ref: '#/components/responses/409'
+        '422':
+          $ref: '#/components/responses/422'
+        '429':
+          $ref: '#/components/responses/429'
+        '500':
+          $ref: '#/components/responses/500'
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TokenRequest'
+  /auth/login:
+    post:
+      operationId: login
+      tags:
+      - Auth
+      summary: Войти
+      description: Вход только для подтверждённого и незаблокированного пользователя; не более 5 попыток/мин/IP.
+        Неверные данные дают 401.
+      responses:
+        '200':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Tokens'
+        '400':
+          $ref: '#/components/responses/400'
+        '404':
+          $ref: '#/components/responses/404'
+        '409':
+          $ref: '#/components/responses/409'
+        '422':
+          $ref: '#/components/responses/422'
+        '429':
+          $ref: '#/components/responses/429'
+        '500':
+          $ref: '#/components/responses/500'
+        '401':
+          $ref: '#/components/responses/401'
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+  /auth/refresh:
+    post:
+      operationId: refreshTokens
+      tags:
+      - Auth
+      summary: Обновить и ротировать пару токенов
+      description: Обновить и ротировать пару токенов
+      responses:
+        '200':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Tokens'
+        '400':
+          $ref: '#/components/responses/400'
+        '404':
+          $ref: '#/components/responses/404'
+        '409':
+          $ref: '#/components/responses/409'
+        '422':
+          $ref: '#/components/responses/422'
+        '429':
+          $ref: '#/components/responses/429'
+        '500':
+          $ref: '#/components/responses/500'
+        '401':
+          $ref: '#/components/responses/401'
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TokenRequest'
+  /auth/logout:
+    post:
+      operationId: logout
+      tags:
+      - Auth
+      summary: Отозвать refresh-сессию
+      description: Отзывает сессию по refresh-токену; повторный выход идемпотентен.
+      responses:
+        '204':
+          description: Успешно
+        '400':
+          $ref: '#/components/responses/400'
+        '404':
+          $ref: '#/components/responses/404'
+        '409':
+          $ref: '#/components/responses/409'
+        '422':
+          $ref: '#/components/responses/422'
+        '429':
+          $ref: '#/components/responses/429'
+        '500':
+          $ref: '#/components/responses/500'
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TokenRequest'
+  /auth/password-reset:
+    post:
+      operationId: requestPasswordReset
+      tags:
+      - Auth
+      summary: Запросить восстановление пароля
+      description: Всегда 202 независимо от наличия e-mail. Одноразовая ссылка действует 1 час.
+      responses:
+        '202':
+          description: Успешно
+        '400':
+          $ref: '#/components/responses/400'
+        '404':
+          $ref: '#/components/responses/404'
+        '409':
+          $ref: '#/components/responses/409'
+        '422':
+          $ref: '#/components/responses/422'
+        '429':
+          $ref: '#/components/responses/429'
+        '500':
+          $ref: '#/components/responses/500'
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EmailRequest'
+  /auth/password-reset/confirm:
+    post:
+      operationId: resetPassword
+      tags:
+      - Auth
+      summary: Установить новый пароль
+      description: Использует одноразовый токен и отзывает все refresh-сессии.
+      responses:
+        '204':
+          description: Успешно
+        '400':
+          $ref: '#/components/responses/400'
+        '404':
+          $ref: '#/components/responses/404'
+        '409':
+          $ref: '#/components/responses/409'
+        '422':
+          $ref: '#/components/responses/422'
+        '429':
+          $ref: '#/components/responses/429'
+        '500':
+          $ref: '#/components/responses/500'
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ResetPasswordRequest'
+  /users/me:
+    get:
+      operationId: getProfile
+      tags:
+      - Users
+      summary: Текущий профиль
+      description: Текущий профиль
+      responses:
+        '200':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Profile'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '500':
+          $ref: '#/components/responses/500'
+    patch:
+      operationId: updateProfile
+      tags:
+      - Users
+      summary: Редактировать профиль
+      description: Редактировать профиль
+      responses:
+        '200':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Profile'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '409':
+          $ref: '#/components/responses/409'
+        '422':
+          $ref: '#/components/responses/422'
+        '500':
+          $ref: '#/components/responses/500'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateProfileRequest'
+  /users:
+    get:
+      operationId: searchUsers
+      tags:
+      - Users
+      summary: Найти игроков по никнейму
+      description: Возвращает только публичные поля; e-mail и роли не раскрываются.
+      responses:
+        '200':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PublicUserPage'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '500':
+          $ref: '#/components/responses/500'
+      parameters:
+      - $ref: '#/components/parameters/Limit'
+      - $ref: '#/components/parameters/Offset'
+      - name: nickname
+        in: query
+        required: true
+        schema:
+          type: string
+          minLength: 3
+          maxLength: 32
+  /disciplines:
+    get:
+      operationId: listDisciplines
+      tags:
+      - Disciplines
+      summary: Справочник активных дисциплин
+      description: Справочник активных дисциплин
+      responses:
+        '200':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DisciplinePage'
+        '400':
+          $ref: '#/components/responses/400'
+        '404':
+          $ref: '#/components/responses/404'
+        '500':
+          $ref: '#/components/responses/500'
+      security: []
+      parameters:
+      - $ref: '#/components/parameters/Limit'
+      - $ref: '#/components/parameters/Offset'
+  /teams:
+    get:
+      operationId: listTeams
+      tags:
+      - Teams
+      summary: Каталог команд
+      description: Каталог команд
+      responses:
+        '200':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TeamPage'
+        '400':
+          $ref: '#/components/responses/400'
+        '404':
+          $ref: '#/components/responses/404'
+        '500':
+          $ref: '#/components/responses/500'
+      security: []
+      parameters:
+      - $ref: '#/components/parameters/Limit'
+      - $ref: '#/components/parameters/Offset'
+      - name: search
+        in: query
+        required: false
+        schema:
+          type: string
+          maxLength: 120
+    post:
+      operationId: createTeam
+      tags:
+      - Teams
+      summary: Создать команду
+      description: Создатель становится капитаном; размер состава проверяется при заявке на конкретную дисциплину.
+      responses:
+        '201':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Team'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '409':
+          $ref: '#/components/responses/409'
+        '422':
+          $ref: '#/components/responses/422'
+        '500':
+          $ref: '#/components/responses/500'
+      x-required-roles:
+      - participant
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateTeamRequest'
+  /users/me/teams:
+    get:
+      operationId: listMyTeams
+      tags:
+      - Teams
+      summary: Мои команды
+      description: Мои команды
+      responses:
+        '200':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TeamPage'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '500':
+          $ref: '#/components/responses/500'
+      parameters:
+      - $ref: '#/components/parameters/Limit'
+      - $ref: '#/components/parameters/Offset'
+  /teams/{team_id}:
+    get:
+      operationId: getTeam
+      tags:
+      - Teams
+      summary: Карточка команды
+      description: Карточка команды
+      responses:
+        '200':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Team'
+        '400':
+          $ref: '#/components/responses/400'
+        '404':
+          $ref: '#/components/responses/404'
+        '500':
+          $ref: '#/components/responses/500'
+      security: []
+      parameters:
+      - name: team_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+    patch:
+      operationId: updateTeam
+      tags:
+      - Teams
+      summary: Изменить команду
+      description: Только капитан.
+      responses:
+        '200':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Team'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '409':
+          $ref: '#/components/responses/409'
+        '422':
+          $ref: '#/components/responses/422'
+        '500':
+          $ref: '#/components/responses/500'
+      parameters:
+      - name: team_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateTeamRequest'
+    delete:
+      operationId: deleteTeam
+      tags:
+      - Teams
+      summary: Удалить команду
+      description: Только капитан; мягкое удаление. Активные принятые заявки запрещают удаление (409); история матчей
+        сохраняется.
+      responses:
+        '204':
+          description: Успешно
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '409':
+          $ref: '#/components/responses/409'
+        '422':
+          $ref: '#/components/responses/422'
+        '500':
+          $ref: '#/components/responses/500'
+      parameters:
+      - name: team_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VersionRequest'
+  /teams/{team_id}/members:
+    get:
+      operationId: listTeamMembers
+      tags:
+      - Teams
+      summary: Состав команды
+      description: Состав команды
+      responses:
+        '200':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TeamMember'
+        '400':
+          $ref: '#/components/responses/400'
+        '404':
+          $ref: '#/components/responses/404'
+        '500':
+          $ref: '#/components/responses/500'
+      security: []
+      parameters:
+      - name: team_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+  /teams/{team_id}/members/{user_id}:
+    delete:
+      operationId: removeTeamMember
+      tags:
+      - Teams
+      summary: Исключить игрока/покинуть команду
+      description: Капитан исключает игрока или игрок выходит сам. Капитан сначала передаёт полномочия. Снимки составов
+        заявок остаются неизменными.
+      responses:
+        '204':
+          description: Успешно
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '409':
+          $ref: '#/components/responses/409'
+        '422':
+          $ref: '#/components/responses/422'
+        '500':
+          $ref: '#/components/responses/500'
+      parameters:
+      - name: team_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: user_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VersionRequest'
+  /teams/{team_id}/captain:
+    put:
+      operationId: transferCaptain
+      tags:
+      - Teams
+      summary: Передать капитанство
+      description: Только текущий капитан; получатель уже состоит в команде.
+      responses:
+        '200':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Team'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '409':
+          $ref: '#/components/responses/409'
+        '422':
+          $ref: '#/components/responses/422'
+        '500':
+          $ref: '#/components/responses/500'
+      parameters:
+      - name: team_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TransferCaptainRequest'
+  /teams/{team_id}/invitations:
+    post:
+      operationId: createInvitation
+      tags:
+      - Teams
+      summary: Пригласить игрока/создать одноразовую ссылку
+      description: Только капитан; токен показывается один раз, в БД хранится хеш.
+      responses:
+        '201':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InvitationLink'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '409':
+          $ref: '#/components/responses/409'
+        '422':
+          $ref: '#/components/responses/422'
+        '500':
+          $ref: '#/components/responses/500'
+      parameters:
+      - name: team_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateInvitationRequest'
+  /users/me/invitations:
+    get:
+      operationId: listMyInvitations
+      tags:
+      - Teams
+      summary: Мои приглашения
+      description: Мои приглашения
+      responses:
+        '200':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InvitationPage'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '500':
+          $ref: '#/components/responses/500'
+      parameters:
+      - $ref: '#/components/parameters/Limit'
+      - $ref: '#/components/parameters/Offset'
+  /invitations/{invitation_id}/decision:
+    post:
+      operationId: decideInvitation
+      tags:
+      - Teams
+      summary: Принять/отклонить приглашение
+      description: Адресное приглашение доступно только приглашённому; ссылка одноразовая и проверяется атомарно.
+      responses:
+        '200':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Invitation'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '409':
+          $ref: '#/components/responses/409'
+        '422':
+          $ref: '#/components/responses/422'
+        '500':
+          $ref: '#/components/responses/500'
+      parameters:
+      - name: invitation_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InvitationDecisionRequest'
+  /teams/{team_id}/invitations/{invitation_id}:
+    delete:
+      operationId: revokeInvitation
+      tags:
+      - Teams
+      summary: Отозвать приглашение
+      description: Только капитан.
+      responses:
+        '204':
+          description: Успешно
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '409':
+          $ref: '#/components/responses/409'
+        '422':
+          $ref: '#/components/responses/422'
+        '500':
+          $ref: '#/components/responses/500'
+      parameters:
+      - name: team_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: invitation_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+  /tournaments:
+    get:
+      operationId: listTournaments
+      tags:
+      - Tournaments
+      summary: Публичный каталог турниров
+      description: Скрытые турниры и черновики исключены; сортировка starts_at ASC NULLS LAST, id ASC; диапазон
+        дат UTC.
+      responses:
+        '200':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TournamentPage'
+        '400':
+          $ref: '#/components/responses/400'
+        '404':
+          $ref: '#/components/responses/404'
+        '500':
+          $ref: '#/components/responses/500'
+      security: []
+      parameters:
+      - $ref: '#/components/parameters/Limit'
+      - $ref: '#/components/parameters/Offset'
+      - name: discipline_id
+        in: query
+        required: false
+        schema:
+          type: string
+          format: uuid
+      - name: status
+        in: query
+        required: false
+        schema:
+          $ref: '#/components/schemas/TournamentStatus'
+      - name: format
+        in: query
+        required: false
+        schema:
+          $ref: '#/components/schemas/TournamentFormat'
+      - name: starts_from
+        in: query
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: starts_to
+        in: query
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: search
+        in: query
+        required: false
+        schema:
+          type: string
+          maxLength: 120
+    post:
+      operationId: createTournament
+      tags:
+      - Tournaments
+      summary: Создать черновик турнира
+      description: Создать черновик турнира
+      responses:
+        '201':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Tournament'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '409':
+          $ref: '#/components/responses/409'
+        '422':
+          $ref: '#/components/responses/422'
+        '500':
+          $ref: '#/components/responses/500'
+      x-required-roles:
+      - organizer
+      - admin
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateTournamentRequest'
+  /users/me/tournaments:
+    get:
+      operationId: listMyTournaments
+      tags:
+      - Tournaments
+      summary: Турниры организатора, включая черновики
+      description: Турниры организатора, включая черновики
+      responses:
+        '200':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TournamentPage'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '500':
+          $ref: '#/components/responses/500'
+      parameters:
+      - $ref: '#/components/parameters/Limit'
+      - $ref: '#/components/parameters/Offset'
+      - name: discipline_id
+        in: query
+        required: false
+        schema:
+          type: string
+          format: uuid
+      - name: status
+        in: query
+        required: false
+        schema:
+          $ref: '#/components/schemas/TournamentStatus'
+      - name: format
+        in: query
+        required: false
+        schema:
+          $ref: '#/components/schemas/TournamentFormat'
+      - name: starts_from
+        in: query
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: starts_to
+        in: query
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: search
+        in: query
+        required: false
+        schema:
+          type: string
+          maxLength: 120
+  /tournaments/{tournament_id}:
+    get:
+      operationId: getTournament
+      tags:
+      - Tournaments
+      summary: Публичная карточка турнира
+      description: Только опубликованные и видимые турниры; черновик читается через /users/me/tournaments.
+      responses:
+        '200':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Tournament'
+        '400':
+          $ref: '#/components/responses/400'
+        '404':
+          $ref: '#/components/responses/404'
+        '500':
+          $ref: '#/components/responses/500'
+      security: []
+      parameters:
+      - name: tournament_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+    patch:
+      operationId: updateTournament
+      tags:
+      - Tournaments
+      summary: Редактировать турнир
+      description: Только владелец-организатор или администратор. Формат/участники заблокированы после старта.
+      responses:
+        '200':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Tournament'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '409':
+          $ref: '#/components/responses/409'
+        '422':
+          $ref: '#/components/responses/422'
+        '500':
+          $ref: '#/components/responses/500'
+      x-required-roles:
+      - organizer
+      - admin
+      parameters:
+      - name: tournament_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateTournamentRequest'
+  /tournaments/{tournament_id}/publish:
+    post:
+      operationId: publishTournament
+      tags:
+      - Tournaments
+      summary: Открыть регистрацию
+      description: Владелец публикует draft; все обязательные даты и регламент должны быть валидны.
+      responses:
+        '200':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Tournament'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '409':
+          $ref: '#/components/responses/409'
+        '422':
+          $ref: '#/components/responses/422'
+        '500':
+          $ref: '#/components/responses/500'
+      x-required-roles:
+      - organizer
+      - admin
+      parameters:
+      - name: tournament_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VersionRequest'
+  /tournaments/{tournament_id}/cancel:
+    post:
+      operationId: cancelTournament
+      tags:
+      - Tournaments
+      summary: Отменить турнир
+      description: Владелец отменяет из draft/registration/in_progress; completed отменить нельзя. Уведомления участникам.
+      responses:
+        '200':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Tournament'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '409':
+          $ref: '#/components/responses/409'
+        '422':
+          $ref: '#/components/responses/422'
+        '500':
+          $ref: '#/components/responses/500'
+      x-required-roles:
+      - organizer
+      - admin
+      parameters:
+      - name: tournament_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReasonRequest'
+  /tournaments/{tournament_id}/complete:
+    post:
+      operationId: completeTournament
+      tags:
+      - Tournaments
+      summary: Завершить турнир и опубликовать места
+      description: Все обязательные матчи завершены/bye, нет открытых споров. Обычно переход выполняется автоматически
+        при фиксации последнего матча.
+      responses:
+        '200':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Tournament'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '409':
+          $ref: '#/components/responses/409'
+        '422':
+          $ref: '#/components/responses/422'
+        '500':
+          $ref: '#/components/responses/500'
+      x-required-roles:
+      - organizer
+      - admin
+      parameters:
+      - name: tournament_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VersionRequest'
+  /tournaments/{tournament_id}/applications:
+    get:
+      operationId: listApplications
+      tags:
+      - Applications
+      summary: Заявки турнира для организатора
+      description: 'Только владелец-организатор/администратор: включает все статусы и снимки составов.'
+      responses:
+        '200':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApplicationPage'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '500':
+          $ref: '#/components/responses/500'
+      parameters:
+      - name: tournament_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - $ref: '#/components/parameters/Limit'
+      - $ref: '#/components/parameters/Offset'
+      - name: status
+        in: query
+        required: false
+        schema:
+          $ref: '#/components/schemas/ApplicationStatus'
+    post:
+      operationId: submitApplication
+      tags:
+      - Applications
+      summary: Подать заявку со снимком состава
+      description: Капитан; регистрация открыта и по статусу, и по времени; есть места. Игроки состоят в команде,
+        размер соответствует дисциплине, нет дублирования по турниру.
+      responses:
+        '201':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Application'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '409':
+          $ref: '#/components/responses/409'
+        '422':
+          $ref: '#/components/responses/422'
+        '500':
+          $ref: '#/components/responses/500'
+      parameters:
+      - name: tournament_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ApplicationRequest'
+  /tournaments/{tournament_id}/participants:
+    get:
+      operationId: listParticipants
+      tags:
+      - Applications
+      summary: Принятые участники турнира
+      description: Публично только принятые заявки видимого турнира; без причины отклонения.
+      responses:
+        '200':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApplicationPage'
+        '400':
+          $ref: '#/components/responses/400'
+        '404':
+          $ref: '#/components/responses/404'
+        '500':
+          $ref: '#/components/responses/500'
+      security: []
+      parameters:
+      - name: tournament_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - $ref: '#/components/parameters/Limit'
+      - $ref: '#/components/parameters/Offset'
+  /users/me/applications:
+    get:
+      operationId: listMyApplications
+      tags:
+      - Applications
+      summary: Заявки моих команд
+      description: Заявки моих команд
+      responses:
+        '200':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApplicationPage'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '500':
+          $ref: '#/components/responses/500'
+      parameters:
+      - $ref: '#/components/parameters/Limit'
+      - $ref: '#/components/parameters/Offset'
+  /tournaments/{tournament_id}/applications/{application_id}/review:
+    post:
+      operationId: reviewApplication
+      tags:
+      - Applications
+      summary: Принять/отклонить заявку
+      description: Только владелец. Решение и уведомление записываются в одной транзакции.
+      responses:
+        '200':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Application'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '409':
+          $ref: '#/components/responses/409'
+        '422':
+          $ref: '#/components/responses/422'
+        '500':
+          $ref: '#/components/responses/500'
+      x-required-roles:
+      - organizer
+      - admin
+      parameters:
+      - name: tournament_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: application_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReviewApplicationRequest'
+  /tournaments/{tournament_id}/applications/{application_id}/withdraw:
+    post:
+      operationId: withdrawApplication
+      tags:
+      - Applications
+      summary: Отозвать заявку
+      description: Только капитан; pending/accepted и регистрация ещё открыта. Освобождает резерв игроков и места.
+      responses:
+        '200':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Application'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '409':
+          $ref: '#/components/responses/409'
+        '422':
+          $ref: '#/components/responses/422'
+        '500':
+          $ref: '#/components/responses/500'
+      parameters:
+      - name: tournament_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: application_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VersionRequest'
+  /tournaments/{tournament_id}/draw-previews:
+    post:
+      operationId: previewDraw
+      tags:
+      - Draw
+      summary: Предпросмотр посева, групп и сетки
+      description: Владелец. Минимум 2 участника; для групп минимум 2 на группу. Регистрация закрывается при подтверждении.
+        Berger (1/2 круга), snake groups, bye до степени 2. Развод сеяных, матч за 3-е место. Предпросмотр не меняет
+        активную сетку.
+      responses:
+        '201':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DrawPreview'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '409':
+          $ref: '#/components/responses/409'
+        '422':
+          $ref: '#/components/responses/422'
+        '500':
+          $ref: '#/components/responses/500'
+      x-required-roles:
+      - organizer
+      - admin
+      parameters:
+      - name: tournament_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SeedingRequest'
+  /tournaments/{tournament_id}/draw:
+    put:
+      operationId: confirmDraw
+      tags:
+      - Draw
+      summary: Подтвердить сетку и начать турнир
+      description: Владелец. Проверяет срок/версию предпросмотра и неизменность участников; закрывает регистрацию,
+        сохраняет этапы/матчи, меняет статус на in_progress атомарно. Пересборка до первого результата; новый preview
+        для той же версии.
+      responses:
+        '200':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Bracket'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '409':
+          $ref: '#/components/responses/409'
+        '422':
+          $ref: '#/components/responses/422'
+        '500':
+          $ref: '#/components/responses/500'
+      x-required-roles:
+      - organizer
+      - admin
+      parameters:
+      - name: tournament_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ConfirmDrawRequest'
+  /tournaments/{tournament_id}/bracket:
+    get:
+      operationId: getBracket
+      tags:
+      - Draw
+      summary: Сетка, группы и этапы
+      description: Сетка, группы и этапы
+      responses:
+        '200':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Bracket'
+        '400':
+          $ref: '#/components/responses/400'
+        '404':
+          $ref: '#/components/responses/404'
+        '500':
+          $ref: '#/components/responses/500'
+      security: []
+      parameters:
+      - name: tournament_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+  /tournaments/{tournament_id}/standings:
+    get:
+      operationId: getStandings
+      tags:
+      - Draw
+      summary: Таблицы кругового/группового этапа
+      description: Сортировка по очкам и указанным tie_breakers. Плей-офф после групп формируется автоматически
+        в транзакции фиксации последнего результата.
+      responses:
+        '200':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Standings'
+        '400':
+          $ref: '#/components/responses/400'
+        '404':
+          $ref: '#/components/responses/404'
+        '500':
+          $ref: '#/components/responses/500'
+      security: []
+      parameters:
+      - name: tournament_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+  /tournaments/{tournament_id}/matches:
+    get:
+      operationId: listMatches
+      tags:
+      - Matches
+      summary: Расписание и результаты матчей
+      description: Расписание и результаты матчей
+      responses:
+        '200':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MatchPage'
+        '400':
+          $ref: '#/components/responses/400'
+        '404':
+          $ref: '#/components/responses/404'
+        '500':
+          $ref: '#/components/responses/500'
+      security: []
+      parameters:
+      - name: tournament_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - $ref: '#/components/parameters/Limit'
+      - $ref: '#/components/parameters/Offset'
+      - name: stage_id
+        in: query
+        required: false
+        schema:
+          type: string
+          format: uuid
+      - name: group_id
+        in: query
+        required: false
+        schema:
+          type: string
+          format: uuid
+      - name: round
+        in: query
+        required: false
+        schema:
+          type: integer
+          minimum: 1
+      - name: status
+        in: query
+        required: false
+        schema:
+          $ref: '#/components/schemas/MatchStatus'
+  /tournaments/{tournament_id}/schedule-round:
+    post:
+      operationId: scheduleRound
+      tags:
+      - Matches
+      summary: Назначить расписание тура
+      description: Только владелец; все изменения и уведомления атомарны. Возвращается полная пачка изменённых матчей
+        без пагинации.
+      responses:
+        '200':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Match'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '409':
+          $ref: '#/components/responses/409'
+        '422':
+          $ref: '#/components/responses/422'
+        '500':
+          $ref: '#/components/responses/500'
+      x-required-roles:
+      - organizer
+      - admin
+      parameters:
+      - name: tournament_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ScheduleRoundRequest'
+  /tournaments/{tournament_id}/referee:
+    put:
+      operationId: assignTournamentReferee
+      tags:
+      - Matches
+      summary: Назначить судью турнира
+      description: Владелец; пользователь имеет роль referee. Назначение применяется ко всем матчам без индивидуального
+        судьи.
+      responses:
+        '200':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Tournament'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '409':
+          $ref: '#/components/responses/409'
+        '422':
+          $ref: '#/components/responses/422'
+        '500':
+          $ref: '#/components/responses/500'
+      x-required-roles:
+      - organizer
+      - admin
+      parameters:
+      - name: tournament_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AssignRefereeRequest'
+  /matches/{match_id}:
+    get:
+      operationId: getMatch
+      tags:
+      - Matches
+      summary: Публичная карточка матча
+      description: Публичная карточка матча
+      responses:
+        '200':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Match'
+        '400':
+          $ref: '#/components/responses/400'
+        '404':
+          $ref: '#/components/responses/404'
+        '500':
+          $ref: '#/components/responses/500'
+      security: []
+      parameters:
+      - name: match_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+  /matches/{match_id}/schedule:
+    put:
+      operationId: scheduleMatch
+      tags:
+      - Matches
+      summary: Назначить/перенести матч
+      description: Только организатор данного турнира; атомарная проверка конфликтов и постановка уведомлений.
+      responses:
+        '200':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Match'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '409':
+          $ref: '#/components/responses/409'
+        '422':
+          $ref: '#/components/responses/422'
+        '500':
+          $ref: '#/components/responses/500'
+      x-required-roles:
+      - organizer
+      - admin
+      parameters:
+      - name: match_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ScheduleMatchRequest'
+  /matches/{match_id}/referee:
+    put:
+      operationId: assignMatchReferee
+      tags:
+      - Matches
+      summary: Назначить судью матча
+      description: Только владелец турнира; referee_id имеет роль referee.
+      responses:
+        '200':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Match'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '409':
+          $ref: '#/components/responses/409'
+        '422':
+          $ref: '#/components/responses/422'
+        '500':
+          $ref: '#/components/responses/500'
+      x-required-roles:
+      - organizer
+      - admin
+      parameters:
+      - name: match_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AssignRefereeRequest'
+  /matches/{match_id}/reports:
+    get:
+      operationId: listResultReports
+      tags:
+      - Results
+      summary: Протоколы результатов
+      description: Капитаны/игроки матча, организатор и назначенный судья; публично только итог в Match.
+      responses:
+        '200':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ResultReport'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '500':
+          $ref: '#/components/responses/500'
+      parameters:
+      - name: match_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+    post:
+      operationId: reportResult
+      tags:
+      - Results
+      summary: Сообщить результат матча
+      description: Капитан одной из команд. Только один pending report. Создаёт deadline (24 ч по умолчанию), уведомляет
+        соперника и меняет статус. Автоподтверждение фоновым обработчиком атомарно конкурирует с подтверждением/спором.
+      responses:
+        '201':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResultReport'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '409':
+          $ref: '#/components/responses/409'
+        '422':
+          $ref: '#/components/responses/422'
+        '500':
+          $ref: '#/components/responses/500'
+      parameters:
+      - name: match_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReportResultRequest'
+  /matches/{match_id}/reports/{report_id}/confirm:
+    post:
+      operationId: confirmResult
+      tags:
+      - Results
+      summary: Подтвердить результат соперника
+      description: 'Только капитан противоположной команды. Повторное подтверждение уже подтверждённого report возвращает
+        тот же итог. Одна транзакция: результат, сетка/таблица/этап, Эло, аудит, outbox; конкурентный спор даёт
+        409.'
+      responses:
+        '200':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Match'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '409':
+          $ref: '#/components/responses/409'
+        '422':
+          $ref: '#/components/responses/422'
+        '500':
+          $ref: '#/components/responses/500'
+      parameters:
+      - name: match_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: report_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VersionRequest'
+  /matches/{match_id}/reports/{report_id}/dispute:
+    post:
+      operationId: disputeResult
+      tags:
+      - Results
+      summary: Оспорить результат
+      description: Капитан соперника до подтверждения/deadline. Один спор на матч; автоподтверждение прекращается.
+        Судья уведомляется.
+      responses:
+        '201':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Dispute'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '409':
+          $ref: '#/components/responses/409'
+        '422':
+          $ref: '#/components/responses/422'
+        '500':
+          $ref: '#/components/responses/500'
+      parameters:
+      - name: match_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: report_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DisputeRequest'
+  /matches/{match_id}/referee-result:
+    put:
+      operationId: setRefereeResult
+      tags:
+      - Results
+      summary: Зафиксировать результат судьёй напрямую
+      description: Только назначенный судья/администратор; подтверждение капитанами не требуется. Завершённый результат
+        меняется через спор.
+      responses:
+        '200':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Match'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '409':
+          $ref: '#/components/responses/409'
+        '422':
+          $ref: '#/components/responses/422'
+        '500':
+          $ref: '#/components/responses/500'
+      x-required-roles:
+      - referee
+      - admin
+      parameters:
+      - name: match_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReportResultRequest'
+  /matches/{match_id}/dispute:
+    get:
+      operationId: getDispute
+      tags:
+      - Results
+      summary: Сведения о споре
+      description: Участники матча, организатор и назначенный судья.
+      responses:
+        '200':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Dispute'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '500':
+          $ref: '#/components/responses/500'
+      parameters:
+      - name: match_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+  /matches/{match_id}/dispute/resolve:
+    post:
+      operationId: resolveDispute
+      tags:
+      - Results
+      summary: Разрешить спор и зафиксировать итог
+      description: Назначенный судья/администратор; решение, результат, производные данные, аудит и уведомления
+        атомарны.
+      responses:
+        '200':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Match'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '409':
+          $ref: '#/components/responses/409'
+        '422':
+          $ref: '#/components/responses/422'
+        '500':
+          $ref: '#/components/responses/500'
+      x-required-roles:
+      - referee
+      - admin
+      parameters:
+      - name: match_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ResolveDisputeRequest'
+  /disputes:
+    get:
+      operationId: listAssignedDisputes
+      tags:
+      - Results
+      summary: Споры назначенного судьи
+      description: Споры назначенного судьи
+      responses:
+        '200':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DisputePage'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '500':
+          $ref: '#/components/responses/500'
+      x-required-roles:
+      - referee
+      - admin
+      parameters:
+      - $ref: '#/components/parameters/Limit'
+      - $ref: '#/components/parameters/Offset'
+      - name: status
+        in: query
+        required: false
+        schema:
+          type: string
+          enum:
+          - open
+          - resolved
+  /ratings:
+    get:
+      operationId: listRatings
+      tags:
+      - Ratings
+      summary: Рейтинг команд по дисциплине
+      description: value DESC, team_id ASC; начальный рейтинг 1500, K=32.
+      responses:
+        '200':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RatingPage'
+        '400':
+          $ref: '#/components/responses/400'
+        '404':
+          $ref: '#/components/responses/404'
+        '500':
+          $ref: '#/components/responses/500'
+      security: []
+      parameters:
+      - $ref: '#/components/parameters/Limit'
+      - $ref: '#/components/parameters/Offset'
+      - name: discipline_id
+        in: query
+        required: true
+        schema:
+          type: string
+          format: uuid
+  /teams/{team_id}/rating-history:
+    get:
+      operationId: listRatingHistory
+      tags:
+      - Ratings
+      summary: История изменений Эло
+      description: История изменений Эло
+      responses:
+        '200':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RatingChangePage'
+        '400':
+          $ref: '#/components/responses/400'
+        '404':
+          $ref: '#/components/responses/404'
+        '500':
+          $ref: '#/components/responses/500'
+      security: []
+      parameters:
+      - name: team_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - $ref: '#/components/parameters/Limit'
+      - $ref: '#/components/parameters/Offset'
+      - name: discipline_id
+        in: query
+        required: true
+        schema:
+          type: string
+          format: uuid
+  /files:
+    post:
+      operationId: uploadFile
+      tags:
+      - Files
+      summary: Загрузить вложение
+      description: Аутентифицированный пользователь загружает собственный файл; до 5 МиБ. Привязка к матчу/команде
+        отдельно проверяет владельца и purpose.
+      responses:
+        '201':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/File'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '409':
+          $ref: '#/components/responses/409'
+        '413':
+          $ref: '#/components/responses/413'
+        '415':
+          $ref: '#/components/responses/415'
+        '422':
+          $ref: '#/components/responses/422'
+        '500':
+          $ref: '#/components/responses/500'
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/UploadFileRequest'
+  /files/{file_id}:
+    get:
+      operationId: downloadFile
+      tags:
+      - Files
+      summary: Скачать собственное/доступное вложение
+      description: 'Владелец или участник ресурса; публичные avatar/logo возвращаются через отдельный URL хранения.
+        Content-Disposition: attachment, X-Content-Type-Options: nosniff.'
+      responses:
+        '200':
+          description: Успешно
+          content:
+            application/octet-stream:
+              schema:
+                type: string
+                format: binary
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '500':
+          $ref: '#/components/responses/500'
+      parameters:
+      - name: file_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+  /users/me/notifications:
+    get:
+      operationId: listNotifications
+      tags:
+      - Notifications
+      summary: Уведомления в интерфейсе
+      description: Уведомления в интерфейсе
+      responses:
+        '200':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotificationPage'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '500':
+          $ref: '#/components/responses/500'
+      parameters:
+      - $ref: '#/components/parameters/Limit'
+      - $ref: '#/components/parameters/Offset'
+      - name: unread
+        in: query
+        required: false
+        schema:
+          type: boolean
+  /users/me/notifications/{notification_id}/read:
+    put:
+      operationId: readNotification
+      tags:
+      - Notifications
+      summary: Отметить своё уведомление прочитанным
+      description: Отметить своё уведомление прочитанным
+      responses:
+        '204':
+          description: Успешно
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '409':
+          $ref: '#/components/responses/409'
+        '422':
+          $ref: '#/components/responses/422'
+        '500':
+          $ref: '#/components/responses/500'
+      parameters:
+      - name: notification_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+  /tournaments/{tournament_id}/events:
+    get:
+      operationId: streamTournamentEvents
+      tags:
+      - Tournaments
+      summary: SSE обновления публичной страницы
+      description: Видимый опубликованный турнир. События match_updated, standings_updated, bracket_updated, tournament_updated,
+        resync_required. id монотонный; heartbeat каждые 15с; возобновление Last-Event-ID, при истёкшем replay —
+        resync_required. Клиент перечитывает REST-ресурсы; закрытие скрытого турнира.
+      responses:
+        '200':
+          description: Успешно
+          content:
+            text/event-stream:
+              schema:
+                type: string
+                example: 'id: 42
+
+                  event: match_updated
+
+                  data: {"match_id":"b9cf6e86-551d-4c58-9a30-3ca6aca1cb00","version":2}
+
+
+                  '
+        '400':
+          $ref: '#/components/responses/400'
+        '404':
+          $ref: '#/components/responses/404'
+        '500':
+          $ref: '#/components/responses/500'
+      security: []
+      parameters:
+      - name: tournament_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: Last-Event-ID
+        in: header
+        required: false
+        schema:
+          type: string
+          maxLength: 100
+  /tournaments/{tournament_id}/export:
+    get:
+      operationId: exportTournament
+      tags:
+      - Tournaments
+      summary: Экспорт итогов CSV
+      description: 'Только completed, видимый турнир. UTF-8; Content-Disposition: attachment. Нейтрализует формулы
+        CSV в пользовательских названиях.'
+      responses:
+        '200':
+          description: Успешно
+          content:
+            text/csv:
+              schema:
+                type: string
+                example: 'place,team,match_id,home_score,away_score
+
+                  '
+        '400':
+          $ref: '#/components/responses/400'
+        '404':
+          $ref: '#/components/responses/404'
+        '500':
+          $ref: '#/components/responses/500'
+      security: []
+      parameters:
+      - name: tournament_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+  /admin/users:
+    get:
+      operationId: listAdminUsers
+      tags:
+      - Admin
+      summary: Поиск пользователей администратором
+      description: Поиск пользователей администратором
+      responses:
+        '200':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProfilePage'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '500':
+          $ref: '#/components/responses/500'
+      x-required-roles:
+      - admin
+      parameters:
+      - $ref: '#/components/parameters/Limit'
+      - $ref: '#/components/parameters/Offset'
+      - name: search
+        in: query
+        required: false
+        schema:
+          type: string
+          maxLength: 254
+  /admin/users/{user_id}/roles:
+    put:
+      operationId: updateUserRoles
+      tags:
+      - Admin
+      summary: Назначить роли
+      description: Назначить роли
+      responses:
+        '200':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Profile'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '409':
+          $ref: '#/components/responses/409'
+        '422':
+          $ref: '#/components/responses/422'
+        '500':
+          $ref: '#/components/responses/500'
+      x-required-roles:
+      - admin
+      parameters:
+      - name: user_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateRolesRequest'
+  /admin/users/{user_id}/block:
+    put:
+      operationId: blockUser
+      tags:
+      - Admin
+      summary: Блокировать/разблокировать пользователя
+      description: Блокировать/разблокировать пользователя
+      responses:
+        '200':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Profile'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '409':
+          $ref: '#/components/responses/409'
+        '422':
+          $ref: '#/components/responses/422'
+        '500':
+          $ref: '#/components/responses/500'
+      x-required-roles:
+      - admin
+      parameters:
+      - name: user_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BlockUserRequest'
+  /admin/disciplines:
+    post:
+      operationId: createDiscipline
+      tags:
+      - Admin
+      summary: Добавить дисциплину
+      description: Добавить дисциплину
+      responses:
+        '201':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Discipline'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '409':
+          $ref: '#/components/responses/409'
+        '422':
+          $ref: '#/components/responses/422'
+        '500':
+          $ref: '#/components/responses/500'
+      x-required-roles:
+      - admin
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DisciplineRequest'
+  /admin/disciplines/{discipline_id}:
+    patch:
+      operationId: updateDiscipline
+      tags:
+      - Admin
+      summary: Изменить/архивировать дисциплину
+      description: Новые ограничения не меняют регламент активных турниров. Архивирование исключает дисциплину из
+        создания турниров, история сохраняется.
+      responses:
+        '200':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Discipline'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '409':
+          $ref: '#/components/responses/409'
+        '422':
+          $ref: '#/components/responses/422'
+        '500':
+          $ref: '#/components/responses/500'
+      x-required-roles:
+      - admin
+      parameters:
+      - name: discipline_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateDisciplineRequest'
+  /admin/tournaments:
+    get:
+      operationId: listAdminTournaments
+      tags:
+      - Admin
+      summary: Все турниры, включая скрытые и черновики
+      description: Все турниры, включая скрытые и черновики
+      responses:
+        '200':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TournamentPage'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '500':
+          $ref: '#/components/responses/500'
+      x-required-roles:
+      - admin
+      parameters:
+      - $ref: '#/components/parameters/Limit'
+      - $ref: '#/components/parameters/Offset'
+      - name: discipline_id
+        in: query
+        required: false
+        schema:
+          type: string
+          format: uuid
+      - name: status
+        in: query
+        required: false
+        schema:
+          $ref: '#/components/schemas/TournamentStatus'
+      - name: format
+        in: query
+        required: false
+        schema:
+          $ref: '#/components/schemas/TournamentFormat'
+      - name: starts_from
+        in: query
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: starts_to
+        in: query
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: search
+        in: query
+        required: false
+        schema:
+          type: string
+          maxLength: 120
+  /admin/tournaments/{tournament_id}/visibility:
+    put:
+      operationId: moderateTournament
+      tags:
+      - Admin
+      summary: Скрыть/вернуть турнир
+      description: Изменяет видимость всех публичных ресурсов и SSE; причина в аудит и уведомление организатору.
+      responses:
+        '200':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Tournament'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '409':
+          $ref: '#/components/responses/409'
+        '422':
+          $ref: '#/components/responses/422'
+        '500':
+          $ref: '#/components/responses/500'
+      x-required-roles:
+      - admin
+      parameters:
+      - name: tournament_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ModerateTournamentRequest'
+  /admin/tournaments/{tournament_id}:
+    delete:
+      operationId: deleteTournament
+      tags:
+      - Admin
+      summary: Удалить турнир модератором
+      description: Мягкое удаление; история матчей, рейтингов и аудит сохраняются; организатор уведомляется.
+      responses:
+        '204':
+          description: Успешно
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '409':
+          $ref: '#/components/responses/409'
+        '422':
+          $ref: '#/components/responses/422'
+        '500':
+          $ref: '#/components/responses/500'
+      x-required-roles:
+      - admin
+      parameters:
+      - name: tournament_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReasonRequest'
+  /admin/audit:
+    get:
+      operationId: listAudit
+      tags:
+      - Admin
+      summary: Журнал действий
+      description: Журнал действий
+      responses:
+        '200':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuditEntryPage'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '500':
+          $ref: '#/components/responses/500'
+      x-required-roles:
+      - admin
+      parameters:
+      - $ref: '#/components/parameters/Limit'
+      - $ref: '#/components/parameters/Offset'
+      - name: entity_id
+        in: query
+        required: false
+        schema:
+          type: string
+          format: uuid
+      - name: actor_id
+        in: query
+        required: false
+        schema:
+          type: string
+          format: uuid
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  parameters:
+    Limit:
+      name: limit
+      in: query
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 100
+        default: 20
+    Offset:
+      name: offset
+      in: query
+      schema:
+        type: integer
+        minimum: 0
+        default: 0
+  responses:
+    '400':
+      description: Некорректный запрос
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    '401':
+      description: Токен отсутствует, истёк или отозван
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    '403':
+      description: Недостаточно прав/учётная запись заблокирована
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    '404':
+      description: Ресурс не найден или скрыт от пользователя
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    '409':
+      description: Конфликт версии, состояния или уникальности
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    '413':
+      description: Файл/тело запроса слишком большой
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    '415':
+      description: Неподдерживаемый тип файла
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    '422':
+      description: Нарушение регламента или бизнес-правила
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    '429':
+      description: Слишком много запросов
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+      headers:
+        Retry-After:
+          description: Число секунд до следующей попытки
+          schema:
+            type: integer
+            minimum: 1
+    '500':
+      description: Внутренняя ошибка
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  schemas:
+    Role:
+      type: string
+      enum:
+      - participant
+      - organizer
+      - referee
+      - admin
+    TournamentFormat:
+      type: string
+      enum:
+      - single_elimination
+      - round_robin
+      - groups_playoffs
+    TournamentStatus:
+      type: string
+      enum:
+      - draft
+      - registration
+      - in_progress
+      - completed
+      - cancelled
+    ApplicationStatus:
+      type: string
+      enum:
+      - pending
+      - accepted
+      - rejected
+      - withdrawn
+    MatchStatus:
+      type: string
+      enum:
+      - scheduled
+      - awaiting_confirmation
+      - disputed
+      - completed
+      - bye
+    StageKind:
+      type: string
+      enum:
+      - round_robin
+      - groups
+      - playoffs
+    TieBreaker:
+      type: string
+      enum:
+      - head_to_head
+      - score_difference
+      - score_for
+      - elo
+      - draw
+    Error:
+      type: object
+      additionalProperties: false
+      required:
+      - code
+      - message
+      - request_id
+      properties:
+        code:
+          type: string
+          example: not_implemented
+        message:
+          type: string
+          example: Операция ещё не реализована
+        request_id:
+          type: string
+        details:
+          type: array
+          items:
+            $ref: '#/components/schemas/FieldError'
+    FieldError:
+      type: object
+      additionalProperties: false
+      required:
+      - field
+      - message
+      properties:
+        field:
+          type: string
+        message:
+          type: string
+    VersionRequest:
+      type: object
+      additionalProperties: false
+      required:
+      - version
+      properties:
+        version:
+          type: integer
+          minimum: 1
+          description: Версия записи для оптимистической блокировки. Устаревшая версия даёт 409.
+    ReasonRequest:
+      type: object
+      additionalProperties: false
+      required:
+      - version
+      - reason
+      properties:
+        version:
+          type: integer
+          minimum: 1
+          description: Версия записи для оптимистической блокировки. Устаревшая версия даёт 409.
+        reason:
+          type: string
+          minLength: 1
+          maxLength: 2000
+    TokenRequest:
+      type: object
+      additionalProperties: false
+      required:
+      - token
+      properties:
+        token:
+          type: string
+          minLength: 1
+          maxLength: 512
+    EmailRequest:
+      type: object
+      additionalProperties: false
+      required:
+      - email
+      properties:
+        email:
+          type: string
+          format: email
+          maxLength: 254
+    RegisterRequest:
+      type: object
+      additionalProperties: false
+      required:
+      - email
+      - password
+      - nickname
+      - personal_data_consent
+      properties:
+        email:
+          type: string
+          format: email
+          maxLength: 254
+        password:
+          type: string
+          minLength: 12
+          maxLength: 72
+          format: password
+        nickname:
+          type: string
+          pattern: ^[A-Za-z0-9_]{3,32}$
+        name:
+          type: string
+          minLength: 1
+          maxLength: 120
+        personal_data_consent:
+          type: boolean
+          enum:
+          - true
+    LoginRequest:
+      type: object
+      additionalProperties: false
+      required:
+      - email
+      - password
+      properties:
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+          format: password
+          minLength: 1
+          maxLength: 72
+    ResetPasswordRequest:
+      type: object
+      additionalProperties: false
+      required:
+      - token
+      - password
+      properties:
+        token:
+          type: string
+          minLength: 1
+          maxLength: 512
+        password:
+          type: string
+          format: password
+          minLength: 12
+          maxLength: 72
+    Tokens:
+      type: object
+      additionalProperties: false
+      required:
+      - access_token
+      - refresh_token
+      - token_type
+      - expires_in
+      properties:
+        access_token:
+          type: string
+        refresh_token:
+          type: string
+        token_type:
+          type: string
+          enum:
+          - Bearer
+        expires_in:
+          type: integer
+          enum:
+          - 900
+      description: 'Access: 15 минут; refresh: 30 дней. Refresh ротируется и отзывается при logout/reset password;
+        сервер хранит только хеш.'
+    PublicUser:
+      type: object
+      additionalProperties: false
+      required:
+      - id
+      - nickname
+      properties:
+        id:
+          type: string
+          format: uuid
+        nickname:
+          type: string
+        name:
+          type: string
+        avatar_url:
+          type: string
+          format: uri
+          maxLength: 2048
+    Profile:
+      type: object
+      additionalProperties: false
+      required:
+      - id
+      - email
+      - nickname
+      - timezone
+      - email_notifications
+      - roles
+      - email_verified
+      - blocked
+      - version
+      properties:
+        id:
+          type: string
+          format: uuid
+        email:
+          type: string
+          format: email
+        nickname:
+          type: string
+        name:
+          type: string
+        avatar_url:
+          type: string
+          format: uri
+          maxLength: 2048
+        timezone:
+          type: string
+          example: Europe/Moscow
+        email_notifications:
+          type: boolean
+        roles:
+          type: array
+          items:
+            $ref: '#/components/schemas/Role'
+        email_verified:
+          type: boolean
+        blocked:
+          type: boolean
+        version:
+          type: integer
+          minimum: 1
+          description: Версия записи для оптимистической блокировки. Устаревшая версия даёт 409.
+    UpdateProfileRequest:
+      type: object
+      additionalProperties: false
+      required:
+      - version
+      properties:
+        version:
+          type: integer
+          minimum: 1
+          description: Версия записи для оптимистической блокировки. Устаревшая версия даёт 409.
+        nickname:
+          type: string
+          pattern: ^[A-Za-z0-9_]{3,32}$
+        name:
+          type: string
+          minLength: 1
+          maxLength: 120
+        avatar_file_id:
+          type: string
+          format: uuid
+        timezone:
+          type: string
+          maxLength: 100
+          description: Идентификатор IANA.
+        email_notifications:
+          type: boolean
+    Discipline:
+      type: object
+      additionalProperties: false
+      required:
+      - id
+      - name
+      - min_roster_size
+      - max_roster_size
+      - allows_draw
+      - score_unit
+      - active
+      - version
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+          minLength: 1
+          maxLength: 120
+        min_roster_size:
+          type: integer
+          minimum: 1
+          maximum: 100
+        max_roster_size:
+          type: integer
+          minimum: 1
+          maximum: 100
+        allows_draw:
+          type: boolean
+        score_unit:
+          type: string
+          minLength: 1
+          maxLength: 40
+        active:
+          type: boolean
+        version:
+          type: integer
+          minimum: 1
+          description: Версия записи для оптимистической блокировки. Устаревшая версия даёт 409.
+    DisciplineRequest:
+      type: object
+      additionalProperties: false
+      required:
+      - name
+      - min_roster_size
+      - max_roster_size
+      - allows_draw
+      - score_unit
+      properties:
+        name:
+          type: string
+          minLength: 1
+          maxLength: 120
+        min_roster_size:
+          type: integer
+          minimum: 1
+          maximum: 100
+        max_roster_size:
+          type: integer
+          minimum: 1
+          maximum: 100
+        allows_draw:
+          type: boolean
+        score_unit:
+          type: string
+          minLength: 1
+          maxLength: 40
+      description: 'min_roster_size <= max_roster_size. Индивидуальная дисциплина: оба равны 1.'
+    UpdateDisciplineRequest:
+      type: object
+      additionalProperties: false
+      required:
+      - version
+      properties:
+        version:
+          type: integer
+          minimum: 1
+          description: Версия записи для оптимистической блокировки. Устаревшая версия даёт 409.
+        name:
+          type: string
+          minLength: 1
+          maxLength: 120
+        min_roster_size:
+          type: integer
+          minimum: 1
+          maximum: 100
+        max_roster_size:
+          type: integer
+          minimum: 1
+          maximum: 100
+        allows_draw:
+          type: boolean
+        score_unit:
+          type: string
+          minLength: 1
+          maxLength: 40
+        active:
+          type: boolean
+    CreateTeamRequest:
+      type: object
+      additionalProperties: false
+      required:
+      - name
+      properties:
+        name:
+          type: string
+          minLength: 1
+          maxLength: 120
+        description:
+          type: string
+          maxLength: 2000
+        logo_file_id:
+          type: string
+          format: uuid
+    UpdateTeamRequest:
+      type: object
+      additionalProperties: false
+      required:
+      - version
+      properties:
+        version:
+          type: integer
+          minimum: 1
+          description: Версия записи для оптимистической блокировки. Устаревшая версия даёт 409.
+        name:
+          type: string
+          minLength: 1
+          maxLength: 120
+        description:
+          type: string
+          maxLength: 2000
+        logo_file_id:
+          type: string
+          format: uuid
+    Team:
+      type: object
+      additionalProperties: false
+      required:
+      - id
+      - name
+      - captain_id
+      - personal
+      - version
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+          minLength: 1
+          maxLength: 120
+        description:
+          type: string
+        logo_url:
+          type: string
+          format: uri
+          maxLength: 2048
+        captain_id:
+          type: string
+          format: uuid
+        personal:
+          type: boolean
+        version:
+          type: integer
+          minimum: 1
+          description: Версия записи для оптимистической блокировки. Устаревшая версия даёт 409.
+    TeamMember:
+      type: object
+      additionalProperties: false
+      required:
+      - user
+      - captain
+      - joined_at
+      properties:
+        user:
+          $ref: '#/components/schemas/PublicUser'
+        captain:
+          type: boolean
+        joined_at:
+          type: string
+          format: date-time
+    Invitation:
+      type: object
+      additionalProperties: false
+      required:
+      - id
+      - team_id
+      - status
+      - expires_at
+      properties:
+        id:
+          type: string
+          format: uuid
+        team_id:
+          type: string
+          format: uuid
+        invitee_id:
+          type: string
+          format: uuid
+        status:
+          type: string
+          enum:
+          - pending
+          - accepted
+          - declined
+          - revoked
+          - expired
+        expires_at:
+          type: string
+          format: date-time
+    CreateInvitationRequest:
+      type: object
+      additionalProperties: false
+      properties:
+        nickname:
+          type: string
+          pattern: ^[A-Za-z0-9_]{3,32}$
+      description: 'nickname задан: адресное приглашение; пустой объект: одноразовая ссылка. Срок действия 7 дней.'
+    InvitationLink:
+      type: object
+      additionalProperties: false
+      required:
+      - invitation
+      - token
+      - url
+      properties:
+        invitation:
+          $ref: '#/components/schemas/Invitation'
+        token:
+          type: string
+        url:
+          type: string
+          format: uri
+          maxLength: 2048
+    InvitationDecisionRequest:
+      type: object
+      additionalProperties: false
+      required:
+      - token
+      - decision
+      properties:
+        token:
+          type: string
+          minLength: 1
+          maxLength: 512
+        decision:
+          type: string
+          enum:
+          - accept
+          - decline
+    TransferCaptainRequest:
+      type: object
+      additionalProperties: false
+      required:
+      - version
+      - user_id
+      properties:
+        version:
+          type: integer
+          minimum: 1
+          description: Версия записи для оптимистической блокировки. Устаревшая версия даёт 409.
+        user_id:
+          type: string
+          format: uuid
+    GroupSettings:
+      type: object
+      additionalProperties: false
+      required:
+      - group_count
+      - qualifiers_per_group
+      - wildcard_count
+      properties:
+        group_count:
+          type: integer
+          minimum: 2
+          maximum: 64
+        qualifiers_per_group:
+          type: integer
+          minimum: 1
+          maximum: 128
+        wildcard_count:
+          type: integer
+          minimum: 0
+          maximum: 128
+          default: 0
+        wildcard_place:
+          type: integer
+          minimum: 2
+          maximum: 128
+      description: wildcard_place обязателен при wildcard_count > 0. Число участников и выходящих проверяется при
+        генерации.
+    Rules:
+      type: object
+      additionalProperties: false
+      required:
+      - best_of
+      - round_robin_legs
+      - win_points
+      - draw_points
+      - loss_points
+      - tie_breakers
+      - third_place_match
+      - confirmation_timeout_hours
+      properties:
+        best_of:
+          type: integer
+          enum:
+          - 1
+          - 3
+          - 5
+        round_robin_legs:
+          type: integer
+          enum:
+          - 1
+          - 2
+          default: 1
+        win_points:
+          type: integer
+          minimum: 0
+          maximum: 100
+        draw_points:
+          type: integer
+          minimum: 0
+          maximum: 100
+        loss_points:
+          type: integer
+          minimum: 0
+          maximum: 100
+        tie_breakers:
+          type: array
+          items:
+            $ref: '#/components/schemas/TieBreaker'
+          minItems: 1
+          uniqueItems: true
+        third_place_match:
+          type: boolean
+        confirmation_timeout_hours:
+          type: integer
+          minimum: 1
+          maximum: 168
+          default: 24
+        group_settings:
+          $ref: '#/components/schemas/GroupSettings'
+      description: 'group_settings обязателен только для groups_playoffs; third_place_match применим к плей-офф.
+        Бо-серия: победитель выигрывает (best_of+1)/2 партий; правила ничьей проверяются по дисциплине/этапу.'
+    CreateTournamentRequest:
+      type: object
+      additionalProperties: false
+      required:
+      - name
+      - discipline_id
+      - format
+      - max_participants
+      - timezone
+      - rules
+      properties:
+        name:
+          type: string
+          minLength: 1
+          maxLength: 120
+        description:
+          type: string
+          maxLength: 10000
+        discipline_id:
+          type: string
+          format: uuid
+        format:
+          $ref: '#/components/schemas/TournamentFormat'
+        max_participants:
+          type: integer
+          minimum: 2
+          maximum: 256
+        registration_opens_at:
+          type: string
+          format: date-time
+        registration_closes_at:
+          type: string
+          format: date-time
+        starts_at:
+          type: string
+          format: date-time
+        ends_at:
+          type: string
+          format: date-time
+        timezone:
+          type: string
+          maxLength: 100
+        rules:
+          $ref: '#/components/schemas/Rules'
+      description: Черновик может не иметь дат. Публикация требует opens < closes <= starts < ends; timezone — IANA.
+    UpdateTournamentRequest:
+      type: object
+      additionalProperties: false
+      required:
+      - version
+      properties:
+        version:
+          type: integer
+          minimum: 1
+          description: Версия записи для оптимистической блокировки. Устаревшая версия даёт 409.
+        name:
+          type: string
+          minLength: 1
+          maxLength: 120
+        description:
+          type: string
+          maxLength: 10000
+        discipline_id:
+          type: string
+          format: uuid
+        format:
+          $ref: '#/components/schemas/TournamentFormat'
+        max_participants:
+          type: integer
+          minimum: 2
+          maximum: 256
+        registration_opens_at:
+          type: string
+          format: date-time
+        registration_closes_at:
+          type: string
+          format: date-time
+        starts_at:
+          type: string
+          format: date-time
+        ends_at:
+          type: string
+          format: date-time
+        timezone:
+          type: string
+          maxLength: 100
+        rules:
+          $ref: '#/components/schemas/Rules'
+      description: Поля изменяются в черновике/регистрации; формат и состав нельзя менять после старта. max_participants
+        не ниже числа принятых заявок.
+    Tournament:
+      type: object
+      additionalProperties: false
+      required:
+      - id
+      - organizer
+      - name
+      - discipline_id
+      - format
+      - max_participants
+      - timezone
+      - rules
+      - status
+      - hidden
+      - accepted_count
+      - version
+      - created_at
+      properties:
+        id:
+          type: string
+          format: uuid
+        organizer:
+          $ref: '#/components/schemas/PublicUser'
+        name:
+          type: string
+          minLength: 1
+          maxLength: 120
+        description:
+          type: string
+          maxLength: 10000
+        discipline_id:
+          type: string
+          format: uuid
+        format:
+          $ref: '#/components/schemas/TournamentFormat'
+        max_participants:
+          type: integer
+          minimum: 2
+          maximum: 256
+        registration_opens_at:
+          type: string
+          format: date-time
+        registration_closes_at:
+          type: string
+          format: date-time
+        starts_at:
+          type: string
+          format: date-time
+        ends_at:
+          type: string
+          format: date-time
+        timezone:
+          type: string
+          maxLength: 100
+        rules:
+          $ref: '#/components/schemas/Rules'
+        status:
+          $ref: '#/components/schemas/TournamentStatus'
+        hidden:
+          type: boolean
+        referee_id:
+          type: string
+          format: uuid
+        accepted_count:
+          type: integer
+          minimum: 0
+        version:
+          type: integer
+          minimum: 1
+          description: Версия записи для оптимистической блокировки. Устаревшая версия даёт 409.
+        created_at:
+          type: string
+          format: date-time
+    ApplicationRequest:
+      type: object
+      additionalProperties: false
+      required:
+      - player_ids
+      properties:
+        team_id:
+          type: string
+          format: uuid
+        player_ids:
+          type: array
+          items:
+            type: string
+            format: uuid
+          minItems: 1
+          maxItems: 100
+          uniqueItems: true
+      description: 'Капитан подаёт за team_id; для индивидуальной дисциплины team_id можно опустить и player_ids
+        содержит только текущего пользователя: персональная команда создаётся автоматически. Состав фиксируется
+        снимком; один игрок занят только одной pending/accepted заявкой турнира.'
+    Application:
+      type: object
+      additionalProperties: false
+      required:
+      - id
+      - tournament_id
+      - team
+      - players
+      - status
+      - version
+      - created_at
+      properties:
+        id:
+          type: string
+          format: uuid
+        tournament_id:
+          type: string
+          format: uuid
+        team:
+          $ref: '#/components/schemas/Team'
+        players:
+          type: array
+          items:
+            $ref: '#/components/schemas/PublicUser'
+        status:
+          $ref: '#/components/schemas/ApplicationStatus'
+        seed:
+          type: integer
+          minimum: 1
+        final_place:
+          type: integer
+          minimum: 1
+        rejection_reason:
+          type: string
+        version:
+          type: integer
+          minimum: 1
+          description: Версия записи для оптимистической блокировки. Устаревшая версия даёт 409.
+        created_at:
+          type: string
+          format: date-time
+    ReviewApplicationRequest:
+      type: object
+      additionalProperties: false
+      required:
+      - version
+      - decision
+      properties:
+        version:
+          type: integer
+          minimum: 1
+          description: Версия записи для оптимистической блокировки. Устаревшая версия даёт 409.
+        decision:
+          type: string
+          enum:
+          - accept
+          - reject
+        reason:
+          type: string
+          minLength: 1
+          maxLength: 2000
+      description: При reject причина обязательна. Принятие проверяет число свободных мест в транзакции.
+    SeedingRequest:
+      type: object
+      additionalProperties: false
+      required:
+      - version
+      - method
+      properties:
+        version:
+          type: integer
+          minimum: 1
+          description: Версия записи для оптимистической блокировки. Устаревшая версия даёт 409.
+        method:
+          type: string
+          enum:
+          - elo
+          - random
+          - manual
+        application_ids:
+          type: array
+          items:
+            type: string
+            format: uuid
+          minItems: 2
+          maxItems: 256
+          uniqueItems: true
+      description: manual требует application_ids — полную перестановку принятых заявок, первая имеет seed=1. random
+        сохраняет выбранную перестановку в предпросмотре.
+    DrawPreview:
+      type: object
+      additionalProperties: false
+      required:
+      - id
+      - tournament_id
+      - tournament_version
+      - expires_at
+      - seeds
+      - stages
+      - groups
+      - matches
+      properties:
+        id:
+          type: string
+          format: uuid
+        tournament_id:
+          type: string
+          format: uuid
+        tournament_version:
+          type: integer
+          minimum: 1
+          description: Версия записи для оптимистической блокировки. Устаревшая версия даёт 409.
+        expires_at:
+          type: string
+          format: date-time
+        seeds:
+          type: array
+          items:
+            $ref: '#/components/schemas/Seed'
+        stages:
+          type: array
+          items:
+            $ref: '#/components/schemas/Stage'
+        groups:
+          type: array
+          items:
+            $ref: '#/components/schemas/Group'
+        matches:
+          type: array
+          items:
+            $ref: '#/components/schemas/Match'
+      description: Предпросмотр хранится 1 час; подтверждение использует именно эту раскладку, не повторяет случайную
+        генерацию.
+    Seed:
+      type: object
+      additionalProperties: false
+      required:
+      - application_id
+      - position
+      properties:
+        application_id:
+          type: string
+          format: uuid
+        position:
+          type: integer
+          minimum: 1
+          maximum: 256
+    ConfirmDrawRequest:
+      type: object
+      additionalProperties: false
+      required:
+      - version
+      - preview_id
+      properties:
+        version:
+          type: integer
+          minimum: 1
+          description: Версия записи для оптимистической блокировки. Устаревшая версия даёт 409.
+        preview_id:
+          type: string
+          format: uuid
+      description: Повторное подтверждение того же preview_id идемпотентно. Пересборка разрешена до первого сообщения/фиксации
+        результата.
+    Stage:
+      type: object
+      additionalProperties: false
+      required:
+      - id
+      - tournament_id
+      - kind
+      - position
+      - status
+      properties:
+        id:
+          type: string
+          format: uuid
+        tournament_id:
+          type: string
+          format: uuid
+        kind:
+          $ref: '#/components/schemas/StageKind'
+        position:
+          type: integer
+          minimum: 1
+        status:
+          type: string
+          enum:
+          - pending
+          - in_progress
+          - completed
+    Group:
+      type: object
+      additionalProperties: false
+      required:
+      - id
+      - stage_id
+      - name
+      - application_ids
+      properties:
+        id:
+          type: string
+          format: uuid
+        stage_id:
+          type: string
+          format: uuid
+        name:
+          type: string
+          minLength: 1
+          maxLength: 120
+        application_ids:
+          type: array
+          items:
+            type: string
+            format: uuid
+    Standing:
+      type: object
+      additionalProperties: false
+      required:
+      - application_id
+      - position
+      - played
+      - wins
+      - draws
+      - losses
+      - score_for
+      - score_against
+      - score_difference
+      - points
+      properties:
+        application_id:
+          type: string
+          format: uuid
+        position:
+          type: integer
+          minimum: 1
+        played:
+          type: integer
+          minimum: 0
+        wins:
+          type: integer
+          minimum: 0
+        draws:
+          type: integer
+          minimum: 0
+        losses:
+          type: integer
+          minimum: 0
+        score_for:
+          type: integer
+          minimum: 0
+        score_against:
+          type: integer
+          minimum: 0
+        score_difference:
+          type: integer
+        points:
+          type: integer
+    Standings:
+      type: object
+      additionalProperties: false
+      required:
+      - stage_id
+      - rows
+      properties:
+        stage_id:
+          type: string
+          format: uuid
+        group_id:
+          type: string
+          format: uuid
+        rows:
+          type: array
+          items:
+            $ref: '#/components/schemas/Standing'
+    Bracket:
+      type: object
+      additionalProperties: false
+      required:
+      - stages
+      - groups
+      - matches
+      properties:
+        stages:
+          type: array
+          items:
+            $ref: '#/components/schemas/Stage'
+        groups:
+          type: array
+          items:
+            $ref: '#/components/schemas/Group'
+        matches:
+          type: array
+          items:
+            $ref: '#/components/schemas/Match'
+    Match:
+      type: object
+      additionalProperties: false
+      required:
+      - id
+      - tournament_id
+      - stage_id
+      - round
+      - position
+      - status
+      - version
+      properties:
+        id:
+          type: string
+          format: uuid
+        tournament_id:
+          type: string
+          format: uuid
+        stage_id:
+          type: string
+          format: uuid
+        group_id:
+          type: string
+          format: uuid
+        round:
+          type: integer
+          minimum: 1
+        position:
+          type: integer
+          minimum: 1
+        home_application_id:
+          type: string
+          format: uuid
+        away_application_id:
+          type: string
+          format: uuid
+        next_match_id:
+          type: string
+          format: uuid
+        next_match_slot:
+          type: string
+          enum:
+          - home
+          - away
+        loser_next_match_id:
+          type: string
+          format: uuid
+        loser_next_match_slot:
+          type: string
+          enum:
+          - home
+          - away
+        starts_at:
+          type: string
+          format: date-time
+        venue:
+          type: string
+          maxLength: 200
+        online_url:
+          type: string
+          format: uri
+          maxLength: 2048
+        referee_id:
+          type: string
+          format: uuid
+        status:
+          $ref: '#/components/schemas/MatchStatus'
+        home_score:
+          type: integer
+          minimum: 0
+        away_score:
+          type: integer
+          minimum: 0
+        winner_application_id:
+          type: string
+          format: uuid
+        version:
+          type: integer
+          minimum: 1
+          description: Версия записи для оптимистической блокировки. Устаревшая версия даёт 409.
+      description: Отсутствующие участники означают ожидаемый результат предыдущего матча/bye. Bye не меняет Эло.
+        Время UTC; перенос не создаёт пересечения для участников/судьи. Связь loser_next используется для матча
+        за 3-е место.
+    ScheduleMatchRequest:
+      type: object
+      additionalProperties: false
+      required:
+      - version
+      - starts_at
+      properties:
+        version:
+          type: integer
+          minimum: 1
+          description: Версия записи для оптимистической блокировки. Устаревшая версия даёт 409.
+        starts_at:
+          type: string
+          format: date-time
+        venue:
+          type: string
+          minLength: 1
+          maxLength: 200
+        online_url:
+          type: string
+          format: uri
+          maxLength: 2048
+      description: Нужна площадка или онлайн-ссылка; нельзя перенести завершённый матч.
+    ScheduleRoundRequest:
+      type: object
+      additionalProperties: false
+      required:
+      - version
+      - stage_id
+      - round
+      - starts_at
+      - interval_minutes
+      - venue
+      properties:
+        version:
+          type: integer
+          minimum: 1
+          description: Версия записи для оптимистической блокировки. Устаревшая версия даёт 409.
+        stage_id:
+          type: string
+          format: uuid
+        round:
+          type: integer
+          minimum: 1
+        starts_at:
+          type: string
+          format: date-time
+        interval_minutes:
+          type: integer
+          minimum: 1
+          maximum: 1440
+        venue:
+          type: string
+          maxLength: 200
+      description: Матчи тура назначаются по position с указанным интервалом; конфликты проверяются до записи всей
+        пачки.
+    AssignRefereeRequest:
+      type: object
+      additionalProperties: false
+      required:
+      - version
+      - referee_id
+      properties:
+        version:
+          type: integer
+          minimum: 1
+          description: Версия записи для оптимистической блокировки. Устаревшая версия даёт 409.
+        referee_id:
+          type: string
+          format: uuid
+    GameScore:
+      type: object
+      additionalProperties: false
+      required:
+      - number
+      - home_score
+      - away_score
+      properties:
+        number:
+          type: integer
+          minimum: 1
+          maximum: 5
+        home_score:
+          type: integer
+          minimum: 0
+          maximum: 100000
+        away_score:
+          type: integer
+          minimum: 0
+          maximum: 100000
+    ReportResultRequest:
+      type: object
+      additionalProperties: false
+      required:
+      - version
+      - home_score
+      - away_score
+      - games
+      properties:
+        version:
+          type: integer
+          minimum: 1
+          description: Версия записи для оптимистической блокировки. Устаревшая версия даёт 409.
+        home_score:
+          type: integer
+          minimum: 0
+          maximum: 100000
+        away_score:
+          type: integer
+          minimum: 0
+          maximum: 100000
+        games:
+          type: array
+          items:
+            $ref: '#/components/schemas/GameScore'
+          minItems: 1
+          maxItems: 5
+        evidence_file_ids:
+          type: array
+          items:
+            type: string
+            format: uuid
+          maxItems: 10
+          uniqueItems: true
+      description: Начало матча должно наступить. Для Bo3/Bo5 итоговый счёт — выигранные партии и согласован с games;
+        для Bo1 — счёт единственной партии. В плей-офф ничья запрещена. Вложение PDF/PNG/JPG <= 5 МиБ.
+    ResultReport:
+      type: object
+      additionalProperties: false
+      required:
+      - id
+      - match_id
+      - author_id
+      - home_score
+      - away_score
+      - games
+      - evidence_file_ids
+      - status
+      - created_at
+      properties:
+        id:
+          type: string
+          format: uuid
+        match_id:
+          type: string
+          format: uuid
+        author_id:
+          type: string
+          format: uuid
+        home_score:
+          type: integer
+          minimum: 0
+        away_score:
+          type: integer
+          minimum: 0
+        games:
+          type: array
+          items:
+            $ref: '#/components/schemas/GameScore'
+        evidence_file_ids:
+          type: array
+          items:
+            type: string
+            format: uuid
+        status:
+          type: string
+          enum:
+          - pending
+          - confirmed
+          - disputed
+          - superseded
+        confirmation_deadline:
+          type: string
+          format: date-time
+        created_at:
+          type: string
+          format: date-time
+    DisputeRequest:
+      type: object
+      additionalProperties: false
+      required:
+      - version
+      - reason
+      properties:
+        version:
+          type: integer
+          minimum: 1
+          description: Версия записи для оптимистической блокировки. Устаревшая версия даёт 409.
+        reason:
+          type: string
+          minLength: 1
+          maxLength: 2000
+        evidence_file_ids:
+          type: array
+          items:
+            type: string
+            format: uuid
+          maxItems: 10
+          uniqueItems: true
+    Dispute:
+      type: object
+      additionalProperties: false
+      required:
+      - id
+      - match_id
+      - report_id
+      - opened_by
+      - reason
+      - status
+      - evidence_file_ids
+      - created_at
+      properties:
+        id:
+          type: string
+          format: uuid
+        match_id:
+          type: string
+          format: uuid
+        report_id:
+          type: string
+          format: uuid
+        opened_by:
+          type: string
+          format: uuid
+        reason:
+          type: string
+          minLength: 1
+          maxLength: 2000
+        status:
+          type: string
+          enum:
+          - open
+          - resolved
+        evidence_file_ids:
+          type: array
+          items:
+            type: string
+            format: uuid
+        resolved_by:
+          type: string
+          format: uuid
+        resolution:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+    ResolveDisputeRequest:
+      type: object
+      additionalProperties: false
+      required:
+      - version
+      - reason
+      - home_score
+      - away_score
+      - games
+      properties:
+        version:
+          type: integer
+          minimum: 1
+          description: Версия записи для оптимистической блокировки. Устаревшая версия даёт 409.
+        reason:
+          type: string
+          minLength: 1
+          maxLength: 2000
+        home_score:
+          type: integer
+          minimum: 0
+          maximum: 100000
+        away_score:
+          type: integer
+          minimum: 0
+          maximum: 100000
+        games:
+          type: array
+          items:
+            $ref: '#/components/schemas/GameScore'
+          minItems: 1
+          maxItems: 5
+        evidence_file_ids:
+          type: array
+          items:
+            type: string
+            format: uuid
+          maxItems: 10
+          uniqueItems: true
+      description: Назначенный судья устанавливает итог. Коррекция завершённого матча требует пересчёта последующих
+        рейтингов; после старта зависимого матча изменение победителя запрещено (409).
+    Rating:
+      type: object
+      additionalProperties: false
+      required:
+      - team
+      - discipline_id
+      - value
+      - played
+      - position
+      properties:
+        team:
+          $ref: '#/components/schemas/Team'
+        discipline_id:
+          type: string
+          format: uuid
+        value:
+          type: number
+          format: double
+        played:
+          type: integer
+          minimum: 0
+        position:
+          type: integer
+          minimum: 1
+    RatingChange:
+      type: object
+      additionalProperties: false
+      required:
+      - match_id
+      - team_id
+      - discipline_id
+      - before
+      - delta
+      - after
+      - created_at
+      properties:
+        match_id:
+          type: string
+          format: uuid
+        team_id:
+          type: string
+          format: uuid
+        discipline_id:
+          type: string
+          format: uuid
+        before:
+          type: number
+          format: double
+        delta:
+          type: number
+          format: double
+        after:
+          type: number
+          format: double
+        created_at:
+          type: string
+          format: date-time
+      description: Начальный рейтинг 1500, K=32; дельты соперников противоположны, храним без округления. Bye исключён.
+    File:
+      type: object
+      additionalProperties: false
+      required:
+      - id
+      - purpose
+      - filename
+      - content_type
+      - size_bytes
+      - created_at
+      properties:
+        id:
+          type: string
+          format: uuid
+        purpose:
+          type: string
+          enum:
+          - avatar
+          - team_logo
+          - match_protocol
+        filename:
+          type: string
+          maxLength: 255
+        content_type:
+          type: string
+          enum:
+          - application/pdf
+          - image/png
+          - image/jpeg
+        size_bytes:
+          type: integer
+          minimum: 1
+          maximum: 5242880
+        created_at:
+          type: string
+          format: date-time
+      description: Сервер проверяет сигнатуру и размер; avatar/team_logo допускают только PNG/JPEG. Доступ к протоколу
+        ограничен участниками, организатором и назначенным судьёй.
+    UploadFileRequest:
+      type: object
+      additionalProperties: false
+      required:
+      - purpose
+      - file
+      properties:
+        purpose:
+          type: string
+          enum:
+          - avatar
+          - team_logo
+          - match_protocol
+        file:
+          type: string
+          format: binary
+          description: До 5 МиБ, проверка по сигнатуре; PDF только для match_protocol.
+    Notification:
+      type: object
+      additionalProperties: false
+      required:
+      - id
+      - kind
+      - message
+      - created_at
+      properties:
+        id:
+          type: string
+          format: uuid
+        kind:
+          type: string
+        message:
+          type: string
+        resource_id:
+          type: string
+          format: uuid
+        read_at:
+          type: string
+          format: date-time
+        created_at:
+          type: string
+          format: date-time
+    UpdateRolesRequest:
+      type: object
+      additionalProperties: false
+      required:
+      - version
+      - roles
+      properties:
+        version:
+          type: integer
+          minimum: 1
+          description: Версия записи для оптимистической блокировки. Устаревшая версия даёт 409.
+        roles:
+          type: array
+          items:
+            $ref: '#/components/schemas/Role'
+          minItems: 1
+          uniqueItems: true
+      description: Администратор назначает роли. Нельзя лишить систему последнего активного администратора.
+    BlockUserRequest:
+      type: object
+      additionalProperties: false
+      required:
+      - version
+      - blocked
+      properties:
+        version:
+          type: integer
+          minimum: 1
+          description: Версия записи для оптимистической блокировки. Устаревшая версия даёт 409.
+        blocked:
+          type: boolean
+        reason:
+          type: string
+          minLength: 1
+          maxLength: 2000
+      description: При блокировке причина обязательна; активные сессии отзываются. Последний администратор защищён.
+    ModerateTournamentRequest:
+      type: object
+      additionalProperties: false
+      required:
+      - version
+      - hidden
+      - reason
+      properties:
+        version:
+          type: integer
+          minimum: 1
+          description: Версия записи для оптимистической блокировки. Устаревшая версия даёт 409.
+        hidden:
+          type: boolean
+        reason:
+          type: string
+          minLength: 1
+          maxLength: 2000
+    AuditEntry:
+      type: object
+      additionalProperties: false
+      required:
+      - id
+      - action
+      - entity_type
+      - entity_id
+      - created_at
+      properties:
+        id:
+          type: string
+          format: uuid
+        actor_id:
+          type: string
+          format: uuid
+        action:
+          type: string
+        entity_type:
+          type: string
+        entity_id:
+          type: string
+          format: uuid
+        before:
+          type: object
+          additionalProperties: true
+        after:
+          type: object
+          additionalProperties: true
+        created_at:
+          type: string
+          format: date-time
+      description: Не содержит паролей, токенов и секретов. Результаты, посев, роли и модерация записываются в транзакции
+        с изменением данных.
+    TournamentPage:
+      type: object
+      additionalProperties: false
+      required:
+      - items
+      - total
+      - limit
+      - offset
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/Tournament'
+        total:
+          type: integer
+          minimum: 0
+        limit:
+          type: integer
+          minimum: 1
+          maximum: 100
+        offset:
+          type: integer
+          minimum: 0
+    TeamPage:
+      type: object
+      additionalProperties: false
+      required:
+      - items
+      - total
+      - limit
+      - offset
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/Team'
+        total:
+          type: integer
+          minimum: 0
+        limit:
+          type: integer
+          minimum: 1
+          maximum: 100
+        offset:
+          type: integer
+          minimum: 0
+    PublicUserPage:
+      type: object
+      additionalProperties: false
+      required:
+      - items
+      - total
+      - limit
+      - offset
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/PublicUser'
+        total:
+          type: integer
+          minimum: 0
+        limit:
+          type: integer
+          minimum: 1
+          maximum: 100
+        offset:
+          type: integer
+          minimum: 0
+    ProfilePage:
+      type: object
+      additionalProperties: false
+      required:
+      - items
+      - total
+      - limit
+      - offset
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/Profile'
+        total:
+          type: integer
+          minimum: 0
+        limit:
+          type: integer
+          minimum: 1
+          maximum: 100
+        offset:
+          type: integer
+          minimum: 0
+    InvitationPage:
+      type: object
+      additionalProperties: false
+      required:
+      - items
+      - total
+      - limit
+      - offset
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/Invitation'
+        total:
+          type: integer
+          minimum: 0
+        limit:
+          type: integer
+          minimum: 1
+          maximum: 100
+        offset:
+          type: integer
+          minimum: 0
+    ApplicationPage:
+      type: object
+      additionalProperties: false
+      required:
+      - items
+      - total
+      - limit
+      - offset
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/Application'
+        total:
+          type: integer
+          minimum: 0
+        limit:
+          type: integer
+          minimum: 1
+          maximum: 100
+        offset:
+          type: integer
+          minimum: 0
+    MatchPage:
+      type: object
+      additionalProperties: false
+      required:
+      - items
+      - total
+      - limit
+      - offset
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/Match'
+        total:
+          type: integer
+          minimum: 0
+        limit:
+          type: integer
+          minimum: 1
+          maximum: 100
+        offset:
+          type: integer
+          minimum: 0
+    RatingPage:
+      type: object
+      additionalProperties: false
+      required:
+      - items
+      - total
+      - limit
+      - offset
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/Rating'
+        total:
+          type: integer
+          minimum: 0
+        limit:
+          type: integer
+          minimum: 1
+          maximum: 100
+        offset:
+          type: integer
+          minimum: 0
+    RatingChangePage:
+      type: object
+      additionalProperties: false
+      required:
+      - items
+      - total
+      - limit
+      - offset
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/RatingChange'
+        total:
+          type: integer
+          minimum: 0
+        limit:
+          type: integer
+          minimum: 1
+          maximum: 100
+        offset:
+          type: integer
+          minimum: 0
+    NotificationPage:
+      type: object
+      additionalProperties: false
+      required:
+      - items
+      - total
+      - limit
+      - offset
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/Notification'
+        total:
+          type: integer
+          minimum: 0
+        limit:
+          type: integer
+          minimum: 1
+          maximum: 100
+        offset:
+          type: integer
+          minimum: 0
+    AuditEntryPage:
+      type: object
+      additionalProperties: false
+      required:
+      - items
+      - total
+      - limit
+      - offset
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/AuditEntry'
+        total:
+          type: integer
+          minimum: 0
+        limit:
+          type: integer
+          minimum: 1
+          maximum: 100
+        offset:
+          type: integer
+          minimum: 0
+    DisciplinePage:
+      type: object
+      additionalProperties: false
+      required:
+      - items
+      - total
+      - limit
+      - offset
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/Discipline'
+        total:
+          type: integer
+          minimum: 0
+        limit:
+          type: integer
+          minimum: 1
+          maximum: 100
+        offset:
+          type: integer
+          minimum: 0
+    DisputePage:
+      type: object
+      additionalProperties: false
+      required:
+      - items
+      - total
+      - limit
+      - offset
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/Dispute'
+        total:
+          type: integer
+          minimum: 0
+        limit:
+          type: integer
+          minimum: 1
+          maximum: 100
+        offset:
+          type: integer
+          minimum: 0

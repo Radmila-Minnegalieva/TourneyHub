@@ -1,0 +1,6 @@
+.env
+bin/
+build/
+.DS_Store
+coverage.out
+.idea/
