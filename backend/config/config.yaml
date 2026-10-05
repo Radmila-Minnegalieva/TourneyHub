@@ -1,0 +1,16 @@
+# Общие настройки сервиса. Секреты задаются через DB_USER и DB_PASSWORD.
+http:
+  address: ":8080"
+  cors_origins:
+    - http://localhost:5173
+    - http://localhost:8081
+
+database:
+  host: localhost
+  port: 5433
+  name: tourneyhub
+  ssl_mode: disable
+
+migrations:
+  # Путь относительно директории этого YAML-файла.
+  directory: ../migrations
