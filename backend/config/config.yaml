@@ -4,6 +4,29 @@ http:
   cors_origins:
     - http://localhost:5173
     - http://localhost:8081
+  read_header_timeout: 5s
+  read_timeout: 15s
+  idle_timeout: 60s
+  shutdown_timeout: 10s
+  sse_poll_interval: 1s
+  sse_heartbeat_interval: 15s
+  body_limit: 6M
+
+public:
+  web_url: http://localhost:5173
+
+smtp:
+  # Пустой адрес сохраняет письма в outbox до настройки SMTP.
+  # SMTP_USER и SMTP_PASSWORD задаются только через окружение.
+  address: ""
+  from: noreply@tourneyhub.local
+  allow_insecure: false
+  dial_timeout: 10s
+  timeout: 15s
+
+worker:
+  interval: 1m
+  event_retention: 168h
 
 database:
   host: localhost

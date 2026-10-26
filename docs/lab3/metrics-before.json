@@ -1,0 +1,2272 @@
+{
+  "go_version": "go1.27.2",
+  "tools": {
+    "gocognit": "v1.2.0",
+    "gocyclo": "v0.6.0",
+    "source": "Go parser/scanner"
+  },
+  "scope": "Manual production Go files; excludes *_test.go, generated code, cmd/metrics, vendor, build and bin",
+  "summary": {
+    "files": 30,
+    "packages": 10,
+    "functions": 248,
+    "source_lines": 5841,
+    "code_lines": 5482,
+    "comment_lines": 102,
+    "comment_density_percent": 1.746276322547509,
+    "blank_lines": 257,
+    "cyclomatic_total": 1527,
+    "cyclomatic_max": 27,
+    "cyclomatic_mean": 6.157258064516129,
+    "cyclomatic_p90": 13,
+    "cognitive_max": 55,
+    "cognitive_mean": 6.846774193548387,
+    "function_lines_max": 82,
+    "function_lines_mean": 20.358870967741936,
+    "package_fan_out_max": 44,
+    "package_fan_out_mean": 10.8,
+    "cyclomatic_over_10": 46,
+    "cognitive_over_15": 39,
+    "function_lines_over_60": 3
+  },
+  "package_fan_out": {
+    "cmd/api": 7,
+    "cmd/bootstrap": 15,
+    "cmd/migrate": 9,
+    "internal/api/v1": 44,
+    "internal/app": 7,
+    "internal/config": 10,
+    "internal/container": 5,
+    "internal/migration": 7,
+    "internal/model": 3,
+    "pkg/api/v1": 1
+  },
+  "files": [
+    {
+      "path": "cmd/api/main.go",
+      "sha256": "05faab2052b75702390ccfae42a7560b5b441e0643c2b70d0ea4eb69e1ab0b31",
+      "source_lines": 26,
+      "code_lines": 23,
+      "comment_lines": 0,
+      "blank_lines": 3
+    },
+    {
+      "path": "cmd/bootstrap/main.go",
+      "sha256": "82910a06e2907e6aa6e07b56cda9a886907a463d9351c168fc9f5074aed367e7",
+      "source_lines": 96,
+      "code_lines": 89,
+      "comment_lines": 2,
+      "blank_lines": 5
+    },
+    {
+      "path": "cmd/migrate/main.go",
+      "sha256": "ff0dcccd6cd6beb436dd83d9a20214d29c08f886965b9a564c2666d274ee530d",
+      "source_lines": 73,
+      "code_lines": 69,
+      "comment_lines": 0,
+      "blank_lines": 4
+    },
+    {
+      "path": "internal/api/v1/admin.go",
+      "sha256": "3ca66b475dfff6f6f0db2294c1ee26d9e011a3e0a992055204476ef15fd49848",
+      "source_lines": 279,
+      "code_lines": 267,
+      "comment_lines": 0,
+      "blank_lines": 12
+    },
+    {
+      "path": "internal/api/v1/api.go",
+      "sha256": "b165354d2b20db1b9a2c7db100834c1613b9ca9a5aa5dd859f108036a786f2e5",
+      "source_lines": 184,
+      "code_lines": 161,
+      "comment_lines": 6,
+      "blank_lines": 17
+    },
+    {
+      "path": "internal/api/v1/applications.go",
+      "sha256": "d3ed2ec0251682837e985cd03bcd3a4f58c52054426cf9874ef4651e789b80e9",
+      "source_lines": 308,
+      "code_lines": 289,
+      "comment_lines": 1,
+      "blank_lines": 18
+    },
+    {
+      "path": "internal/api/v1/catalog.go",
+      "sha256": "845e1047397f1b92fb42797b0e4d482dffa9b0370c5b2af29d00ff012fc9ba2c",
+      "source_lines": 207,
+      "code_lines": 195,
+      "comment_lines": 0,
+      "blank_lines": 12
+    },
+    {
+      "path": "internal/api/v1/competition.go",
+      "sha256": "f813480f997eaa067f660683a9c2767193ce22129be8a94309ebcd1699fed41f",
+      "source_lines": 243,
+      "code_lines": 239,
+      "comment_lines": 0,
+      "blank_lines": 4
+    },
+    {
+      "path": "internal/api/v1/draw.go",
+      "sha256": "4e089d662825655e531f143edcc78f02705e23983672ad0c25ebaea69bf59ed7",
+      "source_lines": 427,
+      "code_lines": 423,
+      "comment_lines": 1,
+      "blank_lines": 3
+    },
+    {
+      "path": "internal/api/v1/events.go",
+      "sha256": "db47d5bd5e41d14aee7ec43ea060f4d11b38961f35becf87488271f5145db602",
+      "source_lines": 161,
+      "code_lines": 153,
+      "comment_lines": 1,
+      "blank_lines": 7
+    },
+    {
+      "path": "internal/api/v1/files.go",
+      "sha256": "46cc1000af8219411e7cd0e015b73cbc130eb57a729c57721aeccf2ed77ccf01",
+      "source_lines": 143,
+      "code_lines": 133,
+      "comment_lines": 1,
+      "blank_lines": 9
+    },
+    {
+      "path": "internal/api/v1/identity.go",
+      "sha256": "03ff2bd4388533cb6f2e19511a02eebf6c97cf5b5e457067d635e5ba964f3cb2",
+      "source_lines": 446,
+      "code_lines": 418,
+      "comment_lines": 4,
+      "blank_lines": 24
+    },
+    {
+      "path": "internal/api/v1/mail.go",
+      "sha256": "ec56d78afd7ee566f094f8647c0a476dfd3143844378562c77f87ea1a7565a5d",
+      "source_lines": 162,
+      "code_lines": 154,
+      "comment_lines": 2,
+      "blank_lines": 6
+    },
+    {
+      "path": "internal/api/v1/results.go",
+      "sha256": "cd5536ff25466f745cd26cdf75d34e77c85c3a1ca0415ebafc0e448447e4adfb",
+      "source_lines": 336,
+      "code_lines": 331,
+      "comment_lines": 0,
+      "blank_lines": 5
+    },
+    {
+      "path": "internal/api/v1/results_disputes.go",
+      "sha256": "3201d09b24a618b9bde4afe81967889a400ff89c53423d784309f72bba8142ec",
+      "source_lines": 271,
+      "code_lines": 264,
+      "comment_lines": 2,
+      "blank_lines": 5
+    },
+    {
+      "path": "internal/api/v1/results_progression.go",
+      "sha256": "0d2f89c7b17b39e76f79b5705bb1abd10ffc774ac73e2837975132e1353cfa26",
+      "source_lines": 307,
+      "code_lines": 299,
+      "comment_lines": 2,
+      "blank_lines": 6
+    },
+    {
+      "path": "internal/api/v1/results_ratings.go",
+      "sha256": "e5ec0df9cf6bb23695e59fd8aab03033718ac9b6abf8ffae9571394a6223dbf9",
+      "source_lines": 137,
+      "code_lines": 130,
+      "comment_lines": 2,
+      "blank_lines": 5
+    },
+    {
+      "path": "internal/api/v1/results_standings.go",
+      "sha256": "09edf694c68e53bbf3f006341868daf632f709bc7102c3524b37fe316491f71c",
+      "source_lines": 176,
+      "code_lines": 172,
+      "comment_lines": 0,
+      "blank_lines": 4
+    },
+    {
+      "path": "internal/api/v1/scheduling.go",
+      "sha256": "a84392ad7a963e81d03484d1d9021e2db10f37cf842cb4ea18bb5ed281f27060",
+      "source_lines": 219,
+      "code_lines": 210,
+      "comment_lines": 4,
+      "blank_lines": 5
+    },
+    {
+      "path": "internal/api/v1/server.go",
+      "sha256": "acfa136c28d98934f68727060f10904466efe13cadaf73e1ce9e107cc04970aa",
+      "source_lines": 134,
+      "code_lines": 124,
+      "comment_lines": 1,
+      "blank_lines": 9
+    },
+    {
+      "path": "internal/api/v1/teams.go",
+      "sha256": "7764be150db34739918522cd973c384c163e9ba1e37c3a69820ce5c0876cd9cd",
+      "source_lines": 530,
+      "code_lines": 502,
+      "comment_lines": 2,
+      "blank_lines": 26
+    },
+    {
+      "path": "internal/api/v1/tournaments.go",
+      "sha256": "2f722affd8c7b2e3760764e9210c0e458653b49c852db3ee9efa0b76fe420828",
+      "source_lines": 493,
+      "code_lines": 461,
+      "comment_lines": 1,
+      "blank_lines": 31
+    },
+    {
+      "path": "internal/app/app.go",
+      "sha256": "3f17140d865e282b1bb1c7990948aee454fb24edcb7edaa98968ac72c5d1d442",
+      "source_lines": 44,
+      "code_lines": 40,
+      "comment_lines": 1,
+      "blank_lines": 3
+    },
+    {
+      "path": "internal/config/config.go",
+      "sha256": "eedd14e6dae0a613fbb992ff720af7b009947d716d255e80069a79e952a0603b",
+      "source_lines": 140,
+      "code_lines": 119,
+      "comment_lines": 12,
+      "blank_lines": 9
+    },
+    {
+      "path": "internal/container/container.go",
+      "sha256": "fe2e68c236f3efe6160dcf46ec5f695409549361c129cde5636aa01817a1702b",
+      "source_lines": 30,
+      "code_lines": 25,
+      "comment_lines": 0,
+      "blank_lines": 5
+    },
+    {
+      "path": "internal/migration/migration.go",
+      "sha256": "57920c78dfbebbd838ed4e16fbb3f52643966b862ce1f637fd2d34de3d505c03",
+      "source_lines": 45,
+      "code_lines": 38,
+      "comment_lines": 4,
+      "blank_lines": 3
+    },
+    {
+      "path": "internal/model/competition.go",
+      "sha256": "ab70b64f109a3fe45e796e2b9142ea733f137399808b1dc7ee050146f83b944c",
+      "source_lines": 133,
+      "code_lines": 117,
+      "comment_lines": 8,
+      "blank_lines": 8
+    },
+    {
+      "path": "internal/model/doc.go",
+      "sha256": "1f95f3856300152240049470591f07f36b986ef6088add370b1591cb1044a5b3",
+      "source_lines": 8,
+      "code_lines": 1,
+      "comment_lines": 7,
+      "blank_lines": 0
+    },
+    {
+      "path": "internal/model/rating.go",
+      "sha256": "6d5395b49e4375ef4a3d275e6d9c4c1a841d0f5c7af1e168110bca6f14c95623",
+      "source_lines": 73,
+      "code_lines": 33,
+      "comment_lines": 33,
+      "blank_lines": 7
+    },
+    {
+      "path": "pkg/api/v1/spec.go",
+      "sha256": "df2ee1a83a9729592f44bd8e7e66806094a1eb4f2181e58feff41e7247f6e694",
+      "source_lines": 10,
+      "code_lines": 3,
+      "comment_lines": 5,
+      "blank_lines": 2
+    }
+  ],
+  "functions": [
+    {
+      "name": "internal/api/v1.(*API).DisputeResult",
+      "file": "internal/api/v1/results_disputes.go",
+      "line": 45,
+      "lines": 82,
+      "cyclomatic": 27,
+      "cognitive": 55
+    },
+    {
+      "name": "internal/api/v1.(*API).ConfirmDraw",
+      "file": "internal/api/v1/draw.go",
+      "line": 289,
+      "lines": 68,
+      "cyclomatic": 19,
+      "cognitive": 33
+    },
+    {
+      "name": "internal/api/v1.sendSMTP",
+      "file": "internal/api/v1/mail.go",
+      "line": 99,
+      "lines": 64,
+      "cyclomatic": 19,
+      "cognitive": 20
+    },
+    {
+      "name": "internal/model.ValidateSeries",
+      "file": "internal/model/competition.go",
+      "line": 90,
+      "lines": 23,
+      "cyclomatic": 19,
+      "cognitive": 17
+    },
+    {
+      "name": "internal/api/v1.(*API).DecideInvitation",
+      "file": "internal/api/v1/teams.go",
+      "line": 449,
+      "lines": 60,
+      "cyclomatic": 18,
+      "cognitive": 35
+    },
+    {
+      "name": "internal/api/v1.validateTournamentRules",
+      "file": "internal/api/v1/tournaments.go",
+      "line": 158,
+      "lines": 34,
+      "cyclomatic": 18,
+      "cognitive": 18
+    },
+    {
+      "name": "internal/api/v1.startPlayoffs",
+      "file": "internal/api/v1/results_progression.go",
+      "line": 165,
+      "lines": 42,
+      "cyclomatic": 17,
+      "cognitive": 19
+    },
+    {
+      "name": "cmd/migrate.run",
+      "file": "cmd/migrate/main.go",
+      "line": 16,
+      "lines": 47,
+      "cyclomatic": 16,
+      "cognitive": 17
+    },
+    {
+      "name": "internal/api/v1.buildGroupDraw",
+      "file": "internal/api/v1/draw.go",
+      "line": 202,
+      "lines": 39,
+      "cyclomatic": 16,
+      "cognitive": 16
+    },
+    {
+      "name": "internal/api/v1.(*API).StreamTournamentEvents",
+      "file": "internal/api/v1/events.go",
+      "line": 76,
+      "lines": 56,
+      "cyclomatic": 16,
+      "cognitive": 22
+    },
+    {
+      "name": "internal/api/v1.qualifiedParticipants",
+      "file": "internal/api/v1/results_progression.go",
+      "line": 114,
+      "lines": 51,
+      "cyclomatic": 16,
+      "cognitive": 28
+    },
+    {
+      "name": "internal/api/v1.validateGroupSettings",
+      "file": "internal/api/v1/tournaments.go",
+      "line": 193,
+      "lines": 18,
+      "cyclomatic": 16,
+      "cognitive": 10
+    },
+    {
+      "name": "internal/api/v1.(*API).BlockUser",
+      "file": "internal/api/v1/admin.go",
+      "line": 81,
+      "lines": 42,
+      "cyclomatic": 15,
+      "cognitive": 23
+    },
+    {
+      "name": "internal/api/v1.(*API).UpdateUserRoles",
+      "file": "internal/api/v1/admin.go",
+      "line": 132,
+      "lines": 49,
+      "cyclomatic": 15,
+      "cognitive": 24
+    },
+    {
+      "name": "internal/api/v1.(*API).UploadFile",
+      "file": "internal/api/v1/files.go",
+      "line": 48,
+      "lines": 46,
+      "cyclomatic": 15,
+      "cognitive": 11
+    },
+    {
+      "name": "internal/api/v1.(*API).ReviewApplication",
+      "file": "internal/api/v1/applications.go",
+      "line": 212,
+      "lines": 34,
+      "cyclomatic": 14,
+      "cognitive": 22
+    },
+    {
+      "name": "internal/api/v1.(*API).UpdateDiscipline",
+      "file": "internal/api/v1/catalog.go",
+      "line": 97,
+      "lines": 51,
+      "cyclomatic": 14,
+      "cognitive": 23
+    },
+    {
+      "name": "internal/api/v1.playoffMatches",
+      "file": "internal/api/v1/draw.go",
+      "line": 123,
+      "lines": 51,
+      "cyclomatic": 14,
+      "cognitive": 19
+    },
+    {
+      "name": "internal/api/v1.saveDraw",
+      "file": "internal/api/v1/draw.go",
+      "line": 382,
+      "lines": 37,
+      "cyclomatic": 14,
+      "cognitive": 22
+    },
+    {
+      "name": "internal/api/v1.insertReport",
+      "file": "internal/api/v1/results.go",
+      "line": 82,
+      "lines": 43,
+      "cyclomatic": 14,
+      "cognitive": 17
+    },
+    {
+      "name": "internal/api/v1.(*API).autoConfirmOne",
+      "file": "internal/api/v1/results_disputes.go",
+      "line": 236,
+      "lines": 36,
+      "cyclomatic": 14,
+      "cognitive": 12
+    },
+    {
+      "name": "internal/api/v1.playoffPlaces",
+      "file": "internal/api/v1/results_progression.go",
+      "line": 247,
+      "lines": 37,
+      "cyclomatic": 14,
+      "cognitive": 22
+    },
+    {
+      "name": "internal/config.Load",
+      "file": "internal/config/config.go",
+      "line": 65,
+      "lines": 50,
+      "cyclomatic": 14,
+      "cognitive": 17
+    },
+    {
+      "name": "cmd/bootstrap.run",
+      "file": "cmd/bootstrap/main.go",
+      "line": 32,
+      "lines": 40,
+      "cyclomatic": 13,
+      "cognitive": 11
+    },
+    {
+      "name": "internal/api/v1.applicationTeam",
+      "file": "internal/api/v1/applications.go",
+      "line": 143,
+      "lines": 31,
+      "cyclomatic": 13,
+      "cognitive": 12
+    },
+    {
+      "name": "internal/api/v1.rebuildStandings",
+      "file": "internal/api/v1/results_standings.go",
+      "line": 95,
+      "lines": 45,
+      "cyclomatic": 13,
+      "cognitive": 17
+    },
+    {
+      "name": "internal/api/v1.(*API).AssignMatchReferee",
+      "file": "internal/api/v1/scheduling.go",
+      "line": 162,
+      "lines": 44,
+      "cyclomatic": 13,
+      "cognitive": 22
+    },
+    {
+      "name": "internal/config.(Config).validate",
+      "file": "internal/config/config.go",
+      "line": 116,
+      "lines": 25,
+      "cyclomatic": 13,
+      "cognitive": 9
+    },
+    {
+      "name": "internal/model.RoundRobin",
+      "file": "internal/model/competition.go",
+      "line": 10,
+      "lines": 38,
+      "cyclomatic": 13,
+      "cognitive": 17
+    },
+    {
+      "name": "internal/api/v1.(*API).PreviewDraw",
+      "file": "internal/api/v1/draw.go",
+      "line": 241,
+      "lines": 48,
+      "cyclomatic": 12,
+      "cognitive": 20
+    },
+    {
+      "name": "internal/api/v1.(*API).Login",
+      "file": "internal/api/v1/identity.go",
+      "line": 197,
+      "lines": 46,
+      "cyclomatic": 12,
+      "cognitive": 12
+    },
+    {
+      "name": "internal/api/v1.(*API).SetRefereeResult",
+      "file": "internal/api/v1/results.go",
+      "line": 246,
+      "lines": 40,
+      "cyclomatic": 12,
+      "cognitive": 17
+    },
+    {
+      "name": "internal/api/v1.(*API).ResolveDispute",
+      "file": "internal/api/v1/results_disputes.go",
+      "line": 127,
+      "lines": 46,
+      "cyclomatic": 12,
+      "cognitive": 20
+    },
+    {
+      "name": "internal/api/v1.(*API).ScheduleRound",
+      "file": "internal/api/v1/scheduling.go",
+      "line": 102,
+      "lines": 49,
+      "cyclomatic": 12,
+      "cognitive": 21
+    },
+    {
+      "name": "internal/api/v1.(*API).CreateInvitation",
+      "file": "internal/api/v1/teams.go",
+      "line": 369,
+      "lines": 46,
+      "cyclomatic": 12,
+      "cognitive": 22
+    },
+    {
+      "name": "internal/api/v1.(*API).ModerateTournament",
+      "file": "internal/api/v1/admin.go",
+      "line": 182,
+      "lines": 41,
+      "cyclomatic": 11,
+      "cognitive": 16
+    },
+    {
+      "name": "internal/api/v1.(*API).DeleteTournament",
+      "file": "internal/api/v1/admin.go",
+      "line": 224,
+      "lines": 39,
+      "cyclomatic": 11,
+      "cognitive": 16
+    },
+    {
+      "name": "internal/api/v1.(*API).SubmitApplication",
+      "file": "internal/api/v1/applications.go",
+      "line": 98,
+      "lines": 44,
+      "cyclomatic": 11,
+      "cognitive": 18
+    },
+    {
+      "name": "internal/api/v1.(*API).ReportResult",
+      "file": "internal/api/v1/results.go",
+      "line": 144,
+      "lines": 43,
+      "cyclomatic": 11,
+      "cognitive": 18
+    },
+    {
+      "name": "internal/api/v1.(*API).ConfirmResult",
+      "file": "internal/api/v1/results.go",
+      "line": 210,
+      "lines": 36,
+      "cyclomatic": 11,
+      "cognitive": 16
+    },
+    {
+      "name": "internal/api/v1.finalizeResult",
+      "file": "internal/api/v1/results.go",
+      "line": 286,
+      "lines": 42,
+      "cyclomatic": 11,
+      "cognitive": 10
+    },
+    {
+      "name": "internal/api/v1.advanceSlot",
+      "file": "internal/api/v1/results_progression.go",
+      "line": 32,
+      "lines": 31,
+      "cyclomatic": 11,
+      "cognitive": 10
+    },
+    {
+      "name": "internal/api/v1.rebuildRatings",
+      "file": "internal/api/v1/results_ratings.go",
+      "line": 23,
+      "lines": 39,
+      "cyclomatic": 11,
+      "cognitive": 16
+    },
+    {
+      "name": "internal/api/v1.scheduleAllowed",
+      "file": "internal/api/v1/scheduling.go",
+      "line": 18,
+      "lines": 15,
+      "cyclomatic": 11,
+      "cognitive": 8
+    },
+    {
+      "name": "internal/api/v1.(*API).DeleteTeam",
+      "file": "internal/api/v1/teams.go",
+      "line": 218,
+      "lines": 40,
+      "cyclomatic": 11,
+      "cognitive": 18
+    },
+    {
+      "name": "internal/api/v1.(*API).RemoveTeamMember",
+      "file": "internal/api/v1/teams.go",
+      "line": 283,
+      "lines": 37,
+      "cyclomatic": 11,
+      "cognitive": 17
+    },
+    {
+      "name": "internal/api/v1.(*API).mutateApplication",
+      "file": "internal/api/v1/applications.go",
+      "line": 269,
+      "lines": 40,
+      "cyclomatic": 10,
+      "cognitive": 17
+    },
+    {
+      "name": "internal/api/v1.orderSeeds",
+      "file": "internal/api/v1/draw.go",
+      "line": 34,
+      "lines": 29,
+      "cyclomatic": 10,
+      "cognitive": 15
+    },
+    {
+      "name": "internal/api/v1.(*API).UpdateProfile",
+      "file": "internal/api/v1/identity.go",
+      "line": 383,
+      "lines": 37,
+      "cyclomatic": 10,
+      "cognitive": 17
+    },
+    {
+      "name": "internal/api/v1.(*API).deliverNextMail",
+      "file": "internal/api/v1/mail.go",
+      "line": 55,
+      "lines": 43,
+      "cyclomatic": 10,
+      "cognitive": 10
+    },
+    {
+      "name": "internal/api/v1.revalidateAdvancedSchedule",
+      "file": "internal/api/v1/results_progression.go",
+      "line": 63,
+      "lines": 26,
+      "cyclomatic": 10,
+      "cognitive": 9
+    },
+    {
+      "name": "internal/api/v1.firstRoundSame",
+      "file": "internal/api/v1/results_progression.go",
+      "line": 285,
+      "lines": 23,
+      "cyclomatic": 10,
+      "cognitive": 11
+    },
+    {
+      "name": "internal/api/v1.recordMatchRating",
+      "file": "internal/api/v1/results_ratings.go",
+      "line": 95,
+      "lines": 35,
+      "cyclomatic": 10,
+      "cognitive": 9
+    },
+    {
+      "name": "internal/api/v1.(*API).UpdateTeam",
+      "file": "internal/api/v1/teams.go",
+      "line": 181,
+      "lines": 36,
+      "cyclomatic": 10,
+      "cognitive": 14
+    },
+    {
+      "name": "internal/api/v1.(*API).TransferCaptain",
+      "file": "internal/api/v1/teams.go",
+      "line": 321,
+      "lines": 39,
+      "cyclomatic": 10,
+      "cognitive": 16
+    },
+    {
+      "name": "internal/api/v1.validateTournamentDates",
+      "file": "internal/api/v1/tournaments.go",
+      "line": 139,
+      "lines": 18,
+      "cyclomatic": 10,
+      "cognitive": 12
+    },
+    {
+      "name": "internal/model.validateBestOf",
+      "file": "internal/model/competition.go",
+      "line": 114,
+      "lines": 20,
+      "cyclomatic": 10,
+      "cognitive": 12
+    },
+    {
+      "name": "internal/api/v1.readBracket",
+      "file": "internal/api/v1/competition.go",
+      "line": 104,
+      "lines": 39,
+      "cyclomatic": 9,
+      "cognitive": 10
+    },
+    {
+      "name": "internal/api/v1.(*API).replayEvents",
+      "file": "internal/api/v1/events.go",
+      "line": 133,
+      "lines": 29,
+      "cyclomatic": 9,
+      "cognitive": 10
+    },
+    {
+      "name": "internal/api/v1.validateFile",
+      "file": "internal/api/v1/files.go",
+      "line": 24,
+      "lines": 23,
+      "cyclomatic": 9,
+      "cognitive": 10
+    },
+    {
+      "name": "internal/api/v1.(*API).ResetPassword",
+      "file": "internal/api/v1/identity.go",
+      "line": 338,
+      "lines": 36,
+      "cyclomatic": 9,
+      "cognitive": 13
+    },
+    {
+      "name": "internal/api/v1.(*API).runBackground",
+      "file": "internal/api/v1/mail.go",
+      "line": 20,
+      "lines": 16,
+      "cyclomatic": 9,
+      "cognitive": 8
+    },
+    {
+      "name": "internal/api/v1.standingLess",
+      "file": "internal/api/v1/results_standings.go",
+      "line": 71,
+      "lines": 24,
+      "cyclomatic": 9,
+      "cognitive": 6
+    },
+    {
+      "name": "internal/api/v1.NewServer",
+      "file": "internal/api/v1/server.go",
+      "line": 30,
+      "lines": 57,
+      "cyclomatic": 9,
+      "cognitive": 12
+    },
+    {
+      "name": "internal/api/v1.handleError",
+      "file": "internal/api/v1/server.go",
+      "line": 109,
+      "lines": 26,
+      "cyclomatic": 9,
+      "cognitive": 9
+    },
+    {
+      "name": "internal/api/v1.(*API).CreateTeam",
+      "file": "internal/api/v1/teams.go",
+      "line": 144,
+      "lines": 36,
+      "cyclomatic": 9,
+      "cognitive": 12
+    },
+    {
+      "name": "internal/api/v1.validateTournamentRequest",
+      "file": "internal/api/v1/tournaments.go",
+      "line": 123,
+      "lines": 15,
+      "cyclomatic": 9,
+      "cognitive": 6
+    },
+    {
+      "name": "internal/api/v1.(*API).mutateTournament",
+      "file": "internal/api/v1/tournaments.go",
+      "line": 354,
+      "lines": 34,
+      "cyclomatic": 9,
+      "cognitive": 15
+    },
+    {
+      "name": "internal/api/v1.(*API).WithdrawApplication",
+      "file": "internal/api/v1/applications.go",
+      "line": 247,
+      "lines": 21,
+      "cyclomatic": 8,
+      "cognitive": 11
+    },
+    {
+      "name": "internal/api/v1.matchReadAccess",
+      "file": "internal/api/v1/competition.go",
+      "line": 159,
+      "lines": 22,
+      "cyclomatic": 8,
+      "cognitive": 6
+    },
+    {
+      "name": "internal/api/v1.(*API).ListAssignedDisputes",
+      "file": "internal/api/v1/results_disputes.go",
+      "line": 173,
+      "lines": 33,
+      "cyclomatic": 8,
+      "cognitive": 9
+    },
+    {
+      "name": "internal/api/v1.finalizeTournament",
+      "file": "internal/api/v1/results_progression.go",
+      "line": 209,
+      "lines": 23,
+      "cyclomatic": 8,
+      "cognitive": 7
+    },
+    {
+      "name": "internal/api/v1.(*API).CreateTournament",
+      "file": "internal/api/v1/tournaments.go",
+      "line": 237,
+      "lines": 38,
+      "cyclomatic": 8,
+      "cognitive": 10
+    },
+    {
+      "name": "internal/api/v1.(*API).AssignTournamentReferee",
+      "file": "internal/api/v1/tournaments.go",
+      "line": 455,
+      "lines": 26,
+      "cyclomatic": 8,
+      "cognitive": 12
+    },
+    {
+      "name": "internal/model.(EloRating).AfterMatch",
+      "file": "internal/model/rating.go",
+      "line": 61,
+      "lines": 13,
+      "cyclomatic": 8,
+      "cognitive": 4
+    },
+    {
+      "name": "cmd/bootstrap.createFirstAdmin",
+      "file": "cmd/bootstrap/main.go",
+      "line": 73,
+      "lines": 24,
+      "cyclomatic": 7,
+      "cognitive": 8
+    },
+    {
+      "name": "internal/api/v1.(*API).ListAdminUsers",
+      "file": "internal/api/v1/admin.go",
+      "line": 20,
+      "lines": 28,
+      "cyclomatic": 7,
+      "cognitive": 7
+    },
+    {
+      "name": "internal/api/v1.dbError",
+      "file": "internal/api/v1/api.go",
+      "line": 89,
+      "lines": 20,
+      "cyclomatic": 7,
+      "cognitive": 5
+    },
+    {
+      "name": "internal/api/v1.(*API).applicationPage",
+      "file": "internal/api/v1/applications.go",
+      "line": 41,
+      "lines": 30,
+      "cyclomatic": 7,
+      "cognitive": 8
+    },
+    {
+      "name": "internal/api/v1.notifyMatch",
+      "file": "internal/api/v1/competition.go",
+      "line": 196,
+      "lines": 26,
+      "cyclomatic": 7,
+      "cognitive": 8
+    },
+    {
+      "name": "internal/api/v1.(*API).ExportTournament",
+      "file": "internal/api/v1/events.go",
+      "line": 17,
+      "lines": 29,
+      "cyclomatic": 7,
+      "cognitive": 6
+    },
+    {
+      "name": "internal/api/v1.(*API).DownloadFile",
+      "file": "internal/api/v1/files.go",
+      "line": 95,
+      "lines": 23,
+      "cyclomatic": 7,
+      "cognitive": 7
+    },
+    {
+      "name": "internal/api/v1.(*API).Register",
+      "file": "internal/api/v1/identity.go",
+      "line": 105,
+      "lines": 29,
+      "cyclomatic": 7,
+      "cognitive": 8
+    },
+    {
+      "name": "internal/api/v1.(*API).RefreshTokens",
+      "file": "internal/api/v1/identity.go",
+      "line": 267,
+      "lines": 31,
+      "cyclomatic": 7,
+      "cognitive": 10
+    },
+    {
+      "name": "internal/api/v1.opposingCaptain",
+      "file": "internal/api/v1/results.go",
+      "line": 187,
+      "lines": 23,
+      "cyclomatic": 7,
+      "cognitive": 6
+    },
+    {
+      "name": "internal/api/v1.(*API).AutoConfirm",
+      "file": "internal/api/v1/results_disputes.go",
+      "line": 209,
+      "lines": 27,
+      "cyclomatic": 7,
+      "cognitive": 8
+    },
+    {
+      "name": "internal/api/v1.finishStage",
+      "file": "internal/api/v1/results_progression.go",
+      "line": 90,
+      "lines": 24,
+      "cyclomatic": 7,
+      "cognitive": 6
+    },
+    {
+      "name": "internal/api/v1.saveRatingChange",
+      "file": "internal/api/v1/results_ratings.go",
+      "line": 78,
+      "lines": 16,
+      "cyclomatic": 7,
+      "cognitive": 5
+    },
+    {
+      "name": "internal/api/v1.headToHead",
+      "file": "internal/api/v1/results_standings.go",
+      "line": 52,
+      "lines": 19,
+      "cyclomatic": 7,
+      "cognitive": 6
+    },
+    {
+      "name": "internal/api/v1.readStandings",
+      "file": "internal/api/v1/results_standings.go",
+      "line": 144,
+      "lines": 22,
+      "cyclomatic": 7,
+      "cognitive": 7
+    },
+    {
+      "name": "internal/api/v1.(*API).listTeams",
+      "file": "internal/api/v1/teams.go",
+      "line": 92,
+      "lines": 31,
+      "cyclomatic": 7,
+      "cognitive": 7
+    },
+    {
+      "name": "internal/api/v1.(*API).tournamentPage",
+      "file": "internal/api/v1/tournaments.go",
+      "line": 75,
+      "lines": 35,
+      "cyclomatic": 7,
+      "cognitive": 8
+    },
+    {
+      "name": "internal/migration.Open",
+      "file": "internal/migration/migration.go",
+      "line": 18,
+      "lines": 28,
+      "cyclomatic": 7,
+      "cognitive": 6
+    },
+    {
+      "name": "internal/model.SnakeGroups",
+      "file": "internal/model/competition.go",
+      "line": 71,
+      "lines": 14,
+      "cyclomatic": 7,
+      "cognitive": 5
+    },
+    {
+      "name": "internal/api/v1.registrationOpen",
+      "file": "internal/api/v1/applications.go",
+      "line": 94,
+      "lines": 3,
+      "cyclomatic": 6,
+      "cognitive": 1
+    },
+    {
+      "name": "internal/api/v1.(*API).CreateDiscipline",
+      "file": "internal/api/v1/catalog.go",
+      "line": 70,
+      "lines": 26,
+      "cyclomatic": 6,
+      "cognitive": 6
+    },
+    {
+      "name": "internal/api/v1.requireScheduled",
+      "file": "internal/api/v1/competition.go",
+      "line": 228,
+      "lines": 9,
+      "cyclomatic": 6,
+      "cognitive": 4
+    },
+    {
+      "name": "internal/api/v1.buildDraw",
+      "file": "internal/api/v1/draw.go",
+      "line": 77,
+      "lines": 25,
+      "cyclomatic": 6,
+      "cognitive": 5
+    },
+    {
+      "name": "internal/api/v1.writeTournamentCSV",
+      "file": "internal/api/v1/events.go",
+      "line": 48,
+      "lines": 27,
+      "cyclomatic": 6,
+      "cognitive": 8
+    },
+    {
+      "name": "internal/api/v1.(*API).authenticate",
+      "file": "internal/api/v1/identity.go",
+      "line": 244,
+      "lines": 22,
+      "cyclomatic": 6,
+      "cognitive": 5
+    },
+    {
+      "name": "internal/api/v1.(*API).SearchUsers",
+      "file": "internal/api/v1/identity.go",
+      "line": 421,
+      "lines": 26,
+      "cyclomatic": 6,
+      "cognitive": 6
+    },
+    {
+      "name": "internal/api/v1.validateEvidence",
+      "file": "internal/api/v1/results.go",
+      "line": 62,
+      "lines": 20,
+      "cyclomatic": 6,
+      "cognitive": 8
+    },
+    {
+      "name": "internal/api/v1.updateProgression",
+      "file": "internal/api/v1/results_progression.go",
+      "line": 15,
+      "lines": 17,
+      "cyclomatic": 6,
+      "cognitive": 8
+    },
+    {
+      "name": "internal/api/v1.(*API).ScheduleMatch",
+      "file": "internal/api/v1/scheduling.go",
+      "line": 76,
+      "lines": 26,
+      "cyclomatic": 6,
+      "cognitive": 8
+    },
+    {
+      "name": "internal/api/v1.(*API).authentication",
+      "file": "internal/api/v1/server.go",
+      "line": 90,
+      "lines": 18,
+      "cyclomatic": 6,
+      "cognitive": 9
+    },
+    {
+      "name": "internal/api/v1.(*API).ListTeamMembers",
+      "file": "internal/api/v1/teams.go",
+      "line": 259,
+      "lines": 23,
+      "cyclomatic": 6,
+      "cognitive": 6
+    },
+    {
+      "name": "internal/api/v1.(*API).ListMyInvitations",
+      "file": "internal/api/v1/teams.go",
+      "line": 422,
+      "lines": 26,
+      "cyclomatic": 6,
+      "cognitive": 6
+    },
+    {
+      "name": "internal/api/v1.(*API).RevokeInvitation",
+      "file": "internal/api/v1/teams.go",
+      "line": 510,
+      "lines": 21,
+      "cyclomatic": 6,
+      "cognitive": 8
+    },
+    {
+      "name": "internal/api/v1.(*API).UpdateTournament",
+      "file": "internal/api/v1/tournaments.go",
+      "line": 308,
+      "lines": 19,
+      "cyclomatic": 6,
+      "cognitive": 8
+    },
+    {
+      "name": "internal/api/v1.(*API).CancelTournament",
+      "file": "internal/api/v1/tournaments.go",
+      "line": 406,
+      "lines": 18,
+      "cyclomatic": 6,
+      "cognitive": 7
+    },
+    {
+      "name": "internal/app.Run",
+      "file": "internal/app/app.go",
+      "line": 14,
+      "lines": 31,
+      "cyclomatic": 6,
+      "cognitive": 5
+    },
+    {
+      "name": "internal/model.SeedOrder",
+      "file": "internal/model/competition.go",
+      "line": 51,
+      "lines": 18,
+      "cyclomatic": 6,
+      "cognitive": 6
+    },
+    {
+      "name": "internal/api/v1.protectLastAdmin",
+      "file": "internal/api/v1/admin.go",
+      "line": 49,
+      "lines": 17,
+      "cyclomatic": 5,
+      "cognitive": 4
+    },
+    {
+      "name": "internal/api/v1.hasRole",
+      "file": "internal/api/v1/api.go",
+      "line": 49,
+      "lines": 13,
+      "cyclomatic": 5,
+      "cognitive": 8
+    },
+    {
+      "name": "internal/api/v1.validateApplicationPlayers",
+      "file": "internal/api/v1/applications.go",
+      "line": 175,
+      "lines": 18,
+      "cyclomatic": 5,
+      "cognitive": 5
+    },
+    {
+      "name": "internal/api/v1.jsonItems",
+      "file": "internal/api/v1/catalog.go",
+      "line": 15,
+      "lines": 20,
+      "cyclomatic": 5,
+      "cognitive": 6
+    },
+    {
+      "name": "internal/api/v1.(*API).ListRatingHistory",
+      "file": "internal/api/v1/catalog.go",
+      "line": 163,
+      "lines": 20,
+      "cyclomatic": 5,
+      "cognitive": 4
+    },
+    {
+      "name": "internal/api/v1.drawAvailable",
+      "file": "internal/api/v1/draw.go",
+      "line": 63,
+      "lines": 14,
+      "cyclomatic": 5,
+      "cognitive": 4
+    },
+    {
+      "name": "internal/api/v1.fillWinner",
+      "file": "internal/api/v1/draw.go",
+      "line": 187,
+      "lines": 15,
+      "cyclomatic": 5,
+      "cognitive": 8
+    },
+    {
+      "name": "internal/api/v1.sameDrawParticipants",
+      "file": "internal/api/v1/draw.go",
+      "line": 357,
+      "lines": 16,
+      "cyclomatic": 5,
+      "cognitive": 5
+    },
+    {
+      "name": "internal/api/v1.queueAccountToken",
+      "file": "internal/api/v1/identity.go",
+      "line": 71,
+      "lines": 21,
+      "cyclomatic": 5,
+      "cognitive": 4
+    },
+    {
+      "name": "internal/api/v1.(*API).VerifyEmail",
+      "file": "internal/api/v1/identity.go",
+      "line": 135,
+      "lines": 23,
+      "cyclomatic": 5,
+      "cognitive": 6
+    },
+    {
+      "name": "internal/api/v1.issueSession",
+      "file": "internal/api/v1/identity.go",
+      "line": 175,
+      "lines": 21,
+      "cyclomatic": 5,
+      "cognitive": 4
+    },
+    {
+      "name": "internal/api/v1.(*API).RequestPasswordReset",
+      "file": "internal/api/v1/identity.go",
+      "line": 315,
+      "lines": 22,
+      "cyclomatic": 5,
+      "cognitive": 6
+    },
+    {
+      "name": "internal/api/v1.(*API).DeliverMail",
+      "file": "internal/api/v1/mail.go",
+      "line": 39,
+      "lines": 15,
+      "cyclomatic": 5,
+      "cognitive": 6
+    },
+    {
+      "name": "internal/api/v1.reportList",
+      "file": "internal/api/v1/results.go",
+      "line": 27,
+      "lines": 20,
+      "cyclomatic": 5,
+      "cognitive": 6
+    },
+    {
+      "name": "internal/api/v1.(*API).ListResultReports",
+      "file": "internal/api/v1/results.go",
+      "line": 125,
+      "lines": 19,
+      "cyclomatic": 5,
+      "cognitive": 4
+    },
+    {
+      "name": "internal/api/v1.(*API).GetDispute",
+      "file": "internal/api/v1/results_disputes.go",
+      "line": 26,
+      "lines": 19,
+      "cyclomatic": 5,
+      "cognitive": 4
+    },
+    {
+      "name": "internal/api/v1.scheduleConflict",
+      "file": "internal/api/v1/scheduling.go",
+      "line": 33,
+      "lines": 18,
+      "cyclomatic": 5,
+      "cognitive": 4
+    },
+    {
+      "name": "internal/api/v1.writeSchedule",
+      "file": "internal/api/v1/scheduling.go",
+      "line": 55,
+      "lines": 21,
+      "cyclomatic": 5,
+      "cognitive": 4
+    },
+    {
+      "name": "internal/api/v1.ensurePersonalTeam",
+      "file": "internal/api/v1/teams.go",
+      "line": 72,
+      "lines": 19,
+      "cyclomatic": 5,
+      "cognitive": 4
+    },
+    {
+      "name": "internal/api/v1.updateTournamentFields",
+      "file": "internal/api/v1/tournaments.go",
+      "line": 328,
+      "lines": 25,
+      "cyclomatic": 5,
+      "cognitive": 5
+    },
+    {
+      "name": "internal/api/v1.notifyTournamentPlayers",
+      "file": "internal/api/v1/tournaments.go",
+      "line": 425,
+      "lines": 16,
+      "cyclomatic": 5,
+      "cognitive": 5
+    },
+    {
+      "name": "internal/api/v1.lockAdmin",
+      "file": "internal/api/v1/admin.go",
+      "line": 67,
+      "lines": 13,
+      "cyclomatic": 4,
+      "cognitive": 3
+    },
+    {
+      "name": "internal/api/v1.(*API).ListAudit",
+      "file": "internal/api/v1/admin.go",
+      "line": 264,
+      "lines": 16,
+      "cyclomatic": 4,
+      "cognitive": 3
+    },
+    {
+      "name": "internal/api/v1.(*API).withTx",
+      "file": "internal/api/v1/api.go",
+      "line": 110,
+      "lines": 15,
+      "cyclomatic": 4,
+      "cognitive": 3
+    },
+    {
+      "name": "internal/api/v1.notify",
+      "file": "internal/api/v1/api.go",
+      "line": 151,
+      "lines": 15,
+      "cyclomatic": 4,
+      "cognitive": 3
+    },
+    {
+      "name": "internal/api/v1.(*API).Background",
+      "file": "internal/api/v1/api.go",
+      "line": 173,
+      "lines": 12,
+      "cyclomatic": 4,
+      "cognitive": 3
+    },
+    {
+      "name": "internal/api/v1.validateDiscipline",
+      "file": "internal/api/v1/catalog.go",
+      "line": 60,
+      "lines": 9,
+      "cyclomatic": 4,
+      "cognitive": 3
+    },
+    {
+      "name": "internal/api/v1.matchList",
+      "file": "internal/api/v1/competition.go",
+      "line": 29,
+      "lines": 16,
+      "cyclomatic": 4,
+      "cognitive": 4
+    },
+    {
+      "name": "internal/api/v1.(*API).matchTransaction",
+      "file": "internal/api/v1/competition.go",
+      "line": 45,
+      "lines": 18,
+      "cyclomatic": 4,
+      "cognitive": 5
+    },
+    {
+      "name": "internal/api/v1.(*API).ListMatches",
+      "file": "internal/api/v1/competition.go",
+      "line": 85,
+      "lines": 19,
+      "cyclomatic": 4,
+      "cognitive": 3
+    },
+    {
+      "name": "internal/api/v1.requireMatchReferee",
+      "file": "internal/api/v1/competition.go",
+      "line": 187,
+      "lines": 9,
+      "cyclomatic": 4,
+      "cognitive": 3
+    },
+    {
+      "name": "internal/api/v1.optionalUUIDEqual",
+      "file": "internal/api/v1/competition.go",
+      "line": 237,
+      "lines": 6,
+      "cyclomatic": 4,
+      "cognitive": 3
+    },
+    {
+      "name": "internal/api/v1.acceptedIDs",
+      "file": "internal/api/v1/draw.go",
+      "line": 18,
+      "lines": 16,
+      "cyclomatic": 4,
+      "cognitive": 4
+    },
+    {
+      "name": "internal/api/v1.linkPlayoffRounds",
+      "file": "internal/api/v1/draw.go",
+      "line": 174,
+      "lines": 13,
+      "cyclomatic": 4,
+      "cognitive": 6
+    },
+    {
+      "name": "internal/api/v1.validateResult",
+      "file": "internal/api/v1/results.go",
+      "line": 47,
+      "lines": 15,
+      "cyclomatic": 4,
+      "cognitive": 3
+    },
+    {
+      "name": "internal/api/v1.assignFinalPlaces",
+      "file": "internal/api/v1/results_progression.go",
+      "line": 232,
+      "lines": 15,
+      "cyclomatic": 4,
+      "cognitive": 3
+    },
+    {
+      "name": "internal/api/v1.ratedMatches",
+      "file": "internal/api/v1/results_ratings.go",
+      "line": 62,
+      "lines": 16,
+      "cyclomatic": 4,
+      "cognitive": 4
+    },
+    {
+      "name": "internal/api/v1.standingsParticipants",
+      "file": "internal/api/v1/results_standings.go",
+      "line": 19,
+      "lines": 16,
+      "cyclomatic": 4,
+      "cognitive": 4
+    },
+    {
+      "name": "internal/api/v1.validTeamLogo",
+      "file": "internal/api/v1/teams.go",
+      "line": 56,
+      "lines": 13,
+      "cyclomatic": 4,
+      "cognitive": 3
+    },
+    {
+      "name": "internal/api/v1.requireTournamentOwner",
+      "file": "internal/api/v1/tournaments.go",
+      "line": 47,
+      "lines": 6,
+      "cyclomatic": 4,
+      "cognitive": 3
+    },
+    {
+      "name": "internal/api/v1.(*API).PublishTournament",
+      "file": "internal/api/v1/tournaments.go",
+      "line": 389,
+      "lines": 16,
+      "cyclomatic": 4,
+      "cognitive": 5
+    },
+    {
+      "name": "internal/api/v1.validateTournamentRefereeSchedule",
+      "file": "internal/api/v1/tournaments.go",
+      "line": 482,
+      "lines": 12,
+      "cyclomatic": 4,
+      "cognitive": 4
+    },
+    {
+      "name": "cmd/api.main",
+      "file": "cmd/api/main.go",
+      "line": 14,
+      "lines": 13,
+      "cyclomatic": 3,
+      "cognitive": 2
+    },
+    {
+      "name": "internal/api/v1.requireRole",
+      "file": "internal/api/v1/api.go",
+      "line": 62,
+      "lines": 9,
+      "cyclomatic": 3,
+      "cognitive": 2
+    },
+    {
+      "name": "internal/api/v1.bindJSON",
+      "file": "internal/api/v1/api.go",
+      "line": 76,
+      "lines": 12,
+      "cyclomatic": 3,
+      "cognitive": 2
+    },
+    {
+      "name": "internal/api/v1.pagination",
+      "file": "internal/api/v1/api.go",
+      "line": 126,
+      "lines": 10,
+      "cyclomatic": 3,
+      "cognitive": 2
+    },
+    {
+      "name": "internal/api/v1.(*API).ListApplications",
+      "file": "internal/api/v1/applications.go",
+      "line": 72,
+      "lines": 10,
+      "cyclomatic": 3,
+      "cognitive": 2
+    },
+    {
+      "name": "internal/api/v1.applicationChanged",
+      "file": "internal/api/v1/applications.go",
+      "line": 202,
+      "lines": 9,
+      "cyclomatic": 3,
+      "cognitive": 2
+    },
+    {
+      "name": "internal/api/v1.(*API).ListDisciplines",
+      "file": "internal/api/v1/catalog.go",
+      "line": 46,
+      "lines": 13,
+      "cyclomatic": 3,
+      "cognitive": 2
+    },
+    {
+      "name": "internal/api/v1.(*API).ListRatings",
+      "file": "internal/api/v1/catalog.go",
+      "line": 149,
+      "lines": 13,
+      "cyclomatic": 3,
+      "cognitive": 2
+    },
+    {
+      "name": "internal/api/v1.(*API).ListNotifications",
+      "file": "internal/api/v1/catalog.go",
+      "line": 184,
+      "lines": 13,
+      "cyclomatic": 3,
+      "cognitive": 2
+    },
+    {
+      "name": "internal/api/v1.(*API).ReadNotification",
+      "file": "internal/api/v1/catalog.go",
+      "line": 198,
+      "lines": 10,
+      "cyclomatic": 3,
+      "cognitive": 2
+    },
+    {
+      "name": "internal/api/v1.(*API).GetMatch",
+      "file": "internal/api/v1/competition.go",
+      "line": 75,
+      "lines": 10,
+      "cyclomatic": 3,
+      "cognitive": 2
+    },
+    {
+      "name": "internal/api/v1.(*API).GetBracket",
+      "file": "internal/api/v1/competition.go",
+      "line": 143,
+      "lines": 11,
+      "cyclomatic": 3,
+      "cognitive": 2
+    },
+    {
+      "name": "internal/api/v1.assignedReferee",
+      "file": "internal/api/v1/competition.go",
+      "line": 181,
+      "lines": 6,
+      "cyclomatic": 3,
+      "cognitive": 2
+    },
+    {
+      "name": "internal/api/v1.roundRobinMatches",
+      "file": "internal/api/v1/draw.go",
+      "line": 108,
+      "lines": 15,
+      "cyclomatic": 3,
+      "cognitive": 2
+    },
+    {
+      "name": "internal/api/v1.clearDraw",
+      "file": "internal/api/v1/draw.go",
+      "line": 373,
+      "lines": 9,
+      "cyclomatic": 3,
+      "cognitive": 3
+    },
+    {
+      "name": "internal/api/v1.saveMatches",
+      "file": "internal/api/v1/draw.go",
+      "line": 419,
+      "lines": 9,
+      "cyclomatic": 3,
+      "cognitive": 3
+    },
+    {
+      "name": "internal/api/v1.csvCell",
+      "file": "internal/api/v1/files.go",
+      "line": 135,
+      "lines": 7,
+      "cyclomatic": 3,
+      "cognitive": 2
+    },
+    {
+      "name": "internal/api/v1.hashPassword",
+      "file": "internal/api/v1/identity.go",
+      "line": 62,
+      "lines": 8,
+      "cyclomatic": 3,
+      "cognitive": 2
+    },
+    {
+      "name": "internal/api/v1.accountTokenURL",
+      "file": "internal/api/v1/identity.go",
+      "line": 93,
+      "lines": 11,
+      "cyclomatic": 3,
+      "cognitive": 2
+    },
+    {
+      "name": "internal/api/v1.(*API).allowLogin",
+      "file": "internal/api/v1/identity.go",
+      "line": 159,
+      "lines": 15,
+      "cyclomatic": 3,
+      "cognitive": 2
+    },
+    {
+      "name": "internal/api/v1.(*API).Logout",
+      "file": "internal/api/v1/identity.go",
+      "line": 299,
+      "lines": 15,
+      "cyclomatic": 3,
+      "cognitive": 2
+    },
+    {
+      "name": "internal/api/v1.scoreWinner",
+      "file": "internal/api/v1/results.go",
+      "line": 328,
+      "lines": 9,
+      "cyclomatic": 3,
+      "cognitive": 2
+    },
+    {
+      "name": "internal/api/v1.updateStanding",
+      "file": "internal/api/v1/results_standings.go",
+      "line": 35,
+      "lines": 17,
+      "cyclomatic": 3,
+      "cognitive": 1
+    },
+    {
+      "name": "internal/api/v1.(*API).GetStandings",
+      "file": "internal/api/v1/results_standings.go",
+      "line": 166,
+      "lines": 11,
+      "cyclomatic": 3,
+      "cognitive": 2
+    },
+    {
+      "name": "internal/api/v1.validateReferee",
+      "file": "internal/api/v1/scheduling.go",
+      "line": 151,
+      "lines": 11,
+      "cyclomatic": 3,
+      "cognitive": 2
+    },
+    {
+      "name": "internal/api/v1.scheduleDependencyConflict",
+      "file": "internal/api/v1/scheduling.go",
+      "line": 209,
+      "lines": 11,
+      "cyclomatic": 3,
+      "cognitive": 2
+    },
+    {
+      "name": "internal/api/v1.captainTeam",
+      "file": "internal/api/v1/teams.go",
+      "line": 38,
+      "lines": 10,
+      "cyclomatic": 3,
+      "cognitive": 2
+    },
+    {
+      "name": "internal/api/v1.readTournament",
+      "file": "internal/api/v1/tournaments.go",
+      "line": 33,
+      "lines": 13,
+      "cyclomatic": 3,
+      "cognitive": 2
+    },
+    {
+      "name": "internal/api/v1.tournamentPublic",
+      "file": "internal/api/v1/tournaments.go",
+      "line": 54,
+      "lines": 11,
+      "cyclomatic": 3,
+      "cognitive": 2
+    },
+    {
+      "name": "internal/api/v1.(*API).GetTournament",
+      "file": "internal/api/v1/tournaments.go",
+      "line": 111,
+      "lines": 11,
+      "cyclomatic": 3,
+      "cognitive": 2
+    },
+    {
+      "name": "internal/api/v1.tournamentRuleArgs",
+      "file": "internal/api/v1/tournaments.go",
+      "line": 224,
+      "lines": 12,
+      "cyclomatic": 3,
+      "cognitive": 2
+    },
+    {
+      "name": "internal/api/v1.(*API).CompleteTournament",
+      "file": "internal/api/v1/tournaments.go",
+      "line": 442,
+      "lines": 12,
+      "cyclomatic": 3,
+      "cognitive": 3
+    },
+    {
+      "name": "internal/container.New",
+      "file": "internal/container/container.go",
+      "line": 16,
+      "lines": 13,
+      "cyclomatic": 3,
+      "cognitive": 2
+    },
+    {
+      "name": "cmd/bootstrap.main",
+      "file": "cmd/bootstrap/main.go",
+      "line": 24,
+      "lines": 7,
+      "cyclomatic": 2,
+      "cognitive": 1
+    },
+    {
+      "name": "cmd/migrate.main",
+      "file": "cmd/migrate/main.go",
+      "line": 64,
+      "lines": 10,
+      "cyclomatic": 2,
+      "cognitive": 1
+    },
+    {
+      "name": "internal/api/v1.(*API).ListAdminTournaments",
+      "file": "internal/api/v1/admin.go",
+      "line": 13,
+      "lines": 6,
+      "cyclomatic": 2,
+      "cognitive": 1
+    },
+    {
+      "name": "internal/api/v1.revokeUserSessions",
+      "file": "internal/api/v1/admin.go",
+      "line": 124,
+      "lines": 7,
+      "cyclomatic": 2,
+      "cognitive": 1
+    },
+    {
+      "name": "internal/api/v1.New",
+      "file": "internal/api/v1/api.go",
+      "line": 33,
+      "lines": 7,
+      "cyclomatic": 2,
+      "cognitive": 1
+    },
+    {
+      "name": "internal/api/v1.audit",
+      "file": "internal/api/v1/api.go",
+      "line": 137,
+      "lines": 8,
+      "cyclomatic": 2,
+      "cognitive": 1
+    },
+    {
+      "name": "internal/api/v1.readApplication",
+      "file": "internal/api/v1/applications.go",
+      "line": 30,
+      "lines": 10,
+      "cyclomatic": 2,
+      "cognitive": 1
+    },
+    {
+      "name": "internal/api/v1.(*API).ListParticipants",
+      "file": "internal/api/v1/applications.go",
+      "line": 83,
+      "lines": 6,
+      "cyclomatic": 2,
+      "cognitive": 1
+    },
+    {
+      "name": "internal/api/v1.reserveApplicationPlayers",
+      "file": "internal/api/v1/applications.go",
+      "line": 194,
+      "lines": 7,
+      "cyclomatic": 2,
+      "cognitive": 1
+    },
+    {
+      "name": "internal/api/v1.jsonObject",
+      "file": "internal/api/v1/catalog.go",
+      "line": 36,
+      "lines": 9,
+      "cyclomatic": 2,
+      "cognitive": 1
+    },
+    {
+      "name": "internal/api/v1.readMatch",
+      "file": "internal/api/v1/competition.go",
+      "line": 22,
+      "lines": 7,
+      "cyclomatic": 2,
+      "cognitive": 1
+    },
+    {
+      "name": "internal/api/v1.matchVersion",
+      "file": "internal/api/v1/competition.go",
+      "line": 63,
+      "lines": 6,
+      "cyclomatic": 2,
+      "cognitive": 1
+    },
+    {
+      "name": "internal/api/v1.tournamentPlaying",
+      "file": "internal/api/v1/competition.go",
+      "line": 69,
+      "lines": 6,
+      "cyclomatic": 2,
+      "cognitive": 1
+    },
+    {
+      "name": "internal/api/v1.matchChanged",
+      "file": "internal/api/v1/competition.go",
+      "line": 222,
+      "lines": 6,
+      "cyclomatic": 2,
+      "cognitive": 1
+    },
+    {
+      "name": "internal/api/v1.(*API).canReadProtocol",
+      "file": "internal/api/v1/files.go",
+      "line": 119,
+      "lines": 14,
+      "cyclomatic": 2,
+      "cognitive": 1
+    },
+    {
+      "name": "internal/api/v1.scanProfile",
+      "file": "internal/api/v1/identity.go",
+      "line": 31,
+      "lines": 11,
+      "cyclomatic": 2,
+      "cognitive": 1
+    },
+    {
+      "name": "internal/api/v1.secretToken",
+      "file": "internal/api/v1/identity.go",
+      "line": 49,
+      "lines": 7,
+      "cyclomatic": 2,
+      "cognitive": 1
+    },
+    {
+      "name": "internal/api/v1.(*API).GetProfile",
+      "file": "internal/api/v1/identity.go",
+      "line": 375,
+      "lines": 7,
+      "cyclomatic": 2,
+      "cognitive": 1
+    },
+    {
+      "name": "internal/api/v1.readReport",
+      "file": "internal/api/v1/results.go",
+      "line": 17,
+      "lines": 10,
+      "cyclomatic": 2,
+      "cognitive": 1
+    },
+    {
+      "name": "internal/api/v1.readDispute",
+      "file": "internal/api/v1/results_disputes.go",
+      "line": 17,
+      "lines": 9,
+      "cyclomatic": 2,
+      "cognitive": 1
+    },
+    {
+      "name": "internal/api/v1.currentRating",
+      "file": "internal/api/v1/results_ratings.go",
+      "line": 130,
+      "lines": 8,
+      "cyclomatic": 2,
+      "cognitive": 1
+    },
+    {
+      "name": "internal/api/v1.teamVersion",
+      "file": "internal/api/v1/teams.go",
+      "line": 49,
+      "lines": 6,
+      "cyclomatic": 2,
+      "cognitive": 1
+    },
+    {
+      "name": "internal/api/v1.(*API).ListTeams",
+      "file": "internal/api/v1/teams.go",
+      "line": 124,
+      "lines": 7,
+      "cyclomatic": 2,
+      "cognitive": 1
+    },
+    {
+      "name": "internal/api/v1.(*API).GetTeam",
+      "file": "internal/api/v1/teams.go",
+      "line": 136,
+      "lines": 7,
+      "cyclomatic": 2,
+      "cognitive": 1
+    },
+    {
+      "name": "internal/api/v1.invitationURL",
+      "file": "internal/api/v1/teams.go",
+      "line": 361,
+      "lines": 7,
+      "cyclomatic": 2,
+      "cognitive": 1
+    },
+    {
+      "name": "internal/api/v1.replacePresent",
+      "file": "internal/api/v1/tournaments.go",
+      "line": 280,
+      "lines": 5,
+      "cyclomatic": 2,
+      "cognitive": 1
+    },
+    {
+      "name": "internal/api/v1.replacePresentPointer",
+      "file": "internal/api/v1/tournaments.go",
+      "line": 286,
+      "lines": 5,
+      "cyclomatic": 2,
+      "cognitive": 1
+    },
+    {
+      "name": "internal/api/v1.principal",
+      "file": "internal/api/v1/api.go",
+      "line": 47,
+      "lines": 1,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/api/v1.currentUser",
+      "file": "internal/api/v1/api.go",
+      "line": 48,
+      "lines": 1,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/api/v1.invalid",
+      "file": "internal/api/v1/api.go",
+      "line": 71,
+      "lines": 1,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/api/v1.conflict",
+      "file": "internal/api/v1/api.go",
+      "line": 72,
+      "lines": 1,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/api/v1.notFound",
+      "file": "internal/api/v1/api.go",
+      "line": 73,
+      "lines": 1,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/api/v1.forbidden",
+      "file": "internal/api/v1/api.go",
+      "line": 74,
+      "lines": 1,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/api/v1.outbox",
+      "file": "internal/api/v1/api.go",
+      "line": 146,
+      "lines": 4,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/api/v1.event",
+      "file": "internal/api/v1/api.go",
+      "line": 167,
+      "lines": 4,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/api/v1.sqlPlaceholder",
+      "file": "internal/api/v1/applications.go",
+      "line": 28,
+      "lines": 1,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/api/v1.(*API).ListMyApplications",
+      "file": "internal/api/v1/applications.go",
+      "line": 90,
+      "lines": 3,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/api/v1.scanMatch",
+      "file": "internal/api/v1/competition.go",
+      "line": 17,
+      "lines": 5,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/api/v1.matchCaptain",
+      "file": "internal/api/v1/competition.go",
+      "line": 154,
+      "lines": 5,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/api/v1.ignoreNoRows",
+      "file": "internal/api/v1/competition.go",
+      "line": 243,
+      "lines": 1,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/api/v1.newStage",
+      "file": "internal/api/v1/draw.go",
+      "line": 102,
+      "lines": 3,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/api/v1.baseMatch",
+      "file": "internal/api/v1/draw.go",
+      "line": 105,
+      "lines": 3,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/api/v1.fileURL",
+      "file": "internal/api/v1/files.go",
+      "line": 143,
+      "lines": 1,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/api/v1.loadProfile",
+      "file": "internal/api/v1/identity.go",
+      "line": 43,
+      "lines": 4,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/api/v1.tokenHash",
+      "file": "internal/api/v1/identity.go",
+      "line": 57,
+      "lines": 4,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/api/v1.writeStanding",
+      "file": "internal/api/v1/results_standings.go",
+      "line": 140,
+      "lines": 4,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/api/v1.scheduleLock",
+      "file": "internal/api/v1/scheduling.go",
+      "line": 51,
+      "lines": 4,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/api/v1.init",
+      "file": "internal/api/v1/server.go",
+      "line": 24,
+      "lines": 3,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/api/v1.scanTeam",
+      "file": "internal/api/v1/teams.go",
+      "line": 22,
+      "lines": 5,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/api/v1.loadTeam",
+      "file": "internal/api/v1/teams.go",
+      "line": 28,
+      "lines": 4,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/api/v1.lockTeam",
+      "file": "internal/api/v1/teams.go",
+      "line": 33,
+      "lines": 4,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/api/v1.(*API).ListMyTeams",
+      "file": "internal/api/v1/teams.go",
+      "line": 132,
+      "lines": 3,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/api/v1.scanInvitation",
+      "file": "internal/api/v1/teams.go",
+      "line": 416,
+      "lines": 5,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/api/v1.(*API).ListTournaments",
+      "file": "internal/api/v1/tournaments.go",
+      "line": 66,
+      "lines": 3,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/api/v1.(*API).ListMyTournaments",
+      "file": "internal/api/v1/tournaments.go",
+      "line": 70,
+      "lines": 4,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/api/v1.readDisciplineRules",
+      "file": "internal/api/v1/tournaments.go",
+      "line": 218,
+      "lines": 5,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/api/v1.tournamentRequest",
+      "file": "internal/api/v1/tournaments.go",
+      "line": 276,
+      "lines": 3,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/api/v1.mergeTournament",
+      "file": "internal/api/v1/tournaments.go",
+      "line": 292,
+      "lines": 15,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/config.(Database).URL",
+      "file": "internal/config/config.go",
+      "line": 49,
+      "lines": 11,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/container.(*Container).Close",
+      "file": "internal/container/container.go",
+      "line": 30,
+      "lines": 1,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/model.NewEloRating",
+      "file": "internal/model/rating.go",
+      "line": 46,
+      "lines": 3,
+      "cyclomatic": 1,
+      "cognitive": 0
+    }
+  ]
+}
