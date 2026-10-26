@@ -1,4 +1,5 @@
 GO ?= go
+GENERATION_TOOLCHAIN := go1.25.8
 COMPOSE ?= docker compose
 PANDOC ?= pandoc
 
@@ -14,8 +15,8 @@ help:
 	@printf '%s\n' 'generate       Генерация моделей и HTTP-интерфейса Echo из OpenAPI' 'check          Проверка генерации, тесты Go и vet' 'up             Запуск PostgreSQL → миграций → API → Swagger UI' 'down           Остановка контейнеров с сохранением БД' 'run            Миграции и запуск API локально (DB_USER и DB_PASSWORD обязательны)' 'migration-test Проверка миграций в отдельной БД (TEST_DATABASE_URL обязателен)' 'docs           Документация модели встроенной командой go doc' 'docs-export    Экспорт документации в HTML и RTF через Pandoc' 'docs-serve     Просмотр HTML на localhost:6060 (нужен Python 3)'
 
 generate:
-	$(GO) tool oapi-codegen -config pkg/api/v1/oapi-codegen.yaml pkg/api/v1/openapi.yaml
-	$(GO) run ./tools/dtomap
+	GOTOOLCHAIN=$(GENERATION_TOOLCHAIN) $(GO) tool oapi-codegen -config pkg/api/v1/oapi-codegen.yaml pkg/api/v1/openapi.yaml
+	GOTOOLCHAIN=$(GENERATION_TOOLCHAIN) $(GO) run ./tools/dtomap
 
 generate-check:
 	@set -e; tmp=$$(mktemp -d); \
