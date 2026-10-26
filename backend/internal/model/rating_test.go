@@ -19,7 +19,11 @@ func ExampleEloRating_AfterMatch() {
 }
 
 func TestEloConservesTotal(t *testing.T) {
-	for _, tc := range []struct{ a, b, score float64 }{{1500, 1500, 1}, {1500, 1500, 0.5}, {1800, 1200, 0}, {1000, 2000, 1}} {
+	for _, tc := range []struct {
+		a     float64
+		b     float64
+		score float64
+	}{{1500, 1500, 1}, {1500, 1500, 0.5}, {1800, 1200, 0}, {1000, 2000, 1}} {
 		a := model.EloRating{Value: tc.a}
 		b := model.EloRating{Value: tc.b}
 		first, err := a.AfterMatch(tc.b, tc.score)
@@ -40,7 +44,11 @@ func TestEloConservesTotal(t *testing.T) {
 }
 
 func TestEloRejectsInvalidInput(t *testing.T) {
-	for _, tc := range []struct{ own, opponent, score float64 }{{1500, 1500, 0.3}, {1500, 1500, math.NaN()}, {math.Inf(1), 1500, 1}, {1500, math.NaN(), 1}} {
+	for _, tc := range []struct {
+		own      float64
+		opponent float64
+		score    float64
+	}{{1500, 1500, 0.3}, {1500, 1500, math.NaN()}, {math.Inf(1), 1500, 1}, {1500, math.NaN(), 1}} {
 		if _, err := (model.EloRating{Value: tc.own}).AfterMatch(tc.opponent, tc.score); err == nil {
 			t.Fatalf("accepted invalid input: %+v", tc)
 		}

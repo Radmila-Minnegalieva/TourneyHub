@@ -6,11 +6,17 @@ import (
 	"time"
 
 	"github.com/Radmila-Minnegalieva/TourneyHub/backend/internal/config"
+	"github.com/Radmila-Minnegalieva/TourneyHub/backend/internal/lib/smtpclient"
+	"github.com/Radmila-Minnegalieva/TourneyHub/backend/internal/repository"
+	"github.com/Radmila-Minnegalieva/TourneyHub/backend/internal/repository/postgres"
+	"github.com/Radmila-Minnegalieva/TourneyHub/backend/internal/service"
 	"github.com/jackc/pgx/v5/pgxpool"
 )
 
 type Container struct {
-	Database *pgxpool.Pool
+	Database   *pgxpool.Pool
+	Repository repository.Store
+	Service    *service.Service
 }
 
 func New(ctx context.Context, cfg config.Config) (*Container, error) {
@@ -24,7 +30,12 @@ func New(ctx context.Context, cfg config.Config) (*Container, error) {
 		pool.Close()
 		return nil, fmt.Errorf("connect database: %w", err)
 	}
-	return &Container{Database: pool}, nil
+	store := postgres.New(pool)
+	var mailer service.Mailer
+	if cfg.SMTP.Address != "" {
+		mailer = smtpclient.New(cfg.SMTP)
+	}
+	return &Container{Database: pool, Repository: store, Service: service.New(store, cfg, mailer)}, nil
 }
 
 func (c *Container) Close() { c.Database.Close() }

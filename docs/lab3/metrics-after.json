@@ -1,0 +1,5100 @@
+{
+  "go_version": "go1.27.2",
+  "tools": {
+    "gocognit": "v1.2.0",
+    "gocyclo": "v0.6.0",
+    "source": "Go parser/scanner"
+  },
+  "scope": "Manual production Go files; excludes *_test.go, generated code, cmd/metrics, tools, vendor, build and bin",
+  "summary": {
+    "files": 82,
+    "packages": 22,
+    "functions": 548,
+    "source_lines": 9479,
+    "code_lines": 8381,
+    "comment_lines": 329,
+    "comment_density_percent": 3.4708302563561557,
+    "blank_lines": 769,
+    "cyclomatic_total": 1919,
+    "cyclomatic_max": 19,
+    "cyclomatic_mean": 3.5018248175182483,
+    "cyclomatic_p90": 8,
+    "cognitive_max": 25,
+    "cognitive_mean": 3.1295620437956204,
+    "function_lines_max": 59,
+    "function_lines_mean": 11.66970802919708,
+    "package_fan_out_max": 24,
+    "package_fan_out_mean": 7.363636363636363,
+    "cyclomatic_over_10": 25,
+    "cognitive_over_15": 21,
+    "function_lines_over_60": 0
+  },
+  "package_fan_out": {
+    "cmd/api": 7,
+    "cmd/bootstrap": 6,
+    "cmd/migrate": 9,
+    "internal/api/v1": 24,
+    "internal/app": 6,
+    "internal/config": 14,
+    "internal/container": 9,
+    "internal/lib/apperror": 0,
+    "internal/lib/authctx": 3,
+    "internal/lib/csvutil": 1,
+    "internal/lib/fileutil": 9,
+    "internal/lib/pagination": 0,
+    "internal/lib/ptr": 0,
+    "internal/lib/security": 7,
+    "internal/lib/slice": 0,
+    "internal/lib/smtpclient": 12,
+    "internal/migration": 7,
+    "internal/model": 5,
+    "internal/repository": 5,
+    "internal/repository/postgres": 13,
+    "internal/service": 24,
+    "pkg/api/v1": 1
+  },
+  "files": [
+    {
+      "path": "cmd/api/main.go",
+      "sha256": "05faab2052b75702390ccfae42a7560b5b441e0643c2b70d0ea4eb69e1ab0b31",
+      "source_lines": 26,
+      "code_lines": 23,
+      "comment_lines": 0,
+      "blank_lines": 3
+    },
+    {
+      "path": "cmd/bootstrap/main.go",
+      "sha256": "393bf879dafab33ca20f714bea12433ca80092ec2db9b68f6e3180fe1b99bf34",
+      "source_lines": 34,
+      "code_lines": 30,
+      "comment_lines": 2,
+      "blank_lines": 2
+    },
+    {
+      "path": "cmd/migrate/main.go",
+      "sha256": "ff0dcccd6cd6beb436dd83d9a20214d29c08f886965b9a564c2666d274ee530d",
+      "source_lines": 73,
+      "code_lines": 69,
+      "comment_lines": 0,
+      "blank_lines": 4
+    },
+    {
+      "path": "internal/api/v1/admin.go",
+      "sha256": "42b4d62c73d33e5de2fdcd2e51bd604c17d9dccd564486b99600822cba7d4e82",
+      "source_lines": 79,
+      "code_lines": 71,
+      "comment_lines": 0,
+      "blank_lines": 8
+    },
+    {
+      "path": "internal/api/v1/api.go",
+      "sha256": "15c923bf382b47f024ec57962af1f856dbb39083a453912c9f7b5b0fbf974718",
+      "source_lines": 42,
+      "code_lines": 35,
+      "comment_lines": 3,
+      "blank_lines": 4
+    },
+    {
+      "path": "internal/api/v1/applications.go",
+      "sha256": "0a467e056fc87eb860938ebe97036b2256c9caa2542c66bb2b5e1aeed9e4a582",
+      "source_lines": 68,
+      "code_lines": 61,
+      "comment_lines": 0,
+      "blank_lines": 7
+    },
+    {
+      "path": "internal/api/v1/binding.go",
+      "sha256": "40ae9e09869cd43ee2624427a60764b137c3f1b2077dc325dd3339d34f49bee1",
+      "source_lines": 20,
+      "code_lines": 18,
+      "comment_lines": 0,
+      "blank_lines": 2
+    },
+    {
+      "path": "internal/api/v1/catalog.go",
+      "sha256": "2495381fa4d7fe248a6de88340260d57ea2417737262055d6bdc26c15f4b64ed",
+      "source_lines": 71,
+      "code_lines": 63,
+      "comment_lines": 0,
+      "blank_lines": 8
+    },
+    {
+      "path": "internal/api/v1/competition.go",
+      "sha256": "c8982d6824e6962f570822396f9eb7391edfdb357d6af2656bf25afb833e5e14",
+      "source_lines": 23,
+      "code_lines": 20,
+      "comment_lines": 0,
+      "blank_lines": 3
+    },
+    {
+      "path": "internal/api/v1/draw.go",
+      "sha256": "d4ad1fe51b0e305b0542c2a7c50d57d262269ae5820a87a20b747e0eeae4bb8f",
+      "source_lines": 39,
+      "code_lines": 35,
+      "comment_lines": 0,
+      "blank_lines": 4
+    },
+    {
+      "path": "internal/api/v1/events.go",
+      "sha256": "dbcce950ba8a038d49cd4edd5f2351224cb9a01822b76be44905fd14ba68e08b",
+      "source_lines": 104,
+      "code_lines": 102,
+      "comment_lines": 0,
+      "blank_lines": 2
+    },
+    {
+      "path": "internal/api/v1/files.go",
+      "sha256": "ebfc8888a780515bee945fc212dee72fa395433f94276e3528ce7c16bcf33446",
+      "source_lines": 46,
+      "code_lines": 44,
+      "comment_lines": 0,
+      "blank_lines": 2
+    },
+    {
+      "path": "internal/api/v1/identity.go",
+      "sha256": "b684e9b03d437897f6e589e648f84f0476d9eb4147a89e4ea41c02297eddfa5d",
+      "source_lines": 114,
+      "code_lines": 103,
+      "comment_lines": 0,
+      "blank_lines": 11
+    },
+    {
+      "path": "internal/api/v1/results.go",
+      "sha256": "34e983346f10bee8706d365e2459f650488b55fd10eb8cd17fb4a4554146ad6e",
+      "source_lines": 52,
+      "code_lines": 47,
+      "comment_lines": 0,
+      "blank_lines": 5
+    },
+    {
+      "path": "internal/api/v1/results_disputes.go",
+      "sha256": "462f5dd89712194f64e851b6eae87b0c1ec253b75deec0692f1ceb5514a9dc8e",
+      "source_lines": 47,
+      "code_lines": 42,
+      "comment_lines": 0,
+      "blank_lines": 5
+    },
+    {
+      "path": "internal/api/v1/results_standings.go",
+      "sha256": "f5a44aabc8b3458e02795a1b9a91328c14400b95200f69180677455d75e7b8f7",
+      "source_lines": 15,
+      "code_lines": 13,
+      "comment_lines": 0,
+      "blank_lines": 2
+    },
+    {
+      "path": "internal/api/v1/scheduling.go",
+      "sha256": "720260fcb9195682ee3a44a6b540ecad736c1556a27e36907506a2f0c509d409",
+      "source_lines": 44,
+      "code_lines": 40,
+      "comment_lines": 0,
+      "blank_lines": 4
+    },
+    {
+      "path": "internal/api/v1/server.go",
+      "sha256": "e05dce90181582b7188049916833aafc6c13be30221d50a8662b0ab3f4fa8502",
+      "source_lines": 142,
+      "code_lines": 133,
+      "comment_lines": 1,
+      "blank_lines": 8
+    },
+    {
+      "path": "internal/api/v1/teams.go",
+      "sha256": "f388d0e4f9b58952c4f54a4029d73b6242b3da117988ee06f802fee34277b3a9",
+      "source_lines": 141,
+      "code_lines": 127,
+      "comment_lines": 0,
+      "blank_lines": 14
+    },
+    {
+      "path": "internal/api/v1/tournaments.go",
+      "sha256": "85e06a72b89c0b63326bbf1d7b5b40b27af95b1fdde7c40609497ea7601fbf5e",
+      "source_lines": 104,
+      "code_lines": 94,
+      "comment_lines": 0,
+      "blank_lines": 10
+    },
+    {
+      "path": "internal/app/app.go",
+      "sha256": "eb341692c04ccbe49da21f85a33a6e29d2f5021a95ee07b71aa30aa3cd63afca",
+      "source_lines": 45,
+      "code_lines": 41,
+      "comment_lines": 1,
+      "blank_lines": 3
+    },
+    {
+      "path": "internal/config/config.go",
+      "sha256": "ffac23389e39fb305efce94f391b2758d891e725c5aa0c88efee9e1007e86b4a",
+      "source_lines": 303,
+      "code_lines": 265,
+      "comment_lines": 20,
+      "blank_lines": 18
+    },
+    {
+      "path": "internal/container/container.go",
+      "sha256": "e855931473f29f7a1d8d6a45e3587148bd8cd283cdf200c77e37211c66004ffe",
+      "source_lines": 41,
+      "code_lines": 36,
+      "comment_lines": 0,
+      "blank_lines": 5
+    },
+    {
+      "path": "internal/lib/apperror/error.go",
+      "sha256": "1a9201b7db68ca1e3ad3dba0706a5f2acdcd3db21fdd280004b986b71fe43023",
+      "source_lines": 29,
+      "code_lines": 23,
+      "comment_lines": 2,
+      "blank_lines": 4
+    },
+    {
+      "path": "internal/lib/authctx/context.go",
+      "sha256": "d2d062857d386116c425cbef58a9bf609b6dac2f5c6535d23348b56f7b9e8178",
+      "source_lines": 30,
+      "code_lines": 26,
+      "comment_lines": 1,
+      "blank_lines": 3
+    },
+    {
+      "path": "internal/lib/csvutil/csv.go",
+      "sha256": "9fe39f624576002e4428c19b6e8aca27f4955e36e54f771cff053a64ff609676",
+      "source_lines": 12,
+      "code_lines": 9,
+      "comment_lines": 1,
+      "blank_lines": 2
+    },
+    {
+      "path": "internal/lib/fileutil/file.go",
+      "sha256": "178777ffc5ec4f8e615f68337f956eca2440a1b66d26d13522f17ea30a077a7b",
+      "source_lines": 46,
+      "code_lines": 43,
+      "comment_lines": 1,
+      "blank_lines": 2
+    },
+    {
+      "path": "internal/lib/pagination/pagination.go",
+      "sha256": "96fddde57b0ee6858a35f1c70c809cd7914ae1ebcc4d73fffea93fc6416a6c04",
+      "source_lines": 13,
+      "code_lines": 11,
+      "comment_lines": 1,
+      "blank_lines": 1
+    },
+    {
+      "path": "internal/lib/ptr/ptr.go",
+      "sha256": "c9bd77c2c7828c158455a2b12df243908991fb4fc8df76973ebd77aa8e1229cd",
+      "source_lines": 11,
+      "code_lines": 9,
+      "comment_lines": 1,
+      "blank_lines": 1
+    },
+    {
+      "path": "internal/lib/security/security.go",
+      "sha256": "067545d849ebe8ca2f25b1fbb7a6b900e434b5aa2c2ab8aec7fd9b1f7499e991",
+      "source_lines": 34,
+      "code_lines": 31,
+      "comment_lines": 1,
+      "blank_lines": 2
+    },
+    {
+      "path": "internal/lib/slice/slice.go",
+      "sha256": "3228f13f09a810b8ae1ae435d9539ee3040de31dd1058f5b7703fbbe725fa15c",
+      "source_lines": 13,
+      "code_lines": 11,
+      "comment_lines": 1,
+      "blank_lines": 1
+    },
+    {
+      "path": "internal/lib/smtpclient/client.go",
+      "sha256": "dbf1a7210748b2742aee7e89289475c3cce4060ad0ac9011bf03b2514d39b457",
+      "source_lines": 126,
+      "code_lines": 113,
+      "comment_lines": 3,
+      "blank_lines": 10
+    },
+    {
+      "path": "internal/migration/migration.go",
+      "sha256": "57920c78dfbebbd838ed4e16fbb3f52643966b862ce1f637fd2d34de3d505c03",
+      "source_lines": 45,
+      "code_lines": 38,
+      "comment_lines": 4,
+      "blank_lines": 3
+    },
+    {
+      "path": "internal/model/competition.go",
+      "sha256": "bf915ba7fadb2694f1e1449799852f4dfc1ae013c8d10f2bee88de03c7751314",
+      "source_lines": 142,
+      "code_lines": 126,
+      "comment_lines": 8,
+      "blank_lines": 8
+    },
+    {
+      "path": "internal/model/doc.go",
+      "sha256": "1f95f3856300152240049470591f07f36b986ef6088add370b1591cb1044a5b3",
+      "source_lines": 8,
+      "code_lines": 1,
+      "comment_lines": 7,
+      "blank_lines": 0
+    },
+    {
+      "path": "internal/model/entities.go",
+      "sha256": "53f0c467653fb451b18b6ec09c6275c6668187a8a90dc52c759a79bc9e5dcc92",
+      "source_lines": 1183,
+      "code_lines": 828,
+      "comment_lines": 178,
+      "blank_lines": 177
+    },
+    {
+      "path": "internal/model/principal.go",
+      "sha256": "aab6a8c717a88fe601c7186a1c0d8196f8fdc5083291d00ceef20c1025bd078f",
+      "source_lines": 43,
+      "code_lines": 30,
+      "comment_lines": 6,
+      "blank_lines": 7
+    },
+    {
+      "path": "internal/model/rating.go",
+      "sha256": "6d5395b49e4375ef4a3d275e6d9c4c1a841d0f5c7af1e168110bca6f14c95623",
+      "source_lines": 73,
+      "code_lines": 33,
+      "comment_lines": 33,
+      "blank_lines": 7
+    },
+    {
+      "path": "internal/repository/catalog.go",
+      "sha256": "04adf71886b0ae2e58a33117dcae6d652b5cf7b25723a0c0fa5ee8f4eb414682",
+      "source_lines": 29,
+      "code_lines": 25,
+      "comment_lines": 1,
+      "blank_lines": 3
+    },
+    {
+      "path": "internal/repository/competition.go",
+      "sha256": "03cd949d5a0e35919b5259daf849990bcde7988599f6a6c3a81adbeb5603d0d0",
+      "source_lines": 119,
+      "code_lines": 107,
+      "comment_lines": 4,
+      "blank_lines": 8
+    },
+    {
+      "path": "internal/repository/identity.go",
+      "sha256": "16e0de0d7c168ccbda394523c917613f29724b6a166426ff0ab1a7a0c0c009f5",
+      "source_lines": 54,
+      "code_lines": 46,
+      "comment_lines": 2,
+      "blank_lines": 6
+    },
+    {
+      "path": "internal/repository/postgres/admin.go",
+      "sha256": "284d457d1f32899a77a73447d36048d8719f9e7f79c0b19f6716e865a0039535",
+      "source_lines": 90,
+      "code_lines": 79,
+      "comment_lines": 0,
+      "blank_lines": 11
+    },
+    {
+      "path": "internal/repository/postgres/applications.go",
+      "sha256": "c592609eabbd3c9e6483550bbf3303f5b075eb7108262da0e02f1a7a9edc5c8b",
+      "source_lines": 111,
+      "code_lines": 97,
+      "comment_lines": 0,
+      "blank_lines": 14
+    },
+    {
+      "path": "internal/repository/postgres/catalog.go",
+      "sha256": "d4c05b8a7f7951ad078e9dd1dc054087676f46646a646df56a1e4ddbdd9b377f",
+      "source_lines": 70,
+      "code_lines": 60,
+      "comment_lines": 0,
+      "blank_lines": 10
+    },
+    {
+      "path": "internal/repository/postgres/common.go",
+      "sha256": "87e01c554dbed249988c81620dc14cd9d7cd63a4f1c3f63dc1cbe047fe5517d3",
+      "source_lines": 45,
+      "code_lines": 43,
+      "comment_lines": 0,
+      "blank_lines": 2
+    },
+    {
+      "path": "internal/repository/postgres/competition.go",
+      "sha256": "d25cab631782ba9df59807076639cecd2d6cf933a1533869a1a5543e9f9357b8",
+      "source_lines": 122,
+      "code_lines": 116,
+      "comment_lines": 0,
+      "blank_lines": 6
+    },
+    {
+      "path": "internal/repository/postgres/draw.go",
+      "sha256": "29786cf7556a3269da1fbda9579cdfafa49bf351cc0db9821dab5d3b7f1ad300",
+      "source_lines": 84,
+      "code_lines": 82,
+      "comment_lines": 0,
+      "blank_lines": 2
+    },
+    {
+      "path": "internal/repository/postgres/identity.go",
+      "sha256": "c0bcfea037c2d39638f1344f4199c668d4b5e1edf074c1418e7d311ba3c17abe",
+      "source_lines": 187,
+      "code_lines": 159,
+      "comment_lines": 0,
+      "blank_lines": 28
+    },
+    {
+      "path": "internal/repository/postgres/mapping.go",
+      "sha256": "97a11739dbed79b1c2e428e1cbbf09e06debe839b97d761cf3bcd0c92b5d3141",
+      "source_lines": 38,
+      "code_lines": 34,
+      "comment_lines": 1,
+      "blank_lines": 3
+    },
+    {
+      "path": "internal/repository/postgres/repository.go",
+      "sha256": "4051295650ff8a97045523883a46718eef5a04bbebf9a7a5ac56ad43f5a64abc",
+      "source_lines": 64,
+      "code_lines": 58,
+      "comment_lines": 2,
+      "blank_lines": 4
+    },
+    {
+      "path": "internal/repository/postgres/resources.go",
+      "sha256": "22013a67527d1f37229ce5f6b710a68f723724b3dd0810435cb570a62815ccdc",
+      "source_lines": 116,
+      "code_lines": 114,
+      "comment_lines": 0,
+      "blank_lines": 2
+    },
+    {
+      "path": "internal/repository/postgres/results.go",
+      "sha256": "c132e45c644ddc07bd7d8187bbb105a222732b3a4d26367a588e5e1dc2c4a947",
+      "source_lines": 106,
+      "code_lines": 103,
+      "comment_lines": 0,
+      "blank_lines": 3
+    },
+    {
+      "path": "internal/repository/postgres/results_disputes.go",
+      "sha256": "8ec9d1a758d37cc824da8402a9ab69de4b77d7a50c898c47364450af09463ec3",
+      "source_lines": 78,
+      "code_lines": 75,
+      "comment_lines": 0,
+      "blank_lines": 3
+    },
+    {
+      "path": "internal/repository/postgres/results_progression.go",
+      "sha256": "5e4c56c79a705308ab949cad9689b83f7233ebba25d4351c32d5ce39e95fa528",
+      "source_lines": 90,
+      "code_lines": 88,
+      "comment_lines": 0,
+      "blank_lines": 2
+    },
+    {
+      "path": "internal/repository/postgres/results_ratings.go",
+      "sha256": "d38832449cb55291179b1a1a4eac6649c72e2ddaa634fb072a4cba7636177dc7",
+      "source_lines": 47,
+      "code_lines": 45,
+      "comment_lines": 0,
+      "blank_lines": 2
+    },
+    {
+      "path": "internal/repository/postgres/results_standings.go",
+      "sha256": "2c779afb74f5de94254a983c03d9fc12b214d9101f05224fe6806c582ef7610c",
+      "source_lines": 70,
+      "code_lines": 67,
+      "comment_lines": 0,
+      "blank_lines": 3
+    },
+    {
+      "path": "internal/repository/postgres/scheduling.go",
+      "sha256": "49ec8eb734cb1f60787443d2187c5fb08b597bb3cb7bc9d4770d2148b76d0aba",
+      "source_lines": 40,
+      "code_lines": 38,
+      "comment_lines": 0,
+      "blank_lines": 2
+    },
+    {
+      "path": "internal/repository/postgres/teams.go",
+      "sha256": "b454710681decf2c451c95a7f965f979a7f3c104b33e7987349608f8a9741ba0",
+      "source_lines": 211,
+      "code_lines": 181,
+      "comment_lines": 0,
+      "blank_lines": 30
+    },
+    {
+      "path": "internal/repository/postgres/tournaments.go",
+      "sha256": "3104c4117d26678442e9e5a3f35bf7c6c6b75e265d43e98f2b7860c8a9367fce",
+      "source_lines": 176,
+      "code_lines": 157,
+      "comment_lines": 2,
+      "blank_lines": 17
+    },
+    {
+      "path": "internal/repository/repository.go",
+      "sha256": "780d3775ca22636030d6a305192c9e0df2d8d1f8b5444ec23b47149f0b214b71",
+      "source_lines": 39,
+      "code_lines": 30,
+      "comment_lines": 4,
+      "blank_lines": 5
+    },
+    {
+      "path": "internal/repository/resources.go",
+      "sha256": "c7ce9041405e333d16fe09306d7998d959863ad1d29cd952d255f102a7a0743e",
+      "source_lines": 57,
+      "code_lines": 50,
+      "comment_lines": 0,
+      "blank_lines": 7
+    },
+    {
+      "path": "internal/repository/teams.go",
+      "sha256": "f629c55f705b0bde6567a70ef97446ead5fc7350db3f9c197a88f769a1cb9f30",
+      "source_lines": 42,
+      "code_lines": 37,
+      "comment_lines": 1,
+      "blank_lines": 4
+    },
+    {
+      "path": "internal/repository/tournaments.go",
+      "sha256": "aafe548f9de1b46f6dcb0aa9d582b62742994d61395f685d06dddb6ae65cf2fb",
+      "source_lines": 54,
+      "code_lines": 45,
+      "comment_lines": 4,
+      "blank_lines": 5
+    },
+    {
+      "path": "internal/service/admin.go",
+      "sha256": "a9f76bcc400e14524ac84f6916633575f81e9443c898651a8e38da5930107059",
+      "source_lines": 192,
+      "code_lines": 181,
+      "comment_lines": 0,
+      "blank_lines": 11
+    },
+    {
+      "path": "internal/service/applications.go",
+      "sha256": "27cb2365867c9cef0857639f476b293529a6f169889d2866d351946e34458932",
+      "source_lines": 222,
+      "code_lines": 208,
+      "comment_lines": 0,
+      "blank_lines": 14
+    },
+    {
+      "path": "internal/service/background.go",
+      "sha256": "3b9d248aba95d667a154ccc540b54258c20fdcec1497eee84a72219ab931e49f",
+      "source_lines": 71,
+      "code_lines": 64,
+      "comment_lines": 3,
+      "blank_lines": 4
+    },
+    {
+      "path": "internal/service/catalog.go",
+      "sha256": "467345499471822f70ed75cb1282408b2fd6191d3864fb5486e10eec0c0a0747",
+      "source_lines": 111,
+      "code_lines": 98,
+      "comment_lines": 1,
+      "blank_lines": 12
+    },
+    {
+      "path": "internal/service/competition.go",
+      "sha256": "8b5b706b1dbea143b15317c88e4877142afc8660468775293a75ae825dbedc99",
+      "source_lines": 136,
+      "code_lines": 132,
+      "comment_lines": 0,
+      "blank_lines": 4
+    },
+    {
+      "path": "internal/service/draw.go",
+      "sha256": "36bf8a48efadd7613c02e3af9926baf51b48a647193a40d0d1f7205f3823ef7d",
+      "source_lines": 387,
+      "code_lines": 374,
+      "comment_lines": 1,
+      "blank_lines": 12
+    },
+    {
+      "path": "internal/service/identity.go",
+      "sha256": "b5f2ed1729fdf9baf5a57a39945304393f614f48ba86ae93f9968340c8ee5e68",
+      "source_lines": 277,
+      "code_lines": 255,
+      "comment_lines": 2,
+      "blank_lines": 20
+    },
+    {
+      "path": "internal/service/interfaces.go",
+      "sha256": "03330eca0740cbfddd965fe463de8787aa32c37e37924d68f6e3e20ca0269b78",
+      "source_lines": 127,
+      "code_lines": 106,
+      "comment_lines": 9,
+      "blank_lines": 12
+    },
+    {
+      "path": "internal/service/resources.go",
+      "sha256": "9ef4386f684f1b2c1c3d12135b39af62b46d3db84192da050682623af424a0c4",
+      "source_lines": 151,
+      "code_lines": 145,
+      "comment_lines": 0,
+      "blank_lines": 6
+    },
+    {
+      "path": "internal/service/results.go",
+      "sha256": "50fd429d22922116e47138cab73251a04e5cf5e796741a7b438cfbadca95110d",
+      "source_lines": 262,
+      "code_lines": 251,
+      "comment_lines": 0,
+      "blank_lines": 11
+    },
+    {
+      "path": "internal/service/results_disputes.go",
+      "sha256": "833133eaf8d7a58f19450975f227a2641892ca78155edfa240b83c872b5ad29f",
+      "source_lines": 236,
+      "code_lines": 218,
+      "comment_lines": 2,
+      "blank_lines": 16
+    },
+    {
+      "path": "internal/service/results_progression.go",
+      "sha256": "935f6166d67e7949362e75bec41f2d518401d9cebeadae6ca7c93698bd8212e4",
+      "source_lines": 375,
+      "code_lines": 355,
+      "comment_lines": 1,
+      "blank_lines": 19
+    },
+    {
+      "path": "internal/service/results_ratings.go",
+      "sha256": "27e6da6ffadadc11034cea324180e6d2dcd72082bb9c68d9e0a5d7504f1c9bc4",
+      "source_lines": 136,
+      "code_lines": 128,
+      "comment_lines": 2,
+      "blank_lines": 6
+    },
+    {
+      "path": "internal/service/results_standings.go",
+      "sha256": "f1cc0b3bdb221a8c84644d70629d31ab6ea512aa4f979a16e7f760f7163f5e18",
+      "source_lines": 146,
+      "code_lines": 139,
+      "comment_lines": 0,
+      "blank_lines": 7
+    },
+    {
+      "path": "internal/service/scheduling.go",
+      "sha256": "17f84e41515acb16b84036c64c06744b3dacd20881609a70505419f5867d2e86",
+      "source_lines": 184,
+      "code_lines": 174,
+      "comment_lines": 3,
+      "blank_lines": 7
+    },
+    {
+      "path": "internal/service/service.go",
+      "sha256": "b406323e4e7283815b27849f8e16f7e01d03f8df3b50e5b725aed4ef00319475",
+      "source_lines": 70,
+      "code_lines": 62,
+      "comment_lines": 1,
+      "blank_lines": 7
+    },
+    {
+      "path": "internal/service/teams.go",
+      "sha256": "9a8c5797544da213a6a533f07fb3c52ae10d1b509867779e3e2fffcec00903be",
+      "source_lines": 414,
+      "code_lines": 383,
+      "comment_lines": 3,
+      "blank_lines": 28
+    },
+    {
+      "path": "internal/service/tournaments.go",
+      "sha256": "066694204c9877037aa5ad1d6ac321652cf4840c0c6e138447468d64c8086a05",
+      "source_lines": 352,
+      "code_lines": 325,
+      "comment_lines": 0,
+      "blank_lines": 27
+    },
+    {
+      "path": "pkg/api/v1/spec.go",
+      "sha256": "df2ee1a83a9729592f44bd8e7e66806094a1eb4f2181e58feff41e7247f6e694",
+      "source_lines": 10,
+      "code_lines": 3,
+      "comment_lines": 5,
+      "blank_lines": 2
+    }
+  ],
+  "functions": [
+    {
+      "name": "internal/model.ValidateSeries",
+      "file": "internal/model/competition.go",
+      "line": 99,
+      "lines": 23,
+      "cyclomatic": 19,
+      "cognitive": 17
+    },
+    {
+      "name": "internal/service.validateTournamentRules",
+      "file": "internal/service/tournaments.go",
+      "line": 90,
+      "lines": 34,
+      "cyclomatic": 18,
+      "cognitive": 18
+    },
+    {
+      "name": "cmd/migrate.run",
+      "file": "cmd/migrate/main.go",
+      "line": 16,
+      "lines": 47,
+      "cyclomatic": 16,
+      "cognitive": 17
+    },
+    {
+      "name": "internal/config.(Config).validateRuntime",
+      "file": "internal/config/config.go",
+      "line": 239,
+      "lines": 33,
+      "cyclomatic": 16,
+      "cognitive": 12
+    },
+    {
+      "name": "internal/service.buildGroupDraw",
+      "file": "internal/service/draw.go",
+      "line": 188,
+      "lines": 39,
+      "cyclomatic": 16,
+      "cognitive": 16
+    },
+    {
+      "name": "internal/service.validateGroupSettings",
+      "file": "internal/service/tournaments.go",
+      "line": 125,
+      "lines": 18,
+      "cyclomatic": 16,
+      "cognitive": 10
+    },
+    {
+      "name": "internal/service.playoffPlaces",
+      "file": "internal/service/results_progression.go",
+      "line": 313,
+      "lines": 39,
+      "cyclomatic": 15,
+      "cognitive": 25
+    },
+    {
+      "name": "internal/service.playoffMatches",
+      "file": "internal/service/draw.go",
+      "line": 109,
+      "lines": 51,
+      "cyclomatic": 14,
+      "cognitive": 19
+    },
+    {
+      "name": "internal/config.(Config).validate",
+      "file": "internal/config/config.go",
+      "line": 152,
+      "lines": 25,
+      "cyclomatic": 13,
+      "cognitive": 9
+    },
+    {
+      "name": "internal/config.(*Config).applyEnvironment",
+      "file": "internal/config/config.go",
+      "line": 179,
+      "lines": 59,
+      "cyclomatic": 13,
+      "cognitive": 21
+    },
+    {
+      "name": "internal/model.RoundRobin",
+      "file": "internal/model/competition.go",
+      "line": 15,
+      "lines": 38,
+      "cyclomatic": 13,
+      "cognitive": 17
+    },
+    {
+      "name": "internal/service.(*Service).BlockUser",
+      "file": "internal/service/admin.go",
+      "line": 52,
+      "lines": 34,
+      "cyclomatic": 13,
+      "cognitive": 21
+    },
+    {
+      "name": "internal/service.applicationTeam",
+      "file": "internal/service/applications.go",
+      "line": 81,
+      "lines": 31,
+      "cyclomatic": 13,
+      "cognitive": 12
+    },
+    {
+      "name": "internal/service.(*Service).ReviewApplication",
+      "file": "internal/service/applications.go",
+      "line": 141,
+      "lines": 29,
+      "cyclomatic": 13,
+      "cognitive": 21
+    },
+    {
+      "name": "internal/service.rebuildStandings",
+      "file": "internal/service/results_standings.go",
+      "line": 92,
+      "lines": 45,
+      "cyclomatic": 13,
+      "cognitive": 17
+    },
+    {
+      "name": "internal/service.saveDraw",
+      "file": "internal/service/draw.go",
+      "line": 356,
+      "lines": 32,
+      "cyclomatic": 12,
+      "cognitive": 17
+    },
+    {
+      "name": "internal/service.(*Service).ResolveDispute",
+      "file": "internal/service/results_disputes.go",
+      "line": 143,
+      "lines": 42,
+      "cyclomatic": 12,
+      "cognitive": 21
+    },
+    {
+      "name": "internal/api/v1.handleError",
+      "file": "internal/api/v1/server.go",
+      "line": 109,
+      "lines": 34,
+      "cyclomatic": 11,
+      "cognitive": 13
+    },
+    {
+      "name": "internal/service.(*Service).UpdateUserRoles",
+      "file": "internal/service/admin.go",
+      "line": 87,
+      "lines": 37,
+      "cyclomatic": 11,
+      "cognitive": 17
+    },
+    {
+      "name": "internal/service.finalizeResult",
+      "file": "internal/service/results.go",
+      "line": 212,
+      "lines": 41,
+      "cyclomatic": 11,
+      "cognitive": 10
+    },
+    {
+      "name": "internal/service.(*Service).autoConfirmOne",
+      "file": "internal/service/results_disputes.go",
+      "line": 207,
+      "lines": 30,
+      "cyclomatic": 11,
+      "cognitive": 15
+    },
+    {
+      "name": "internal/service.advanceSlot",
+      "file": "internal/service/results_progression.go",
+      "line": 33,
+      "lines": 29,
+      "cyclomatic": 11,
+      "cognitive": 10
+    },
+    {
+      "name": "internal/service.rebuildRatings",
+      "file": "internal/service/results_ratings.go",
+      "line": 29,
+      "lines": 39,
+      "cyclomatic": 11,
+      "cognitive": 16
+    },
+    {
+      "name": "internal/service.scheduleAllowed",
+      "file": "internal/service/scheduling.go",
+      "line": 17,
+      "lines": 15,
+      "cyclomatic": 11,
+      "cognitive": 8
+    },
+    {
+      "name": "internal/service.(*Service).AssignMatchReferee",
+      "file": "internal/service/scheduling.go",
+      "line": 137,
+      "lines": 36,
+      "cyclomatic": 11,
+      "cognitive": 20
+    },
+    {
+      "name": "internal/model.validateBestOf",
+      "file": "internal/model/competition.go",
+      "line": 123,
+      "lines": 20,
+      "cyclomatic": 10,
+      "cognitive": 12
+    },
+    {
+      "name": "internal/service.orderSeeds",
+      "file": "internal/service/draw.go",
+      "line": 20,
+      "lines": 29,
+      "cyclomatic": 10,
+      "cognitive": 15
+    },
+    {
+      "name": "internal/service.(*Service).Login",
+      "file": "internal/service/identity.go",
+      "line": 111,
+      "lines": 34,
+      "cyclomatic": 10,
+      "cognitive": 10
+    },
+    {
+      "name": "internal/service.(*Service).SetRefereeResult",
+      "file": "internal/service/results.go",
+      "line": 179,
+      "lines": 33,
+      "cyclomatic": 10,
+      "cognitive": 15
+    },
+    {
+      "name": "internal/service.revalidateAdvancedSchedule",
+      "file": "internal/service/results_progression.go",
+      "line": 62,
+      "lines": 26,
+      "cyclomatic": 10,
+      "cognitive": 9
+    },
+    {
+      "name": "internal/service.firstRoundSame",
+      "file": "internal/service/results_progression.go",
+      "line": 353,
+      "lines": 23,
+      "cyclomatic": 10,
+      "cognitive": 11
+    },
+    {
+      "name": "internal/service.recordMatchRating",
+      "file": "internal/service/results_ratings.go",
+      "line": 93,
+      "lines": 37,
+      "cyclomatic": 10,
+      "cognitive": 9
+    },
+    {
+      "name": "internal/service.(*Service).ScheduleRound",
+      "file": "internal/service/scheduling.go",
+      "line": 88,
+      "lines": 39,
+      "cyclomatic": 10,
+      "cognitive": 19
+    },
+    {
+      "name": "internal/service.validateTournamentDates",
+      "file": "internal/service/tournaments.go",
+      "line": 71,
+      "lines": 18,
+      "cyclomatic": 10,
+      "cognitive": 12
+    },
+    {
+      "name": "internal/lib/fileutil.Validate",
+      "file": "internal/lib/fileutil/file.go",
+      "line": 16,
+      "lines": 24,
+      "cyclomatic": 9,
+      "cognitive": 10
+    },
+    {
+      "name": "internal/repository/postgres.readBracket",
+      "file": "internal/repository/postgres/competition.go",
+      "line": 43,
+      "lines": 39,
+      "cyclomatic": 9,
+      "cognitive": 10
+    },
+    {
+      "name": "internal/service.(*Service).ModerateTournament",
+      "file": "internal/service/admin.go",
+      "line": 125,
+      "lines": 33,
+      "cyclomatic": 9,
+      "cognitive": 14
+    },
+    {
+      "name": "internal/service.(*Service).SubmitApplication",
+      "file": "internal/service/applications.go",
+      "line": 45,
+      "lines": 35,
+      "cyclomatic": 9,
+      "cognitive": 16
+    },
+    {
+      "name": "internal/service.(*Service).mutateApplication",
+      "file": "internal/service/applications.go",
+      "line": 189,
+      "lines": 34,
+      "cyclomatic": 9,
+      "cognitive": 16
+    },
+    {
+      "name": "internal/service.(*Service).PreviewDraw",
+      "file": "internal/service/draw.go",
+      "line": 227,
+      "lines": 35,
+      "cyclomatic": 9,
+      "cognitive": 16
+    },
+    {
+      "name": "internal/service.(*Service).ExportTournament",
+      "file": "internal/service/resources.go",
+      "line": 62,
+      "lines": 33,
+      "cyclomatic": 9,
+      "cognitive": 10
+    },
+    {
+      "name": "internal/service.insertReport",
+      "file": "internal/service/results.go",
+      "line": 49,
+      "lines": 29,
+      "cyclomatic": 9,
+      "cognitive": 10
+    },
+    {
+      "name": "internal/service.(*Service).ReportResult",
+      "file": "internal/service/results.go",
+      "line": 94,
+      "lines": 35,
+      "cyclomatic": 9,
+      "cognitive": 16
+    },
+    {
+      "name": "internal/service.(*Service).ConfirmResult",
+      "file": "internal/service/results.go",
+      "line": 151,
+      "lines": 28,
+      "cyclomatic": 9,
+      "cognitive": 14
+    },
+    {
+      "name": "internal/service.finalizeTournament",
+      "file": "internal/service/results_progression.go",
+      "line": 241,
+      "lines": 26,
+      "cyclomatic": 9,
+      "cognitive": 8
+    },
+    {
+      "name": "internal/service.standingLess",
+      "file": "internal/service/results_standings.go",
+      "line": 68,
+      "lines": 24,
+      "cyclomatic": 9,
+      "cognitive": 6
+    },
+    {
+      "name": "internal/service.(*Service).RemoveTeamMember",
+      "file": "internal/service/teams.go",
+      "line": 186,
+      "lines": 29,
+      "cyclomatic": 9,
+      "cognitive": 15
+    },
+    {
+      "name": "internal/service.validateTournamentRequest",
+      "file": "internal/service/tournaments.go",
+      "line": 55,
+      "lines": 15,
+      "cyclomatic": 9,
+      "cognitive": 6
+    },
+    {
+      "name": "internal/api/v1.(*API).serveEvents",
+      "file": "internal/api/v1/events.go",
+      "line": 60,
+      "lines": 28,
+      "cyclomatic": 8,
+      "cognitive": 12
+    },
+    {
+      "name": "internal/api/v1.NewServer",
+      "file": "internal/api/v1/server.go",
+      "line": 34,
+      "lines": 56,
+      "cyclomatic": 8,
+      "cognitive": 11
+    },
+    {
+      "name": "internal/config.Load",
+      "file": "internal/config/config.go",
+      "line": 120,
+      "lines": 31,
+      "cyclomatic": 8,
+      "cognitive": 7
+    },
+    {
+      "name": "internal/config.LoadBootstrap",
+      "file": "internal/config/config.go",
+      "line": 286,
+      "lines": 18,
+      "cyclomatic": 8,
+      "cognitive": 6
+    },
+    {
+      "name": "internal/lib/smtpclient.(*Client).connect",
+      "file": "internal/lib/smtpclient/client.go",
+      "line": 81,
+      "lines": 32,
+      "cyclomatic": 8,
+      "cognitive": 7
+    },
+    {
+      "name": "internal/model.(EloRating).AfterMatch",
+      "file": "internal/model/rating.go",
+      "line": 61,
+      "lines": 13,
+      "cyclomatic": 8,
+      "cognitive": 4
+    },
+    {
+      "name": "internal/service.(*Service).DeleteTournament",
+      "file": "internal/service/admin.go",
+      "line": 159,
+      "lines": 27,
+      "cyclomatic": 8,
+      "cognitive": 12
+    },
+    {
+      "name": "internal/service.matchReadAccess",
+      "file": "internal/service/competition.go",
+      "line": 68,
+      "lines": 21,
+      "cyclomatic": 8,
+      "cognitive": 6
+    },
+    {
+      "name": "internal/service.(*Service).DownloadFile",
+      "file": "internal/service/resources.go",
+      "line": 43,
+      "lines": 19,
+      "cyclomatic": 8,
+      "cognitive": 9
+    },
+    {
+      "name": "internal/service.assignFinalPlaces",
+      "file": "internal/service/results_progression.go",
+      "line": 268,
+      "lines": 23,
+      "cyclomatic": 8,
+      "cognitive": 14
+    },
+    {
+      "name": "internal/service.(*Service).UpdateTeam",
+      "file": "internal/service/teams.go",
+      "line": 120,
+      "lines": 28,
+      "cyclomatic": 8,
+      "cognitive": 12
+    },
+    {
+      "name": "internal/service.(*Service).DeleteTeam",
+      "file": "internal/service/teams.go",
+      "line": 149,
+      "lines": 29,
+      "cyclomatic": 8,
+      "cognitive": 14
+    },
+    {
+      "name": "internal/service.(*Service).TransferCaptain",
+      "file": "internal/service/teams.go",
+      "line": 216,
+      "lines": 32,
+      "cyclomatic": 8,
+      "cognitive": 14
+    },
+    {
+      "name": "internal/service.(*Service).mutateTournament",
+      "file": "internal/service/tournaments.go",
+      "line": 239,
+      "lines": 30,
+      "cyclomatic": 8,
+      "cognitive": 14
+    },
+    {
+      "name": "internal/api/v1.(*API).StreamTournamentEvents",
+      "file": "internal/api/v1/events.go",
+      "line": 21,
+      "lines": 29,
+      "cyclomatic": 7,
+      "cognitive": 7
+    },
+    {
+      "name": "internal/config.validateHostPort",
+      "file": "internal/config/config.go",
+      "line": 273,
+      "lines": 11,
+      "cyclomatic": 7,
+      "cognitive": 4
+    },
+    {
+      "name": "internal/migration.Open",
+      "file": "internal/migration/migration.go",
+      "line": 18,
+      "lines": 28,
+      "cyclomatic": 7,
+      "cognitive": 6
+    },
+    {
+      "name": "internal/model.SnakeGroups",
+      "file": "internal/model/competition.go",
+      "line": 76,
+      "lines": 14,
+      "cyclomatic": 7,
+      "cognitive": 5
+    },
+    {
+      "name": "internal/repository/postgres.dbError",
+      "file": "internal/repository/postgres/repository.go",
+      "line": 42,
+      "lines": 20,
+      "cyclomatic": 7,
+      "cognitive": 5
+    },
+    {
+      "name": "internal/repository/postgres.readStandings",
+      "file": "internal/repository/postgres/results_standings.go",
+      "line": 10,
+      "lines": 22,
+      "cyclomatic": 7,
+      "cognitive": 7
+    },
+    {
+      "name": "internal/service.(*Service).WithdrawApplication",
+      "file": "internal/service/applications.go",
+      "line": 171,
+      "lines": 17,
+      "cyclomatic": 7,
+      "cognitive": 10
+    },
+    {
+      "name": "internal/service.(*Service).runBackground",
+      "file": "internal/service/background.go",
+      "line": 24,
+      "lines": 11,
+      "cyclomatic": 7,
+      "cognitive": 6
+    },
+    {
+      "name": "internal/service.validatePersistedDraw",
+      "file": "internal/service/draw.go",
+      "line": 295,
+      "lines": 19,
+      "cyclomatic": 7,
+      "cognitive": 6
+    },
+    {
+      "name": "internal/service.materializeDraw",
+      "file": "internal/service/draw.go",
+      "line": 315,
+      "lines": 23,
+      "cyclomatic": 7,
+      "cognitive": 6
+    },
+    {
+      "name": "internal/service.(*Service).ReplayEvents",
+      "file": "internal/service/resources.go",
+      "line": 102,
+      "lines": 17,
+      "cyclomatic": 7,
+      "cognitive": 6
+    },
+    {
+      "name": "internal/service.(*Service).BootstrapAdmin",
+      "file": "internal/service/resources.go",
+      "line": 119,
+      "lines": 26,
+      "cyclomatic": 7,
+      "cognitive": 12
+    },
+    {
+      "name": "internal/service.opposingCaptain",
+      "file": "internal/service/results.go",
+      "line": 129,
+      "lines": 21,
+      "cyclomatic": 7,
+      "cognitive": 6
+    },
+    {
+      "name": "internal/service.finishStage",
+      "file": "internal/service/results_progression.go",
+      "line": 89,
+      "lines": 24,
+      "cyclomatic": 7,
+      "cognitive": 6
+    },
+    {
+      "name": "internal/service.requireUnstartedPlayoffs",
+      "file": "internal/service/results_progression.go",
+      "line": 221,
+      "lines": 8,
+      "cyclomatic": 7,
+      "cognitive": 5
+    },
+    {
+      "name": "internal/service.saveRatingChange",
+      "file": "internal/service/results_ratings.go",
+      "line": 79,
+      "lines": 14,
+      "cyclomatic": 7,
+      "cognitive": 5
+    },
+    {
+      "name": "internal/service.headToHead",
+      "file": "internal/service/results_standings.go",
+      "line": 49,
+      "lines": 19,
+      "cyclomatic": 7,
+      "cognitive": 6
+    },
+    {
+      "name": "internal/service.(*Service).CreateTeam",
+      "file": "internal/service/teams.go",
+      "line": 91,
+      "lines": 28,
+      "cyclomatic": 7,
+      "cognitive": 10
+    },
+    {
+      "name": "internal/service.(*Service).CreateInvitation",
+      "file": "internal/service/teams.go",
+      "line": 271,
+      "lines": 31,
+      "cyclomatic": 7,
+      "cognitive": 11
+    },
+    {
+      "name": "internal/service.(*Service).AssignTournamentReferee",
+      "file": "internal/service/tournaments.go",
+      "line": 319,
+      "lines": 21,
+      "cyclomatic": 7,
+      "cognitive": 11
+    },
+    {
+      "name": "internal/api/v1.(*API).UploadFile",
+      "file": "internal/api/v1/files.go",
+      "line": 12,
+      "lines": 24,
+      "cyclomatic": 6,
+      "cognitive": 5
+    },
+    {
+      "name": "internal/api/v1.(*API).authentication",
+      "file": "internal/api/v1/server.go",
+      "line": 91,
+      "lines": 17,
+      "cyclomatic": 6,
+      "cognitive": 9
+    },
+    {
+      "name": "internal/app.Run",
+      "file": "internal/app/app.go",
+      "line": 13,
+      "lines": 33,
+      "cyclomatic": 6,
+      "cognitive": 5
+    },
+    {
+      "name": "internal/lib/smtpclient.(*Client).send",
+      "file": "internal/lib/smtpclient/client.go",
+      "line": 39,
+      "lines": 22,
+      "cyclomatic": 6,
+      "cognitive": 5
+    },
+    {
+      "name": "internal/model.SeedOrder",
+      "file": "internal/model/competition.go",
+      "line": 56,
+      "lines": 18,
+      "cyclomatic": 6,
+      "cognitive": 6
+    },
+    {
+      "name": "internal/model.(TieBreaker).Valid",
+      "file": "internal/model/entities.go",
+      "line": 196,
+      "lines": 16,
+      "cyclomatic": 6,
+      "cognitive": 1
+    },
+    {
+      "name": "internal/repository/postgres.(*Repository).ListApplicationPage",
+      "file": "internal/repository/postgres/applications.go",
+      "line": 34,
+      "lines": 28,
+      "cyclomatic": 6,
+      "cognitive": 7
+    },
+    {
+      "name": "internal/repository/postgres.(*Repository).InsertResultReport",
+      "file": "internal/repository/postgres/results.go",
+      "line": 61,
+      "lines": 17,
+      "cyclomatic": 6,
+      "cognitive": 7
+    },
+    {
+      "name": "internal/repository/postgres.(*Repository).ReadAssignedDisputePage",
+      "file": "internal/repository/postgres/results_disputes.go",
+      "line": 38,
+      "lines": 25,
+      "cyclomatic": 6,
+      "cognitive": 7
+    },
+    {
+      "name": "internal/repository/postgres.(*Repository).ListTournamentPage",
+      "file": "internal/repository/postgres/tournaments.go",
+      "line": 52,
+      "lines": 31,
+      "cyclomatic": 6,
+      "cognitive": 7
+    },
+    {
+      "name": "internal/service.registrationOpen",
+      "file": "internal/service/applications.go",
+      "line": 41,
+      "lines": 3,
+      "cyclomatic": 6,
+      "cognitive": 1
+    },
+    {
+      "name": "internal/service.(*Service).UpdateDiscipline",
+      "file": "internal/service/catalog.go",
+      "line": 47,
+      "lines": 25,
+      "cyclomatic": 6,
+      "cognitive": 9
+    },
+    {
+      "name": "internal/service.requireScheduled",
+      "file": "internal/service/competition.go",
+      "line": 122,
+      "lines": 9,
+      "cyclomatic": 6,
+      "cognitive": 4
+    },
+    {
+      "name": "internal/service.buildDraw",
+      "file": "internal/service/draw.go",
+      "line": 63,
+      "lines": 25,
+      "cyclomatic": 6,
+      "cognitive": 5
+    },
+    {
+      "name": "internal/service.confirmPersistedDraw",
+      "file": "internal/service/draw.go",
+      "line": 273,
+      "lines": 21,
+      "cyclomatic": 6,
+      "cognitive": 5
+    },
+    {
+      "name": "internal/service.(*Service).ResetPassword",
+      "file": "internal/service/identity.go",
+      "line": 200,
+      "lines": 22,
+      "cyclomatic": 6,
+      "cognitive": 9
+    },
+    {
+      "name": "internal/service.validateEvidence",
+      "file": "internal/service/results.go",
+      "line": 28,
+      "lines": 20,
+      "cyclomatic": 6,
+      "cognitive": 8
+    },
+    {
+      "name": "internal/service.disputableReport",
+      "file": "internal/service/results_disputes.go",
+      "line": 54,
+      "lines": 17,
+      "cyclomatic": 6,
+      "cognitive": 5
+    },
+    {
+      "name": "internal/service.requirePendingDisputeCaptain",
+      "file": "internal/service/results_disputes.go",
+      "line": 86,
+      "lines": 12,
+      "cyclomatic": 6,
+      "cognitive": 5
+    },
+    {
+      "name": "internal/service.updateProgression",
+      "file": "internal/service/results_progression.go",
+      "line": 16,
+      "lines": 17,
+      "cyclomatic": 6,
+      "cognitive": 8
+    },
+    {
+      "name": "internal/service.unqualifiedPlaces",
+      "file": "internal/service/results_progression.go",
+      "line": 291,
+      "lines": 21,
+      "cyclomatic": 6,
+      "cognitive": 7
+    },
+    {
+      "name": "internal/service.(*Service).CreateTournament",
+      "file": "internal/service/tournaments.go",
+      "line": 176,
+      "lines": 25,
+      "cyclomatic": 6,
+      "cognitive": 8
+    },
+    {
+      "name": "internal/api/v1.(*API).replayEvents",
+      "file": "internal/api/v1/events.go",
+      "line": 88,
+      "lines": 17,
+      "cyclomatic": 5,
+      "cognitive": 5
+    },
+    {
+      "name": "internal/lib/authctx.HasRole",
+      "file": "internal/lib/authctx/context.go",
+      "line": 18,
+      "lines": 13,
+      "cyclomatic": 5,
+      "cognitive": 8
+    },
+    {
+      "name": "internal/lib/fileutil.CleanName",
+      "file": "internal/lib/fileutil/file.go",
+      "line": 40,
+      "lines": 7,
+      "cyclomatic": 5,
+      "cognitive": 2
+    },
+    {
+      "name": "internal/lib/smtpclient.(*Client).configure",
+      "file": "internal/lib/smtpclient/client.go",
+      "line": 114,
+      "lines": 13,
+      "cyclomatic": 5,
+      "cognitive": 5
+    },
+    {
+      "name": "internal/repository/postgres.(*Repository).AdminUserPage",
+      "file": "internal/repository/postgres/admin.go",
+      "line": 11,
+      "lines": 20,
+      "cyclomatic": 5,
+      "cognitive": 5
+    },
+    {
+      "name": "internal/repository/postgres.(*Repository).SearchPublicUsers",
+      "file": "internal/repository/postgres/identity.go",
+      "line": 169,
+      "lines": 19,
+      "cyclomatic": 5,
+      "cognitive": 5
+    },
+    {
+      "name": "internal/repository/postgres.jsonItems",
+      "file": "internal/repository/postgres/mapping.go",
+      "line": 9,
+      "lines": 20,
+      "cyclomatic": 5,
+      "cognitive": 6
+    },
+    {
+      "name": "internal/repository/postgres.reportList",
+      "file": "internal/repository/postgres/results.go",
+      "line": 23,
+      "lines": 20,
+      "cyclomatic": 5,
+      "cognitive": 6
+    },
+    {
+      "name": "internal/repository/postgres.(*Repository).TeamsPage",
+      "file": "internal/repository/postgres/teams.go",
+      "line": 51,
+      "lines": 20,
+      "cyclomatic": 5,
+      "cognitive": 5
+    },
+    {
+      "name": "internal/repository/postgres.(*Repository).InvitationsPage",
+      "file": "internal/repository/postgres/teams.go",
+      "line": 163,
+      "lines": 20,
+      "cyclomatic": 5,
+      "cognitive": 5
+    },
+    {
+      "name": "internal/repository/postgres.(*Repository).MatchesUsingTournamentReferee",
+      "file": "internal/repository/postgres/tournaments.go",
+      "line": 156,
+      "lines": 21,
+      "cyclomatic": 5,
+      "cognitive": 6
+    },
+    {
+      "name": "internal/service.protectLastAdmin",
+      "file": "internal/service/admin.go",
+      "line": 20,
+      "lines": 17,
+      "cyclomatic": 5,
+      "cognitive": 4
+    },
+    {
+      "name": "internal/service.validateApplicationPlayers",
+      "file": "internal/service/applications.go",
+      "line": 113,
+      "lines": 17,
+      "cyclomatic": 5,
+      "cognitive": 5
+    },
+    {
+      "name": "internal/service.(*Service).DeliverMail",
+      "file": "internal/service/background.go",
+      "line": 35,
+      "lines": 15,
+      "cyclomatic": 5,
+      "cognitive": 6
+    },
+    {
+      "name": "internal/service.drawAvailable",
+      "file": "internal/service/draw.go",
+      "line": 49,
+      "lines": 13,
+      "cyclomatic": 5,
+      "cognitive": 4
+    },
+    {
+      "name": "internal/service.fillWinner",
+      "file": "internal/service/draw.go",
+      "line": 173,
+      "lines": 15,
+      "cyclomatic": 5,
+      "cognitive": 8
+    },
+    {
+      "name": "internal/service.sameDrawParticipants",
+      "file": "internal/service/draw.go",
+      "line": 339,
+      "lines": 16,
+      "cyclomatic": 5,
+      "cognitive": 5
+    },
+    {
+      "name": "internal/service.(*Service).queueAccountToken",
+      "file": "internal/service/identity.go",
+      "line": 18,
+      "lines": 19,
+      "cyclomatic": 5,
+      "cognitive": 4
+    },
+    {
+      "name": "internal/service.(*Service).Register",
+      "file": "internal/service/identity.go",
+      "line": 47,
+      "lines": 19,
+      "cyclomatic": 5,
+      "cognitive": 6
+    },
+    {
+      "name": "internal/service.issueSession",
+      "file": "internal/service/identity.go",
+      "line": 91,
+      "lines": 19,
+      "cyclomatic": 5,
+      "cognitive": 4
+    },
+    {
+      "name": "internal/service.(*Service).Authenticate",
+      "file": "internal/service/identity.go",
+      "line": 146,
+      "lines": 14,
+      "cyclomatic": 5,
+      "cognitive": 4
+    },
+    {
+      "name": "internal/service.(*Service).RefreshTokens",
+      "file": "internal/service/identity.go",
+      "line": 161,
+      "lines": 21,
+      "cyclomatic": 5,
+      "cognitive": 8
+    },
+    {
+      "name": "internal/service.(*Service).UpdateProfile",
+      "file": "internal/service/identity.go",
+      "line": 251,
+      "lines": 22,
+      "cyclomatic": 5,
+      "cognitive": 7
+    },
+    {
+      "name": "internal/service.(*Service).UploadFile",
+      "file": "internal/service/resources.go",
+      "line": 20,
+      "lines": 23,
+      "cyclomatic": 5,
+      "cognitive": 4
+    },
+    {
+      "name": "internal/service.startPlayoffs",
+      "file": "internal/service/results_progression.go",
+      "line": 178,
+      "lines": 18,
+      "cyclomatic": 5,
+      "cognitive": 4
+    },
+    {
+      "name": "internal/service.replacePlayoffDraw",
+      "file": "internal/service/results_progression.go",
+      "line": 206,
+      "lines": 14,
+      "cyclomatic": 5,
+      "cognitive": 7
+    },
+    {
+      "name": "internal/service.scheduleConflict",
+      "file": "internal/service/scheduling.go",
+      "line": 32,
+      "lines": 17,
+      "cyclomatic": 5,
+      "cognitive": 4
+    },
+    {
+      "name": "internal/service.writeSchedule",
+      "file": "internal/service/scheduling.go",
+      "line": 50,
+      "lines": 20,
+      "cyclomatic": 5,
+      "cognitive": 4
+    },
+    {
+      "name": "internal/service.ensurePersonalTeam",
+      "file": "internal/service/teams.go",
+      "line": 52,
+      "lines": 19,
+      "cyclomatic": 5,
+      "cognitive": 4
+    },
+    {
+      "name": "internal/service.resolveInvitee",
+      "file": "internal/service/teams.go",
+      "line": 253,
+      "lines": 17,
+      "cyclomatic": 5,
+      "cognitive": 4
+    },
+    {
+      "name": "internal/service.authorizeInvitation",
+      "file": "internal/service/teams.go",
+      "line": 347,
+      "lines": 12,
+      "cyclomatic": 5,
+      "cognitive": 5
+    },
+    {
+      "name": "internal/service.(lockedInvitation).validate",
+      "file": "internal/service/teams.go",
+      "line": 360,
+      "lines": 12,
+      "cyclomatic": 5,
+      "cognitive": 4
+    },
+    {
+      "name": "internal/service.(*Service).RevokeInvitation",
+      "file": "internal/service/teams.go",
+      "line": 400,
+      "lines": 15,
+      "cyclomatic": 5,
+      "cognitive": 7
+    },
+    {
+      "name": "internal/service.(*Service).UpdateTournament",
+      "file": "internal/service/tournaments.go",
+      "line": 202,
+      "lines": 15,
+      "cyclomatic": 5,
+      "cognitive": 7
+    },
+    {
+      "name": "internal/service.updateTournamentFields",
+      "file": "internal/service/tournaments.go",
+      "line": 218,
+      "lines": 20,
+      "cyclomatic": 5,
+      "cognitive": 5
+    },
+    {
+      "name": "internal/service.(*Service).CancelTournament",
+      "file": "internal/service/tournaments.go",
+      "line": 282,
+      "lines": 14,
+      "cyclomatic": 5,
+      "cognitive": 6
+    },
+    {
+      "name": "internal/api/v1.parseEventCursor",
+      "file": "internal/api/v1/events.go",
+      "line": 50,
+      "lines": 10,
+      "cyclomatic": 4,
+      "cognitive": 3
+    },
+    {
+      "name": "internal/container.New",
+      "file": "internal/container/container.go",
+      "line": 22,
+      "lines": 18,
+      "cyclomatic": 4,
+      "cognitive": 3
+    },
+    {
+      "name": "internal/lib/smtpclient.(*Client).sender",
+      "file": "internal/lib/smtpclient/client.go",
+      "line": 67,
+      "lines": 13,
+      "cyclomatic": 4,
+      "cognitive": 3
+    },
+    {
+      "name": "internal/model.(FilePurpose).Valid",
+      "file": "internal/model/entities.go",
+      "line": 38,
+      "lines": 12,
+      "cyclomatic": 4,
+      "cognitive": 1
+    },
+    {
+      "name": "internal/model.(RulesBestOf).Valid",
+      "file": "internal/model/entities.go",
+      "line": 134,
+      "lines": 12,
+      "cyclomatic": 4,
+      "cognitive": 1
+    },
+    {
+      "name": "internal/model.(TournamentFormat).Valid",
+      "file": "internal/model/entities.go",
+      "line": 231,
+      "lines": 12,
+      "cyclomatic": 4,
+      "cognitive": 1
+    },
+    {
+      "name": "internal/repository/postgres.(*Repository).ReplaceUserRoles",
+      "file": "internal/repository/postgres/admin.go",
+      "line": 55,
+      "lines": 12,
+      "cyclomatic": 4,
+      "cognitive": 4
+    },
+    {
+      "name": "internal/repository/postgres.matchList",
+      "file": "internal/repository/postgres/competition.go",
+      "line": 26,
+      "lines": 16,
+      "cyclomatic": 4,
+      "cognitive": 4
+    },
+    {
+      "name": "internal/repository/postgres.(*Repository).InsertGroup",
+      "file": "internal/repository/postgres/draw.go",
+      "line": 61,
+      "lines": 11,
+      "cyclomatic": 4,
+      "cognitive": 4
+    },
+    {
+      "name": "internal/repository/postgres.(*Repository).WithinTx",
+      "file": "internal/repository/postgres/repository.go",
+      "line": 28,
+      "lines": 14,
+      "cyclomatic": 4,
+      "cognitive": 3
+    },
+    {
+      "name": "internal/repository/postgres.(*Repository).ExportRows",
+      "file": "internal/repository/postgres/resources.go",
+      "line": 31,
+      "lines": 23,
+      "cyclomatic": 4,
+      "cognitive": 4
+    },
+    {
+      "name": "internal/repository/postgres.(*Repository).EventsAfter",
+      "file": "internal/repository/postgres/resources.go",
+      "line": 59,
+      "lines": 16,
+      "cyclomatic": 4,
+      "cognitive": 4
+    },
+    {
+      "name": "internal/repository/postgres.(*Repository).CreateBootstrapAdmin",
+      "file": "internal/repository/postgres/resources.go",
+      "line": 106,
+      "lines": 11,
+      "cyclomatic": 4,
+      "cognitive": 4
+    },
+    {
+      "name": "internal/repository/postgres.(*Repository).ExpiredResultCandidates",
+      "file": "internal/repository/postgres/results_disputes.go",
+      "line": 63,
+      "lines": 16,
+      "cyclomatic": 4,
+      "cognitive": 4
+    },
+    {
+      "name": "internal/repository/postgres.(*Repository).UnplacedStandings",
+      "file": "internal/repository/postgres/results_progression.go",
+      "line": 66,
+      "lines": 16,
+      "cyclomatic": 4,
+      "cognitive": 4
+    },
+    {
+      "name": "internal/repository/postgres.(*Repository).ReadRatedMatches",
+      "file": "internal/repository/postgres/results_ratings.go",
+      "line": 9,
+      "lines": 16,
+      "cyclomatic": 4,
+      "cognitive": 4
+    },
+    {
+      "name": "internal/repository/postgres.(*Repository).ReadStandingParticipants",
+      "file": "internal/repository/postgres/results_standings.go",
+      "line": 36,
+      "lines": 16,
+      "cyclomatic": 4,
+      "cognitive": 4
+    },
+    {
+      "name": "internal/repository/postgres.optionalUUIDEqual",
+      "file": "internal/repository/postgres/results_standings.go",
+      "line": 65,
+      "lines": 6,
+      "cyclomatic": 4,
+      "cognitive": 3
+    },
+    {
+      "name": "internal/repository/postgres.(*Repository).TeamMembers",
+      "file": "internal/repository/postgres/teams.go",
+      "line": 101,
+      "lines": 16,
+      "cyclomatic": 4,
+      "cognitive": 4
+    },
+    {
+      "name": "internal/service.lockAdmin",
+      "file": "internal/service/admin.go",
+      "line": 38,
+      "lines": 13,
+      "cyclomatic": 4,
+      "cognitive": 3
+    },
+    {
+      "name": "internal/service.(*Service).Background",
+      "file": "internal/service/background.go",
+      "line": 12,
+      "lines": 12,
+      "cyclomatic": 4,
+      "cognitive": 3
+    },
+    {
+      "name": "internal/service.(*Service).deliverNextMail",
+      "file": "internal/service/background.go",
+      "line": 53,
+      "lines": 19,
+      "cyclomatic": 4,
+      "cognitive": 6
+    },
+    {
+      "name": "internal/service.validateDiscipline",
+      "file": "internal/service/catalog.go",
+      "line": 18,
+      "lines": 9,
+      "cyclomatic": 4,
+      "cognitive": 3
+    },
+    {
+      "name": "internal/service.(*Service).CreateDiscipline",
+      "file": "internal/service/catalog.go",
+      "line": 28,
+      "lines": 18,
+      "cyclomatic": 4,
+      "cognitive": 4
+    },
+    {
+      "name": "internal/service.(*Service).matchTransaction",
+      "file": "internal/service/competition.go",
+      "line": 13,
+      "lines": 17,
+      "cyclomatic": 4,
+      "cognitive": 5
+    },
+    {
+      "name": "internal/service.requireMatchReferee",
+      "file": "internal/service/competition.go",
+      "line": 95,
+      "lines": 9,
+      "cyclomatic": 4,
+      "cognitive": 3
+    },
+    {
+      "name": "internal/service.notifyMatch",
+      "file": "internal/service/competition.go",
+      "line": 104,
+      "lines": 12,
+      "cyclomatic": 4,
+      "cognitive": 4
+    },
+    {
+      "name": "internal/service.optionalUUIDEqual",
+      "file": "internal/service/competition.go",
+      "line": 131,
+      "lines": 6,
+      "cyclomatic": 4,
+      "cognitive": 3
+    },
+    {
+      "name": "internal/service.linkPlayoffRounds",
+      "file": "internal/service/draw.go",
+      "line": 160,
+      "lines": 13,
+      "cyclomatic": 4,
+      "cognitive": 6
+    },
+    {
+      "name": "internal/service.validateProfileAvatar",
+      "file": "internal/service/identity.go",
+      "line": 237,
+      "lines": 13,
+      "cyclomatic": 4,
+      "cognitive": 3
+    },
+    {
+      "name": "internal/service.validateResult",
+      "file": "internal/service/results.go",
+      "line": 13,
+      "lines": 14,
+      "cyclomatic": 4,
+      "cognitive": 3
+    },
+    {
+      "name": "internal/service.(*Service).ListResultReports",
+      "file": "internal/service/results.go",
+      "line": 79,
+      "lines": 14,
+      "cyclomatic": 4,
+      "cognitive": 3
+    },
+    {
+      "name": "internal/service.(*Service).GetDispute",
+      "file": "internal/service/results_disputes.go",
+      "line": 13,
+      "lines": 15,
+      "cyclomatic": 4,
+      "cognitive": 3
+    },
+    {
+      "name": "internal/service.openDispute",
+      "file": "internal/service/results_disputes.go",
+      "line": 39,
+      "lines": 14,
+      "cyclomatic": 4,
+      "cognitive": 3
+    },
+    {
+      "name": "internal/service.requireCompletedDisputeCaptain",
+      "file": "internal/service/results_disputes.go",
+      "line": 72,
+      "lines": 13,
+      "cyclomatic": 4,
+      "cognitive": 3
+    },
+    {
+      "name": "internal/service.recordDisputedMatch",
+      "file": "internal/service/results_disputes.go",
+      "line": 117,
+      "lines": 14,
+      "cyclomatic": 4,
+      "cognitive": 3
+    },
+    {
+      "name": "internal/service.(*Service).AutoConfirm",
+      "file": "internal/service/results_disputes.go",
+      "line": 195,
+      "lines": 12,
+      "cyclomatic": 4,
+      "cognitive": 4
+    },
+    {
+      "name": "internal/service.qualifiedParticipants",
+      "file": "internal/service/results_progression.go",
+      "line": 114,
+      "lines": 18,
+      "cyclomatic": 4,
+      "cognitive": 3
+    },
+    {
+      "name": "internal/service.rankedGroupRows",
+      "file": "internal/service/results_progression.go",
+      "line": 143,
+      "lines": 11,
+      "cyclomatic": 4,
+      "cognitive": 6
+    },
+    {
+      "name": "internal/service.wildcardLess",
+      "file": "internal/service/results_progression.go",
+      "line": 165,
+      "lines": 12,
+      "cyclomatic": 4,
+      "cognitive": 3
+    },
+    {
+      "name": "internal/service.(*Service).ScheduleMatch",
+      "file": "internal/service/scheduling.go",
+      "line": 70,
+      "lines": 18,
+      "cyclomatic": 4,
+      "cognitive": 6
+    },
+    {
+      "name": "internal/service.notify",
+      "file": "internal/service/service.go",
+      "line": 58,
+      "lines": 13,
+      "cyclomatic": 4,
+      "cognitive": 3
+    },
+    {
+      "name": "internal/service.validTeamLogo",
+      "file": "internal/service/teams.go",
+      "line": 36,
+      "lines": 13,
+      "cyclomatic": 4,
+      "cognitive": 3
+    },
+    {
+      "name": "internal/service.(lockedInvitation).apply",
+      "file": "internal/service/teams.go",
+      "line": 384,
+      "lines": 15,
+      "cyclomatic": 4,
+      "cognitive": 4
+    },
+    {
+      "name": "internal/service.requireTournamentOwner",
+      "file": "internal/service/tournaments.go",
+      "line": 14,
+      "lines": 6,
+      "cyclomatic": 4,
+      "cognitive": 3
+    },
+    {
+      "name": "internal/service.notifyTournamentPlayers",
+      "file": "internal/service/tournaments.go",
+      "line": 297,
+      "lines": 12,
+      "cyclomatic": 4,
+      "cognitive": 4
+    },
+    {
+      "name": "internal/service.validateTournamentRefereeSchedule",
+      "file": "internal/service/tournaments.go",
+      "line": 341,
+      "lines": 12,
+      "cyclomatic": 4,
+      "cognitive": 4
+    },
+    {
+      "name": "cmd/api.main",
+      "file": "cmd/api/main.go",
+      "line": 14,
+      "lines": 13,
+      "cyclomatic": 3,
+      "cognitive": 2
+    },
+    {
+      "name": "cmd/bootstrap.run",
+      "file": "cmd/bootstrap/main.go",
+      "line": 21,
+      "lines": 14,
+      "cyclomatic": 3,
+      "cognitive": 2
+    },
+    {
+      "name": "internal/api/v1.(*API).BlockUser",
+      "file": "internal/api/v1/admin.go",
+      "line": 26,
+      "lines": 11,
+      "cyclomatic": 3,
+      "cognitive": 2
+    },
+    {
+      "name": "internal/api/v1.(*API).UpdateUserRoles",
+      "file": "internal/api/v1/admin.go",
+      "line": 38,
+      "lines": 11,
+      "cyclomatic": 3,
+      "cognitive": 2
+    },
+    {
+      "name": "internal/api/v1.(*API).ModerateTournament",
+      "file": "internal/api/v1/admin.go",
+      "line": 50,
+      "lines": 11,
+      "cyclomatic": 3,
+      "cognitive": 2
+    },
+    {
+      "name": "internal/api/v1.(*API).DeleteTournament",
+      "file": "internal/api/v1/admin.go",
+      "line": 62,
+      "lines": 10,
+      "cyclomatic": 3,
+      "cognitive": 2
+    },
+    {
+      "name": "internal/api/v1.(*API).SubmitApplication",
+      "file": "internal/api/v1/applications.go",
+      "line": 34,
+      "lines": 11,
+      "cyclomatic": 3,
+      "cognitive": 2
+    },
+    {
+      "name": "internal/api/v1.(*API).ReviewApplication",
+      "file": "internal/api/v1/applications.go",
+      "line": 46,
+      "lines": 11,
+      "cyclomatic": 3,
+      "cognitive": 2
+    },
+    {
+      "name": "internal/api/v1.(*API).WithdrawApplication",
+      "file": "internal/api/v1/applications.go",
+      "line": 58,
+      "lines": 11,
+      "cyclomatic": 3,
+      "cognitive": 2
+    },
+    {
+      "name": "internal/api/v1.bindJSON",
+      "file": "internal/api/v1/binding.go",
+      "line": 9,
+      "lines": 12,
+      "cyclomatic": 3,
+      "cognitive": 2
+    },
+    {
+      "name": "internal/api/v1.(*API).CreateDiscipline",
+      "file": "internal/api/v1/catalog.go",
+      "line": 18,
+      "lines": 11,
+      "cyclomatic": 3,
+      "cognitive": 2
+    },
+    {
+      "name": "internal/api/v1.(*API).UpdateDiscipline",
+      "file": "internal/api/v1/catalog.go",
+      "line": 30,
+      "lines": 11,
+      "cyclomatic": 3,
+      "cognitive": 2
+    },
+    {
+      "name": "internal/api/v1.(*API).PreviewDraw",
+      "file": "internal/api/v1/draw.go",
+      "line": 17,
+      "lines": 11,
+      "cyclomatic": 3,
+      "cognitive": 2
+    },
+    {
+      "name": "internal/api/v1.(*API).ConfirmDraw",
+      "file": "internal/api/v1/draw.go",
+      "line": 29,
+      "lines": 11,
+      "cyclomatic": 3,
+      "cognitive": 2
+    },
+    {
+      "name": "internal/api/v1.(*API).Register",
+      "file": "internal/api/v1/identity.go",
+      "line": 9,
+      "lines": 10,
+      "cyclomatic": 3,
+      "cognitive": 2
+    },
+    {
+      "name": "internal/api/v1.(*API).VerifyEmail",
+      "file": "internal/api/v1/identity.go",
+      "line": 20,
+      "lines": 10,
+      "cyclomatic": 3,
+      "cognitive": 2
+    },
+    {
+      "name": "internal/api/v1.(*API).Login",
+      "file": "internal/api/v1/identity.go",
+      "line": 31,
+      "lines": 11,
+      "cyclomatic": 3,
+      "cognitive": 2
+    },
+    {
+      "name": "internal/api/v1.(*API).RefreshTokens",
+      "file": "internal/api/v1/identity.go",
+      "line": 43,
+      "lines": 11,
+      "cyclomatic": 3,
+      "cognitive": 2
+    },
+    {
+      "name": "internal/api/v1.(*API).Logout",
+      "file": "internal/api/v1/identity.go",
+      "line": 55,
+      "lines": 10,
+      "cyclomatic": 3,
+      "cognitive": 2
+    },
+    {
+      "name": "internal/api/v1.(*API).RequestPasswordReset",
+      "file": "internal/api/v1/identity.go",
+      "line": 66,
+      "lines": 10,
+      "cyclomatic": 3,
+      "cognitive": 2
+    },
+    {
+      "name": "internal/api/v1.(*API).ResetPassword",
+      "file": "internal/api/v1/identity.go",
+      "line": 77,
+      "lines": 10,
+      "cyclomatic": 3,
+      "cognitive": 2
+    },
+    {
+      "name": "internal/api/v1.(*API).UpdateProfile",
+      "file": "internal/api/v1/identity.go",
+      "line": 88,
+      "lines": 11,
+      "cyclomatic": 3,
+      "cognitive": 2
+    },
+    {
+      "name": "internal/api/v1.(*API).ReportResult",
+      "file": "internal/api/v1/results.go",
+      "line": 18,
+      "lines": 11,
+      "cyclomatic": 3,
+      "cognitive": 2
+    },
+    {
+      "name": "internal/api/v1.(*API).ConfirmResult",
+      "file": "internal/api/v1/results.go",
+      "line": 30,
+      "lines": 11,
+      "cyclomatic": 3,
+      "cognitive": 2
+    },
+    {
+      "name": "internal/api/v1.(*API).SetRefereeResult",
+      "file": "internal/api/v1/results.go",
+      "line": 42,
+      "lines": 11,
+      "cyclomatic": 3,
+      "cognitive": 2
+    },
+    {
+      "name": "internal/api/v1.(*API).DisputeResult",
+      "file": "internal/api/v1/results_disputes.go",
+      "line": 17,
+      "lines": 11,
+      "cyclomatic": 3,
+      "cognitive": 2
+    },
+    {
+      "name": "internal/api/v1.(*API).ResolveDispute",
+      "file": "internal/api/v1/results_disputes.go",
+      "line": 29,
+      "lines": 11,
+      "cyclomatic": 3,
+      "cognitive": 2
+    },
+    {
+      "name": "internal/api/v1.(*API).ScheduleMatch",
+      "file": "internal/api/v1/scheduling.go",
+      "line": 10,
+      "lines": 11,
+      "cyclomatic": 3,
+      "cognitive": 2
+    },
+    {
+      "name": "internal/api/v1.(*API).ScheduleRound",
+      "file": "internal/api/v1/scheduling.go",
+      "line": 22,
+      "lines": 11,
+      "cyclomatic": 3,
+      "cognitive": 2
+    },
+    {
+      "name": "internal/api/v1.(*API).AssignMatchReferee",
+      "file": "internal/api/v1/scheduling.go",
+      "line": 34,
+      "lines": 11,
+      "cyclomatic": 3,
+      "cognitive": 2
+    },
+    {
+      "name": "internal/api/v1.(*API).ListTeamMembers",
+      "file": "internal/api/v1/teams.go",
+      "line": 42,
+      "lines": 11,
+      "cyclomatic": 3,
+      "cognitive": 2
+    },
+    {
+      "name": "internal/api/v1.(*API).CreateTeam",
+      "file": "internal/api/v1/teams.go",
+      "line": 54,
+      "lines": 11,
+      "cyclomatic": 3,
+      "cognitive": 2
+    },
+    {
+      "name": "internal/api/v1.(*API).UpdateTeam",
+      "file": "internal/api/v1/teams.go",
+      "line": 66,
+      "lines": 11,
+      "cyclomatic": 3,
+      "cognitive": 2
+    },
+    {
+      "name": "internal/api/v1.(*API).DeleteTeam",
+      "file": "internal/api/v1/teams.go",
+      "line": 78,
+      "lines": 10,
+      "cyclomatic": 3,
+      "cognitive": 2
+    },
+    {
+      "name": "internal/api/v1.(*API).RemoveTeamMember",
+      "file": "internal/api/v1/teams.go",
+      "line": 89,
+      "lines": 10,
+      "cyclomatic": 3,
+      "cognitive": 2
+    },
+    {
+      "name": "internal/api/v1.(*API).TransferCaptain",
+      "file": "internal/api/v1/teams.go",
+      "line": 100,
+      "lines": 11,
+      "cyclomatic": 3,
+      "cognitive": 2
+    },
+    {
+      "name": "internal/api/v1.(*API).CreateInvitation",
+      "file": "internal/api/v1/teams.go",
+      "line": 112,
+      "lines": 11,
+      "cyclomatic": 3,
+      "cognitive": 2
+    },
+    {
+      "name": "internal/api/v1.(*API).DecideInvitation",
+      "file": "internal/api/v1/teams.go",
+      "line": 124,
+      "lines": 11,
+      "cyclomatic": 3,
+      "cognitive": 2
+    },
+    {
+      "name": "internal/api/v1.(*API).CreateTournament",
+      "file": "internal/api/v1/tournaments.go",
+      "line": 34,
+      "lines": 11,
+      "cyclomatic": 3,
+      "cognitive": 2
+    },
+    {
+      "name": "internal/api/v1.(*API).UpdateTournament",
+      "file": "internal/api/v1/tournaments.go",
+      "line": 46,
+      "lines": 11,
+      "cyclomatic": 3,
+      "cognitive": 2
+    },
+    {
+      "name": "internal/api/v1.(*API).PublishTournament",
+      "file": "internal/api/v1/tournaments.go",
+      "line": 58,
+      "lines": 11,
+      "cyclomatic": 3,
+      "cognitive": 2
+    },
+    {
+      "name": "internal/api/v1.(*API).CancelTournament",
+      "file": "internal/api/v1/tournaments.go",
+      "line": 70,
+      "lines": 11,
+      "cyclomatic": 3,
+      "cognitive": 2
+    },
+    {
+      "name": "internal/api/v1.(*API).CompleteTournament",
+      "file": "internal/api/v1/tournaments.go",
+      "line": 82,
+      "lines": 11,
+      "cyclomatic": 3,
+      "cognitive": 2
+    },
+    {
+      "name": "internal/api/v1.(*API).AssignTournamentReferee",
+      "file": "internal/api/v1/tournaments.go",
+      "line": 94,
+      "lines": 11,
+      "cyclomatic": 3,
+      "cognitive": 2
+    },
+    {
+      "name": "internal/lib/csvutil.EscapeCell",
+      "file": "internal/lib/csvutil/csv.go",
+      "line": 6,
+      "lines": 7,
+      "cyclomatic": 3,
+      "cognitive": 2
+    },
+    {
+      "name": "internal/lib/pagination.Values",
+      "file": "internal/lib/pagination/pagination.go",
+      "line": 4,
+      "lines": 10,
+      "cyclomatic": 3,
+      "cognitive": 2
+    },
+    {
+      "name": "internal/lib/security.HashPassword",
+      "file": "internal/lib/security/security.go",
+      "line": 25,
+      "lines": 7,
+      "cyclomatic": 3,
+      "cognitive": 2
+    },
+    {
+      "name": "internal/lib/slice.Map",
+      "file": "internal/lib/slice/slice.go",
+      "line": 4,
+      "lines": 10,
+      "cyclomatic": 3,
+      "cognitive": 2
+    },
+    {
+      "name": "internal/lib/smtpclient.(*Client).Send",
+      "file": "internal/lib/smtpclient/client.go",
+      "line": 27,
+      "lines": 11,
+      "cyclomatic": 3,
+      "cognitive": 2
+    },
+    {
+      "name": "internal/model.(ReviewApplicationRequestDecision).Valid",
+      "file": "internal/model/entities.go",
+      "line": 107,
+      "lines": 10,
+      "cyclomatic": 3,
+      "cognitive": 1
+    },
+    {
+      "name": "internal/model.(RulesRoundRobinLegs).Valid",
+      "file": "internal/model/entities.go",
+      "line": 154,
+      "lines": 10,
+      "cyclomatic": 3,
+      "cognitive": 1
+    },
+    {
+      "name": "internal/repository/postgres.(*Repository).ClearTournamentDraw",
+      "file": "internal/repository/postgres/draw.go",
+      "line": 44,
+      "lines": 9,
+      "cyclomatic": 3,
+      "cognitive": 3
+    },
+    {
+      "name": "internal/repository/postgres.(*Repository).InsertMatches",
+      "file": "internal/repository/postgres/draw.go",
+      "line": 72,
+      "lines": 9,
+      "cyclomatic": 3,
+      "cognitive": 3
+    },
+    {
+      "name": "internal/repository/postgres.(*Repository).InsertDisputeFiles",
+      "file": "internal/repository/postgres/results_disputes.go",
+      "line": 26,
+      "lines": 8,
+      "cyclomatic": 3,
+      "cognitive": 3
+    },
+    {
+      "name": "internal/repository/postgres.(*Repository).ReadTournament",
+      "file": "internal/repository/postgres/tournaments.go",
+      "line": 32,
+      "lines": 13,
+      "cyclomatic": 3,
+      "cognitive": 2
+    },
+    {
+      "name": "internal/repository/postgres.tournamentRuleArgs",
+      "file": "internal/repository/postgres/tournaments.go",
+      "line": 96,
+      "lines": 12,
+      "cyclomatic": 3,
+      "cognitive": 2
+    },
+    {
+      "name": "internal/service.(*Service).ListApplications",
+      "file": "internal/service/applications.go",
+      "line": 14,
+      "lines": 11,
+      "cyclomatic": 3,
+      "cognitive": 2
+    },
+    {
+      "name": "internal/service.applicationChanged",
+      "file": "internal/service/applications.go",
+      "line": 131,
+      "lines": 9,
+      "cyclomatic": 3,
+      "cognitive": 2
+    },
+    {
+      "name": "internal/service.(*Service).ReadNotification",
+      "file": "internal/service/catalog.go",
+      "line": 102,
+      "lines": 10,
+      "cyclomatic": 3,
+      "cognitive": 2
+    },
+    {
+      "name": "internal/service.(*Service).GetMatch",
+      "file": "internal/service/competition.go",
+      "line": 42,
+      "lines": 10,
+      "cyclomatic": 3,
+      "cognitive": 2
+    },
+    {
+      "name": "internal/service.assignedReferee",
+      "file": "internal/service/competition.go",
+      "line": 89,
+      "lines": 6,
+      "cyclomatic": 3,
+      "cognitive": 2
+    },
+    {
+      "name": "internal/service.roundRobinMatches",
+      "file": "internal/service/draw.go",
+      "line": 94,
+      "lines": 15,
+      "cyclomatic": 3,
+      "cognitive": 2
+    },
+    {
+      "name": "internal/service.(*Service).VerifyEmail",
+      "file": "internal/service/identity.go",
+      "line": 67,
+      "lines": 12,
+      "cyclomatic": 3,
+      "cognitive": 4
+    },
+    {
+      "name": "internal/service.(*Service).allowLogin",
+      "file": "internal/service/identity.go",
+      "line": 80,
+      "lines": 10,
+      "cyclomatic": 3,
+      "cognitive": 2
+    },
+    {
+      "name": "internal/service.(*Service).RequestPasswordReset",
+      "file": "internal/service/identity.go",
+      "line": 187,
+      "lines": 12,
+      "cyclomatic": 3,
+      "cognitive": 4
+    },
+    {
+      "name": "internal/service.validateProfileTimezone",
+      "file": "internal/service/identity.go",
+      "line": 227,
+      "lines": 9,
+      "cyclomatic": 3,
+      "cognitive": 2
+    },
+    {
+      "name": "internal/service.scoreWinner",
+      "file": "internal/service/results.go",
+      "line": 254,
+      "lines": 9,
+      "cyclomatic": 3,
+      "cognitive": 2
+    },
+    {
+      "name": "internal/service.createDispute",
+      "file": "internal/service/results_disputes.go",
+      "line": 99,
+      "lines": 10,
+      "cyclomatic": 3,
+      "cognitive": 2
+    },
+    {
+      "name": "internal/service.notifyDisputeReferee",
+      "file": "internal/service/results_disputes.go",
+      "line": 132,
+      "lines": 10,
+      "cyclomatic": 3,
+      "cognitive": 2
+    },
+    {
+      "name": "internal/service.stageStandings",
+      "file": "internal/service/results_progression.go",
+      "line": 133,
+      "lines": 9,
+      "cyclomatic": 3,
+      "cognitive": 3
+    },
+    {
+      "name": "internal/service.automaticQualifiers",
+      "file": "internal/service/results_progression.go",
+      "line": 155,
+      "lines": 9,
+      "cyclomatic": 3,
+      "cognitive": 3
+    },
+    {
+      "name": "internal/service.persistPlayoffDraw",
+      "file": "internal/service/results_progression.go",
+      "line": 230,
+      "lines": 9,
+      "cyclomatic": 3,
+      "cognitive": 2
+    },
+    {
+      "name": "internal/service.ratedMatches",
+      "file": "internal/service/results_ratings.go",
+      "line": 68,
+      "lines": 11,
+      "cyclomatic": 3,
+      "cognitive": 2
+    },
+    {
+      "name": "internal/service.standingsParticipants",
+      "file": "internal/service/results_standings.go",
+      "line": 20,
+      "lines": 11,
+      "cyclomatic": 3,
+      "cognitive": 2
+    },
+    {
+      "name": "internal/service.updateStanding",
+      "file": "internal/service/results_standings.go",
+      "line": 32,
+      "lines": 17,
+      "cyclomatic": 3,
+      "cognitive": 1
+    },
+    {
+      "name": "internal/service.validateReferee",
+      "file": "internal/service/scheduling.go",
+      "line": 127,
+      "lines": 10,
+      "cyclomatic": 3,
+      "cognitive": 2
+    },
+    {
+      "name": "internal/service.scheduleDependencyConflict",
+      "file": "internal/service/scheduling.go",
+      "line": 175,
+      "lines": 10,
+      "cyclomatic": 3,
+      "cognitive": 2
+    },
+    {
+      "name": "internal/service.requireRole",
+      "file": "internal/service/service.go",
+      "line": 38,
+      "lines": 9,
+      "cyclomatic": 3,
+      "cognitive": 2
+    },
+    {
+      "name": "internal/service.captainTeam",
+      "file": "internal/service/teams.go",
+      "line": 18,
+      "lines": 10,
+      "cyclomatic": 3,
+      "cognitive": 2
+    },
+    {
+      "name": "internal/service.(*Service).DecideInvitation",
+      "file": "internal/service/teams.go",
+      "line": 308,
+      "lines": 16,
+      "cyclomatic": 3,
+      "cognitive": 4
+    },
+    {
+      "name": "internal/service.lockInvitationDecision",
+      "file": "internal/service/teams.go",
+      "line": 331,
+      "lines": 15,
+      "cyclomatic": 3,
+      "cognitive": 2
+    },
+    {
+      "name": "internal/service.addInvitedMember",
+      "file": "internal/service/teams.go",
+      "line": 373,
+      "lines": 10,
+      "cyclomatic": 3,
+      "cognitive": 2
+    },
+    {
+      "name": "internal/service.tournamentPublic",
+      "file": "internal/service/tournaments.go",
+      "line": 21,
+      "lines": 10,
+      "cyclomatic": 3,
+      "cognitive": 2
+    },
+    {
+      "name": "internal/service.(*Service).PublishTournament",
+      "file": "internal/service/tournaments.go",
+      "line": 270,
+      "lines": 11,
+      "cyclomatic": 3,
+      "cognitive": 4
+    },
+    {
+      "name": "cmd/bootstrap.main",
+      "file": "cmd/bootstrap/main.go",
+      "line": 14,
+      "lines": 7,
+      "cyclomatic": 2,
+      "cognitive": 1
+    },
+    {
+      "name": "cmd/migrate.main",
+      "file": "cmd/migrate/main.go",
+      "line": 64,
+      "lines": 10,
+      "cyclomatic": 2,
+      "cognitive": 1
+    },
+    {
+      "name": "internal/api/v1.(*API).ListAdminTournaments",
+      "file": "internal/api/v1/admin.go",
+      "line": 10,
+      "lines": 7,
+      "cyclomatic": 2,
+      "cognitive": 1
+    },
+    {
+      "name": "internal/api/v1.(*API).ListAdminUsers",
+      "file": "internal/api/v1/admin.go",
+      "line": 18,
+      "lines": 7,
+      "cyclomatic": 2,
+      "cognitive": 1
+    },
+    {
+      "name": "internal/api/v1.(*API).ListAudit",
+      "file": "internal/api/v1/admin.go",
+      "line": 73,
+      "lines": 7,
+      "cyclomatic": 2,
+      "cognitive": 1
+    },
+    {
+      "name": "internal/api/v1.New",
+      "file": "internal/api/v1/api.go",
+      "line": 26,
+      "lines": 17,
+      "cyclomatic": 2,
+      "cognitive": 1
+    },
+    {
+      "name": "internal/api/v1.(*API).ListApplications",
+      "file": "internal/api/v1/applications.go",
+      "line": 10,
+      "lines": 7,
+      "cyclomatic": 2,
+      "cognitive": 1
+    },
+    {
+      "name": "internal/api/v1.(*API).ListParticipants",
+      "file": "internal/api/v1/applications.go",
+      "line": 18,
+      "lines": 7,
+      "cyclomatic": 2,
+      "cognitive": 1
+    },
+    {
+      "name": "internal/api/v1.(*API).ListMyApplications",
+      "file": "internal/api/v1/applications.go",
+      "line": 26,
+      "lines": 7,
+      "cyclomatic": 2,
+      "cognitive": 1
+    },
+    {
+      "name": "internal/api/v1.(*API).ListDisciplines",
+      "file": "internal/api/v1/catalog.go",
+      "line": 10,
+      "lines": 7,
+      "cyclomatic": 2,
+      "cognitive": 1
+    },
+    {
+      "name": "internal/api/v1.(*API).ListRatings",
+      "file": "internal/api/v1/catalog.go",
+      "line": 42,
+      "lines": 7,
+      "cyclomatic": 2,
+      "cognitive": 1
+    },
+    {
+      "name": "internal/api/v1.(*API).ListRatingHistory",
+      "file": "internal/api/v1/catalog.go",
+      "line": 50,
+      "lines": 7,
+      "cyclomatic": 2,
+      "cognitive": 1
+    },
+    {
+      "name": "internal/api/v1.(*API).ListNotifications",
+      "file": "internal/api/v1/catalog.go",
+      "line": 58,
+      "lines": 7,
+      "cyclomatic": 2,
+      "cognitive": 1
+    },
+    {
+      "name": "internal/api/v1.(*API).ReadNotification",
+      "file": "internal/api/v1/catalog.go",
+      "line": 66,
+      "lines": 6,
+      "cyclomatic": 2,
+      "cognitive": 1
+    },
+    {
+      "name": "internal/api/v1.(*API).GetMatch",
+      "file": "internal/api/v1/competition.go",
+      "line": 9,
+      "lines": 7,
+      "cyclomatic": 2,
+      "cognitive": 1
+    },
+    {
+      "name": "internal/api/v1.(*API).ListMatches",
+      "file": "internal/api/v1/competition.go",
+      "line": 17,
+      "lines": 7,
+      "cyclomatic": 2,
+      "cognitive": 1
+    },
+    {
+      "name": "internal/api/v1.(*API).GetBracket",
+      "file": "internal/api/v1/draw.go",
+      "line": 9,
+      "lines": 7,
+      "cyclomatic": 2,
+      "cognitive": 1
+    },
+    {
+      "name": "internal/api/v1.(*API).ExportTournament",
+      "file": "internal/api/v1/events.go",
+      "line": 13,
+      "lines": 8,
+      "cyclomatic": 2,
+      "cognitive": 1
+    },
+    {
+      "name": "internal/api/v1.(*API).DownloadFile",
+      "file": "internal/api/v1/files.go",
+      "line": 36,
+      "lines": 11,
+      "cyclomatic": 2,
+      "cognitive": 1
+    },
+    {
+      "name": "internal/api/v1.(*API).GetProfile",
+      "file": "internal/api/v1/identity.go",
+      "line": 100,
+      "lines": 7,
+      "cyclomatic": 2,
+      "cognitive": 1
+    },
+    {
+      "name": "internal/api/v1.(*API).SearchUsers",
+      "file": "internal/api/v1/identity.go",
+      "line": 108,
+      "lines": 7,
+      "cyclomatic": 2,
+      "cognitive": 1
+    },
+    {
+      "name": "internal/api/v1.(*API).ListResultReports",
+      "file": "internal/api/v1/results.go",
+      "line": 10,
+      "lines": 7,
+      "cyclomatic": 2,
+      "cognitive": 1
+    },
+    {
+      "name": "internal/api/v1.(*API).GetDispute",
+      "file": "internal/api/v1/results_disputes.go",
+      "line": 9,
+      "lines": 7,
+      "cyclomatic": 2,
+      "cognitive": 1
+    },
+    {
+      "name": "internal/api/v1.(*API).ListAssignedDisputes",
+      "file": "internal/api/v1/results_disputes.go",
+      "line": 41,
+      "lines": 7,
+      "cyclomatic": 2,
+      "cognitive": 1
+    },
+    {
+      "name": "internal/api/v1.(*API).GetStandings",
+      "file": "internal/api/v1/results_standings.go",
+      "line": 9,
+      "lines": 7,
+      "cyclomatic": 2,
+      "cognitive": 1
+    },
+    {
+      "name": "internal/api/v1.(*API).ListTeams",
+      "file": "internal/api/v1/teams.go",
+      "line": 10,
+      "lines": 7,
+      "cyclomatic": 2,
+      "cognitive": 1
+    },
+    {
+      "name": "internal/api/v1.(*API).ListMyTeams",
+      "file": "internal/api/v1/teams.go",
+      "line": 18,
+      "lines": 7,
+      "cyclomatic": 2,
+      "cognitive": 1
+    },
+    {
+      "name": "internal/api/v1.(*API).ListMyInvitations",
+      "file": "internal/api/v1/teams.go",
+      "line": 26,
+      "lines": 7,
+      "cyclomatic": 2,
+      "cognitive": 1
+    },
+    {
+      "name": "internal/api/v1.(*API).GetTeam",
+      "file": "internal/api/v1/teams.go",
+      "line": 34,
+      "lines": 7,
+      "cyclomatic": 2,
+      "cognitive": 1
+    },
+    {
+      "name": "internal/api/v1.(*API).RevokeInvitation",
+      "file": "internal/api/v1/teams.go",
+      "line": 136,
+      "lines": 6,
+      "cyclomatic": 2,
+      "cognitive": 1
+    },
+    {
+      "name": "internal/api/v1.(*API).ListTournaments",
+      "file": "internal/api/v1/tournaments.go",
+      "line": 10,
+      "lines": 7,
+      "cyclomatic": 2,
+      "cognitive": 1
+    },
+    {
+      "name": "internal/api/v1.(*API).ListMyTournaments",
+      "file": "internal/api/v1/tournaments.go",
+      "line": 18,
+      "lines": 7,
+      "cyclomatic": 2,
+      "cognitive": 1
+    },
+    {
+      "name": "internal/api/v1.(*API).GetTournament",
+      "file": "internal/api/v1/tournaments.go",
+      "line": 26,
+      "lines": 7,
+      "cyclomatic": 2,
+      "cognitive": 1
+    },
+    {
+      "name": "internal/lib/ptr.Map",
+      "file": "internal/lib/ptr/ptr.go",
+      "line": 4,
+      "lines": 7,
+      "cyclomatic": 2,
+      "cognitive": 1
+    },
+    {
+      "name": "internal/lib/security.NewToken",
+      "file": "internal/lib/security/security.go",
+      "line": 14,
+      "lines": 7,
+      "cyclomatic": 2,
+      "cognitive": 1
+    },
+    {
+      "name": "internal/repository/postgres.(*Repository).SoftDeleteTournamentRecord",
+      "file": "internal/repository/postgres/admin.go",
+      "line": 73,
+      "lines": 7,
+      "cyclomatic": 2,
+      "cognitive": 1
+    },
+    {
+      "name": "internal/repository/postgres.(*Repository).AuditPage",
+      "file": "internal/repository/postgres/admin.go",
+      "line": 81,
+      "lines": 10,
+      "cyclomatic": 2,
+      "cognitive": 1
+    },
+    {
+      "name": "internal/repository/postgres.(*Repository).ReadApplication",
+      "file": "internal/repository/postgres/applications.go",
+      "line": 23,
+      "lines": 10,
+      "cyclomatic": 2,
+      "cognitive": 1
+    },
+    {
+      "name": "internal/repository/postgres.(*Repository).ReserveApplicationPlayers",
+      "file": "internal/repository/postgres/applications.go",
+      "line": 90,
+      "lines": 7,
+      "cyclomatic": 2,
+      "cognitive": 1
+    },
+    {
+      "name": "internal/repository/postgres.(*Repository).DisciplinePage",
+      "file": "internal/repository/postgres/catalog.go",
+      "line": 11,
+      "lines": 9,
+      "cyclomatic": 2,
+      "cognitive": 1
+    },
+    {
+      "name": "internal/repository/postgres.(*Repository).Discipline",
+      "file": "internal/repository/postgres/catalog.go",
+      "line": 25,
+      "lines": 7,
+      "cyclomatic": 2,
+      "cognitive": 1
+    },
+    {
+      "name": "internal/repository/postgres.(*Repository).RatingPage",
+      "file": "internal/repository/postgres/catalog.go",
+      "line": 37,
+      "lines": 9,
+      "cyclomatic": 2,
+      "cognitive": 1
+    },
+    {
+      "name": "internal/repository/postgres.(*Repository).RatingHistoryPage",
+      "file": "internal/repository/postgres/catalog.go",
+      "line": 47,
+      "lines": 9,
+      "cyclomatic": 2,
+      "cognitive": 1
+    },
+    {
+      "name": "internal/repository/postgres.(*Repository).NotificationPage",
+      "file": "internal/repository/postgres/catalog.go",
+      "line": 57,
+      "lines": 9,
+      "cyclomatic": 2,
+      "cognitive": 1
+    },
+    {
+      "name": "internal/repository/postgres.(*Repository).Audit",
+      "file": "internal/repository/postgres/common.go",
+      "line": 9,
+      "lines": 8,
+      "cyclomatic": 2,
+      "cognitive": 1
+    },
+    {
+      "name": "internal/repository/postgres.readMatch",
+      "file": "internal/repository/postgres/competition.go",
+      "line": 18,
+      "lines": 7,
+      "cyclomatic": 2,
+      "cognitive": 1
+    },
+    {
+      "name": "internal/repository/postgres.(*Repository).ReadMatchPage",
+      "file": "internal/repository/postgres/competition.go",
+      "line": 90,
+      "lines": 11,
+      "cyclomatic": 2,
+      "cognitive": 1
+    },
+    {
+      "name": "internal/repository/postgres.(*Repository).MatchNotificationRecipients",
+      "file": "internal/repository/postgres/competition.go",
+      "line": 115,
+      "lines": 8,
+      "cyclomatic": 2,
+      "cognitive": 1
+    },
+    {
+      "name": "internal/repository/postgres.(*Repository).AcceptedApplicationsByRating",
+      "file": "internal/repository/postgres/draw.go",
+      "line": 12,
+      "lines": 8,
+      "cyclomatic": 2,
+      "cognitive": 1
+    },
+    {
+      "name": "internal/repository/postgres.(*Repository).InsertDrawPreview",
+      "file": "internal/repository/postgres/draw.go",
+      "line": 25,
+      "lines": 8,
+      "cyclomatic": 2,
+      "cognitive": 1
+    },
+    {
+      "name": "internal/repository/postgres.(*Repository).ReadDrawPreview",
+      "file": "internal/repository/postgres/draw.go",
+      "line": 33,
+      "lines": 11,
+      "cyclomatic": 2,
+      "cognitive": 1
+    },
+    {
+      "name": "internal/repository/postgres.scanProfile",
+      "file": "internal/repository/postgres/identity.go",
+      "line": 21,
+      "lines": 11,
+      "cyclomatic": 2,
+      "cognitive": 1
+    },
+    {
+      "name": "internal/repository/postgres.(*Repository).AuthenticateAccess",
+      "file": "internal/repository/postgres/identity.go",
+      "line": 102,
+      "lines": 13,
+      "cyclomatic": 2,
+      "cognitive": 1
+    },
+    {
+      "name": "internal/repository/postgres.(*Repository).RevokeUserSessions",
+      "file": "internal/repository/postgres/identity.go",
+      "line": 150,
+      "lines": 7,
+      "cyclomatic": 2,
+      "cognitive": 1
+    },
+    {
+      "name": "internal/repository/postgres.jsonObject",
+      "file": "internal/repository/postgres/mapping.go",
+      "line": 30,
+      "lines": 9,
+      "cyclomatic": 2,
+      "cognitive": 1
+    },
+    {
+      "name": "internal/repository/postgres.ignoreNoRows",
+      "file": "internal/repository/postgres/repository.go",
+      "line": 62,
+      "lines": 3,
+      "cyclomatic": 2,
+      "cognitive": 1
+    },
+    {
+      "name": "internal/repository/postgres.(*Repository).PendingMail",
+      "file": "internal/repository/postgres/resources.go",
+      "line": 75,
+      "lines": 10,
+      "cyclomatic": 2,
+      "cognitive": 1
+    },
+    {
+      "name": "internal/repository/postgres.readReport",
+      "file": "internal/repository/postgres/results.go",
+      "line": 13,
+      "lines": 10,
+      "cyclomatic": 2,
+      "cognitive": 1
+    },
+    {
+      "name": "internal/repository/postgres.(*Repository).SupersedeResultReports",
+      "file": "internal/repository/postgres/results.go",
+      "line": 87,
+      "lines": 8,
+      "cyclomatic": 2,
+      "cognitive": 1
+    },
+    {
+      "name": "internal/repository/postgres.(*Repository).ReadDispute",
+      "file": "internal/repository/postgres/results_disputes.go",
+      "line": 13,
+      "lines": 9,
+      "cyclomatic": 2,
+      "cognitive": 1
+    },
+    {
+      "name": "internal/repository/postgres.(*Repository).SetMatchParticipant",
+      "file": "internal/repository/postgres/results_progression.go",
+      "line": 9,
+      "lines": 8,
+      "cyclomatic": 2,
+      "cognitive": 1
+    },
+    {
+      "name": "internal/repository/postgres.(*Repository).Team",
+      "file": "internal/repository/postgres/teams.go",
+      "line": 20,
+      "lines": 7,
+      "cyclomatic": 2,
+      "cognitive": 1
+    },
+    {
+      "name": "internal/repository/postgres.(*Repository).WithdrawPendingTeamApplications",
+      "file": "internal/repository/postgres/teams.go",
+      "line": 83,
+      "lines": 7,
+      "cyclomatic": 2,
+      "cognitive": 1
+    },
+    {
+      "name": "internal/repository/postgres.(*Repository).TournamentPlayerIDs",
+      "file": "internal/repository/postgres/tournaments.go",
+      "line": 147,
+      "lines": 8,
+      "cyclomatic": 2,
+      "cognitive": 1
+    },
+    {
+      "name": "internal/service.(*Service).ListAdminUsers",
+      "file": "internal/service/admin.go",
+      "line": 13,
+      "lines": 6,
+      "cyclomatic": 2,
+      "cognitive": 1
+    },
+    {
+      "name": "internal/service.(*Service).ListAudit",
+      "file": "internal/service/admin.go",
+      "line": 187,
+      "lines": 6,
+      "cyclomatic": 2,
+      "cognitive": 1
+    },
+    {
+      "name": "internal/service.(*Service).ListParticipants",
+      "file": "internal/service/applications.go",
+      "line": 26,
+      "lines": 8,
+      "cyclomatic": 2,
+      "cognitive": 1
+    },
+    {
+      "name": "internal/service.(*Service).ListRatingHistory",
+      "file": "internal/service/catalog.go",
+      "line": 89,
+      "lines": 7,
+      "cyclomatic": 2,
+      "cognitive": 1
+    },
+    {
+      "name": "internal/service.matchVersion",
+      "file": "internal/service/competition.go",
+      "line": 30,
+      "lines": 6,
+      "cyclomatic": 2,
+      "cognitive": 1
+    },
+    {
+      "name": "internal/service.tournamentPlaying",
+      "file": "internal/service/competition.go",
+      "line": 36,
+      "lines": 6,
+      "cyclomatic": 2,
+      "cognitive": 1
+    },
+    {
+      "name": "internal/service.(*Service).ListMatches",
+      "file": "internal/service/competition.go",
+      "line": 52,
+      "lines": 7,
+      "cyclomatic": 2,
+      "cognitive": 1
+    },
+    {
+      "name": "internal/service.(*Service).GetBracket",
+      "file": "internal/service/competition.go",
+      "line": 59,
+      "lines": 6,
+      "cyclomatic": 2,
+      "cognitive": 1
+    },
+    {
+      "name": "internal/service.matchChanged",
+      "file": "internal/service/competition.go",
+      "line": 116,
+      "lines": 6,
+      "cyclomatic": 2,
+      "cognitive": 1
+    },
+    {
+      "name": "internal/service.accountTokenURL",
+      "file": "internal/service/identity.go",
+      "line": 38,
+      "lines": 8,
+      "cyclomatic": 2,
+      "cognitive": 1
+    },
+    {
+      "name": "internal/service.(*Service).Cleanup",
+      "file": "internal/service/resources.go",
+      "line": 146,
+      "lines": 6,
+      "cyclomatic": 2,
+      "cognitive": 1
+    },
+    {
+      "name": "internal/service.saveDisputeFiles",
+      "file": "internal/service/results_disputes.go",
+      "line": 110,
+      "lines": 6,
+      "cyclomatic": 2,
+      "cognitive": 1
+    },
+    {
+      "name": "internal/service.(*Service).ListAssignedDisputes",
+      "file": "internal/service/results_disputes.go",
+      "line": 185,
+      "lines": 7,
+      "cyclomatic": 2,
+      "cognitive": 1
+    },
+    {
+      "name": "internal/service.readPlayoffStage",
+      "file": "internal/service/results_progression.go",
+      "line": 197,
+      "lines": 8,
+      "cyclomatic": 2,
+      "cognitive": 1
+    },
+    {
+      "name": "internal/service.currentRating",
+      "file": "internal/service/results_ratings.go",
+      "line": 130,
+      "lines": 7,
+      "cyclomatic": 2,
+      "cognitive": 1
+    },
+    {
+      "name": "internal/service.(*Service).GetStandings",
+      "file": "internal/service/results_standings.go",
+      "line": 141,
+      "lines": 6,
+      "cyclomatic": 2,
+      "cognitive": 1
+    },
+    {
+      "name": "internal/service.(*Service).withTx",
+      "file": "internal/service/service.go",
+      "line": 30,
+      "lines": 6,
+      "cyclomatic": 2,
+      "cognitive": 1
+    },
+    {
+      "name": "internal/service.teamVersion",
+      "file": "internal/service/teams.go",
+      "line": 29,
+      "lines": 6,
+      "cyclomatic": 2,
+      "cognitive": 1
+    },
+    {
+      "name": "internal/service.(*Service).ListTeams",
+      "file": "internal/service/teams.go",
+      "line": 72,
+      "lines": 8,
+      "cyclomatic": 2,
+      "cognitive": 1
+    },
+    {
+      "name": "internal/service.(*Service).ListTeamMembers",
+      "file": "internal/service/teams.go",
+      "line": 179,
+      "lines": 6,
+      "cyclomatic": 2,
+      "cognitive": 1
+    },
+    {
+      "name": "internal/service.(*Service).ListAdminTournaments",
+      "file": "internal/service/tournaments.go",
+      "line": 41,
+      "lines": 6,
+      "cyclomatic": 2,
+      "cognitive": 1
+    },
+    {
+      "name": "internal/service.(*Service).GetTournament",
+      "file": "internal/service/tournaments.go",
+      "line": 48,
+      "lines": 6,
+      "cyclomatic": 2,
+      "cognitive": 1
+    },
+    {
+      "name": "internal/service.replacePresent",
+      "file": "internal/service/tournaments.go",
+      "line": 148,
+      "lines": 5,
+      "cyclomatic": 2,
+      "cognitive": 1
+    },
+    {
+      "name": "internal/service.replacePresentPointer",
+      "file": "internal/service/tournaments.go",
+      "line": 154,
+      "lines": 5,
+      "cyclomatic": 2,
+      "cognitive": 1
+    },
+    {
+      "name": "internal/service.(*Service).CompleteTournament",
+      "file": "internal/service/tournaments.go",
+      "line": 310,
+      "lines": 8,
+      "cyclomatic": 2,
+      "cognitive": 2
+    },
+    {
+      "name": "internal/api/v1.init",
+      "file": "internal/api/v1/server.go",
+      "line": 26,
+      "lines": 3,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/config.Default",
+      "file": "internal/config/config.go",
+      "line": 77,
+      "lines": 8,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/config.(Database).URL",
+      "file": "internal/config/config.go",
+      "line": 104,
+      "lines": 11,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/container.(*Container).Close",
+      "file": "internal/container/container.go",
+      "line": 41,
+      "lines": 1,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/lib/apperror.(*Error).Error",
+      "file": "internal/lib/apperror/error.go",
+      "line": 24,
+      "lines": 1,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/lib/apperror.(*Error).Unwrap",
+      "file": "internal/lib/apperror/error.go",
+      "line": 25,
+      "lines": 1,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/lib/apperror.New",
+      "file": "internal/lib/apperror/error.go",
+      "line": 26,
+      "lines": 1,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/lib/apperror.Wrap",
+      "file": "internal/lib/apperror/error.go",
+      "line": 27,
+      "lines": 3,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/lib/authctx.WithPrincipal",
+      "file": "internal/lib/authctx/context.go",
+      "line": 13,
+      "lines": 3,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/lib/authctx.FromContext",
+      "file": "internal/lib/authctx/context.go",
+      "line": 16,
+      "lines": 1,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/lib/authctx.CurrentUser",
+      "file": "internal/lib/authctx/context.go",
+      "line": 17,
+      "lines": 1,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/lib/ptr.Value",
+      "file": "internal/lib/ptr/ptr.go",
+      "line": 11,
+      "lines": 1,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/lib/security.TokenHash",
+      "file": "internal/lib/security/security.go",
+      "line": 21,
+      "lines": 4,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/lib/security.CheckPassword",
+      "file": "internal/lib/security/security.go",
+      "line": 32,
+      "lines": 3,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/lib/smtpclient.New",
+      "file": "internal/lib/smtpclient/client.go",
+      "line": 24,
+      "lines": 1,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/lib/smtpclient.writeMessage",
+      "file": "internal/lib/smtpclient/client.go",
+      "line": 62,
+      "lines": 4,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/model.NewEloRating",
+      "file": "internal/model/rating.go",
+      "line": 46,
+      "lines": 3,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/repository/postgres.(*Repository).UserHasAdminRole",
+      "file": "internal/repository/postgres/admin.go",
+      "line": 32,
+      "lines": 5,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/repository/postgres.(*Repository).OtherActiveAdminCount",
+      "file": "internal/repository/postgres/admin.go",
+      "line": 38,
+      "lines": 5,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/repository/postgres.(*Repository).LockUserVersion",
+      "file": "internal/repository/postgres/admin.go",
+      "line": 44,
+      "lines": 5,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/repository/postgres.(*Repository).SetUserBlocked",
+      "file": "internal/repository/postgres/admin.go",
+      "line": 50,
+      "lines": 4,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/repository/postgres.(*Repository).SetTournamentVisibility",
+      "file": "internal/repository/postgres/admin.go",
+      "line": 68,
+      "lines": 4,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/repository/postgres.(*Repository).LockTournamentApplication",
+      "file": "internal/repository/postgres/applications.go",
+      "line": 63,
+      "lines": 4,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/repository/postgres.(*Repository).LockApplicationTeam",
+      "file": "internal/repository/postgres/applications.go",
+      "line": 68,
+      "lines": 4,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/repository/postgres.(*Repository).ApplicationTeamCaptain",
+      "file": "internal/repository/postgres/applications.go",
+      "line": 73,
+      "lines": 5,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/repository/postgres.(*Repository).EligibleApplicationPlayersCount",
+      "file": "internal/repository/postgres/applications.go",
+      "line": 79,
+      "lines": 5,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/repository/postgres.(*Repository).CreateApplicationRecord",
+      "file": "internal/repository/postgres/applications.go",
+      "line": 85,
+      "lines": 4,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/repository/postgres.(*Repository).ReleaseApplicationPlayers",
+      "file": "internal/repository/postgres/applications.go",
+      "line": 98,
+      "lines": 4,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/repository/postgres.(*Repository).SetApplicationDecision",
+      "file": "internal/repository/postgres/applications.go",
+      "line": 103,
+      "lines": 4,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/repository/postgres.(*Repository).BumpApplicationVersion",
+      "file": "internal/repository/postgres/applications.go",
+      "line": 108,
+      "lines": 4,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/repository/postgres.(*Repository).CreateDisciplineRecord",
+      "file": "internal/repository/postgres/catalog.go",
+      "line": 21,
+      "lines": 3,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/repository/postgres.(*Repository).UpdateDisciplineRecord",
+      "file": "internal/repository/postgres/catalog.go",
+      "line": 33,
+      "lines": 3,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/repository/postgres.(*Repository).MarkNotificationRead",
+      "file": "internal/repository/postgres/catalog.go",
+      "line": 67,
+      "lines": 4,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/repository/postgres.(*Repository).Outbox",
+      "file": "internal/repository/postgres/common.go",
+      "line": 17,
+      "lines": 4,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/repository/postgres.(*Repository).Notify",
+      "file": "internal/repository/postgres/common.go",
+      "line": 21,
+      "lines": 4,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/repository/postgres.(*Repository).NotificationRecipient",
+      "file": "internal/repository/postgres/common.go",
+      "line": 25,
+      "lines": 5,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/repository/postgres.(*Repository).Event",
+      "file": "internal/repository/postgres/common.go",
+      "line": 30,
+      "lines": 4,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/repository/postgres.(*Repository).LockSchedule",
+      "file": "internal/repository/postgres/common.go",
+      "line": 34,
+      "lines": 4,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/repository/postgres.(*Repository).LockRatings",
+      "file": "internal/repository/postgres/common.go",
+      "line": 38,
+      "lines": 4,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/repository/postgres.(*Repository).LockAdmin",
+      "file": "internal/repository/postgres/common.go",
+      "line": 42,
+      "lines": 4,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/repository/postgres.scanMatch",
+      "file": "internal/repository/postgres/competition.go",
+      "line": 12,
+      "lines": 5,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/repository/postgres.(*Repository).ReadMatch",
+      "file": "internal/repository/postgres/competition.go",
+      "line": 82,
+      "lines": 3,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/repository/postgres.(*Repository).MatchTournamentID",
+      "file": "internal/repository/postgres/competition.go",
+      "line": 85,
+      "lines": 5,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/repository/postgres.(*Repository).ReadBracket",
+      "file": "internal/repository/postgres/competition.go",
+      "line": 101,
+      "lines": 4,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/repository/postgres.(*Repository).MatchCaptainSide",
+      "file": "internal/repository/postgres/competition.go",
+      "line": 105,
+      "lines": 5,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/repository/postgres.(*Repository).IsMatchRosterPlayer",
+      "file": "internal/repository/postgres/competition.go",
+      "line": 110,
+      "lines": 5,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/repository/postgres.(*Repository).HasTournamentReports",
+      "file": "internal/repository/postgres/draw.go",
+      "line": 20,
+      "lines": 5,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/repository/postgres.(*Repository).SetApplicationSeed",
+      "file": "internal/repository/postgres/draw.go",
+      "line": 53,
+      "lines": 4,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/repository/postgres.(*Repository).InsertStage",
+      "file": "internal/repository/postgres/draw.go",
+      "line": 57,
+      "lines": 4,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/repository/postgres.(*Repository).ConfirmDrawPreview",
+      "file": "internal/repository/postgres/draw.go",
+      "line": 81,
+      "lines": 4,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/repository/postgres.(*Repository).Profile",
+      "file": "internal/repository/postgres/identity.go",
+      "line": 33,
+      "lines": 3,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/repository/postgres.(*Repository).CreateUser",
+      "file": "internal/repository/postgres/identity.go",
+      "line": 37,
+      "lines": 5,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/repository/postgres.(*Repository).AddUserRole",
+      "file": "internal/repository/postgres/identity.go",
+      "line": 43,
+      "lines": 4,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/repository/postgres.(*Repository).InvalidateAccountTokens",
+      "file": "internal/repository/postgres/identity.go",
+      "line": 48,
+      "lines": 4,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/repository/postgres.(*Repository).CreateAccountToken",
+      "file": "internal/repository/postgres/identity.go",
+      "line": 53,
+      "lines": 4,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/repository/postgres.(*Repository).ConsumeAccountToken",
+      "file": "internal/repository/postgres/identity.go",
+      "line": 58,
+      "lines": 5,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/repository/postgres.(*Repository).VerifyUserEmail",
+      "file": "internal/repository/postgres/identity.go",
+      "line": 64,
+      "lines": 4,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/repository/postgres.(*Repository).RecordLoginAttempt",
+      "file": "internal/repository/postgres/identity.go",
+      "line": 69,
+      "lines": 9,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/repository/postgres.(*Repository).CreateRefreshSession",
+      "file": "internal/repository/postgres/identity.go",
+      "line": 79,
+      "lines": 5,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/repository/postgres.(*Repository).CreateAccessSession",
+      "file": "internal/repository/postgres/identity.go",
+      "line": 85,
+      "lines": 4,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/repository/postgres.(*Repository).LoginAccount",
+      "file": "internal/repository/postgres/identity.go",
+      "line": 90,
+      "lines": 5,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/repository/postgres.(*Repository).LockLoginAccount",
+      "file": "internal/repository/postgres/identity.go",
+      "line": 96,
+      "lines": 5,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/repository/postgres.(*Repository).LockRefreshSession",
+      "file": "internal/repository/postgres/identity.go",
+      "line": 116,
+      "lines": 6,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/repository/postgres.(*Repository).RevokeRefreshSession",
+      "file": "internal/repository/postgres/identity.go",
+      "line": 123,
+      "lines": 4,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/repository/postgres.(*Repository).RevokeSessionAccess",
+      "file": "internal/repository/postgres/identity.go",
+      "line": 128,
+      "lines": 4,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/repository/postgres.(*Repository).LogoutSession",
+      "file": "internal/repository/postgres/identity.go",
+      "line": 133,
+      "lines": 5,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/repository/postgres.(*Repository).PasswordResetAccount",
+      "file": "internal/repository/postgres/identity.go",
+      "line": 139,
+      "lines": 5,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/repository/postgres.(*Repository).SetPasswordHash",
+      "file": "internal/repository/postgres/identity.go",
+      "line": 145,
+      "lines": 4,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/repository/postgres.(*Repository).OwnsFile",
+      "file": "internal/repository/postgres/identity.go",
+      "line": 158,
+      "lines": 5,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/repository/postgres.(*Repository).UpdateUserProfile",
+      "file": "internal/repository/postgres/identity.go",
+      "line": 164,
+      "lines": 4,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/repository/postgres.New",
+      "file": "internal/repository/postgres/repository.go",
+      "line": 27,
+      "lines": 1,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/repository/postgres.(*Repository).CreateFile",
+      "file": "internal/repository/postgres/resources.go",
+      "line": 12,
+      "lines": 3,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/repository/postgres.(*Repository).File",
+      "file": "internal/repository/postgres/resources.go",
+      "line": 15,
+      "lines": 5,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/repository/postgres.(*Repository).CanReadProtocol",
+      "file": "internal/repository/postgres/resources.go",
+      "line": 20,
+      "lines": 11,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/repository/postgres.(*Repository).EventBounds",
+      "file": "internal/repository/postgres/resources.go",
+      "line": 54,
+      "lines": 5,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/repository/postgres.(*Repository).CompleteMail",
+      "file": "internal/repository/postgres/resources.go",
+      "line": 85,
+      "lines": 4,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/repository/postgres.(*Repository).RetryMail",
+      "file": "internal/repository/postgres/resources.go",
+      "line": 89,
+      "lines": 4,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/repository/postgres.(*Repository).CleanupRateLimits",
+      "file": "internal/repository/postgres/resources.go",
+      "line": 93,
+      "lines": 4,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/repository/postgres.(*Repository).CleanupEvents",
+      "file": "internal/repository/postgres/resources.go",
+      "line": 97,
+      "lines": 4,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/repository/postgres.(*Repository).BootstrapState",
+      "file": "internal/repository/postgres/resources.go",
+      "line": 101,
+      "lines": 5,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/repository/postgres.(*Repository).ReadResultReport",
+      "file": "internal/repository/postgres/results.go",
+      "line": 43,
+      "lines": 4,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/repository/postgres.(*Repository).ReadResultReports",
+      "file": "internal/repository/postgres/results.go",
+      "line": 47,
+      "lines": 4,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/repository/postgres.(*Repository).ReadResultRules",
+      "file": "internal/repository/postgres/results.go",
+      "line": 51,
+      "lines": 5,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/repository/postgres.(*Repository).ValidMatchEvidence",
+      "file": "internal/repository/postgres/results.go",
+      "line": 56,
+      "lines": 5,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/repository/postgres.(*Repository).SetMatchStatus",
+      "file": "internal/repository/postgres/results.go",
+      "line": 78,
+      "lines": 4,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/repository/postgres.(*Repository).ReadReportingApplication",
+      "file": "internal/repository/postgres/results.go",
+      "line": 82,
+      "lines": 5,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/repository/postgres.(*Repository).SetReportStatus",
+      "file": "internal/repository/postgres/results.go",
+      "line": 95,
+      "lines": 4,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/repository/postgres.(*Repository).ConfirmResultReport",
+      "file": "internal/repository/postgres/results.go",
+      "line": 99,
+      "lines": 4,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/repository/postgres.(*Repository).SaveFinalResult",
+      "file": "internal/repository/postgres/results.go",
+      "line": 103,
+      "lines": 4,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/repository/postgres.(*Repository).InsertDispute",
+      "file": "internal/repository/postgres/results_disputes.go",
+      "line": 22,
+      "lines": 4,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/repository/postgres.(*Repository).ResolveDispute",
+      "file": "internal/repository/postgres/results_disputes.go",
+      "line": 34,
+      "lines": 4,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/repository/postgres.(*Repository).StageRemainingMatches",
+      "file": "internal/repository/postgres/results_progression.go",
+      "line": 17,
+      "lines": 5,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/repository/postgres.(*Repository).CompleteStage",
+      "file": "internal/repository/postgres/results_progression.go",
+      "line": 22,
+      "lines": 5,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/repository/postgres.(*Repository).RemainingTournamentStages",
+      "file": "internal/repository/postgres/results_progression.go",
+      "line": 27,
+      "lines": 5,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/repository/postgres.(*Repository).ReadPlayoffStage",
+      "file": "internal/repository/postgres/results_progression.go",
+      "line": 32,
+      "lines": 5,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/repository/postgres.(*Repository).StageMatches",
+      "file": "internal/repository/postgres/results_progression.go",
+      "line": 37,
+      "lines": 4,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/repository/postgres.(*Repository).DeleteStageMatches",
+      "file": "internal/repository/postgres/results_progression.go",
+      "line": 41,
+      "lines": 4,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/repository/postgres.(*Repository).SetStageStatus",
+      "file": "internal/repository/postgres/results_progression.go",
+      "line": 45,
+      "lines": 4,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/repository/postgres.(*Repository).TournamentMatchCounts",
+      "file": "internal/repository/postgres/results_progression.go",
+      "line": 49,
+      "lines": 5,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/repository/postgres.(*Repository).CompleteTournamentStages",
+      "file": "internal/repository/postgres/results_progression.go",
+      "line": 54,
+      "lines": 4,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/repository/postgres.(*Repository).ClearFinalPlaces",
+      "file": "internal/repository/postgres/results_progression.go",
+      "line": 58,
+      "lines": 4,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/repository/postgres.(*Repository).SetFinalPlace",
+      "file": "internal/repository/postgres/results_progression.go",
+      "line": 62,
+      "lines": 4,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/repository/postgres.(*Repository).PlacedApplicationsCount",
+      "file": "internal/repository/postgres/results_progression.go",
+      "line": 82,
+      "lines": 5,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/repository/postgres.(*Repository).PlayoffMatches",
+      "file": "internal/repository/postgres/results_progression.go",
+      "line": 87,
+      "lines": 4,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/repository/postgres.(*Repository).MatchTeams",
+      "file": "internal/repository/postgres/results_ratings.go",
+      "line": 25,
+      "lines": 5,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/repository/postgres.(*Repository).UpsertRating",
+      "file": "internal/repository/postgres/results_ratings.go",
+      "line": 30,
+      "lines": 4,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/repository/postgres.(*Repository).ReadLatestRatingRevision",
+      "file": "internal/repository/postgres/results_ratings.go",
+      "line": 34,
+      "lines": 5,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/repository/postgres.(*Repository).InsertRatingRevision",
+      "file": "internal/repository/postgres/results_ratings.go",
+      "line": 39,
+      "lines": 4,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/repository/postgres.(*Repository).ReadRating",
+      "file": "internal/repository/postgres/results_ratings.go",
+      "line": 43,
+      "lines": 5,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/repository/postgres.(*Repository).ReadStandings",
+      "file": "internal/repository/postgres/results_standings.go",
+      "line": 32,
+      "lines": 4,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/repository/postgres.(*Repository).CompletedStageMatches",
+      "file": "internal/repository/postgres/results_standings.go",
+      "line": 52,
+      "lines": 4,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/repository/postgres.(*Repository).ClearStageStandings",
+      "file": "internal/repository/postgres/results_standings.go",
+      "line": 56,
+      "lines": 4,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/repository/postgres.(*Repository).InsertStanding",
+      "file": "internal/repository/postgres/results_standings.go",
+      "line": 60,
+      "lines": 4,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/repository/postgres.(*Repository).RoundMatches",
+      "file": "internal/repository/postgres/scheduling.go",
+      "line": 10,
+      "lines": 4,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/repository/postgres.(*Repository).ClearRoundSchedule",
+      "file": "internal/repository/postgres/scheduling.go",
+      "line": 14,
+      "lines": 4,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/repository/postgres.(*Repository).SetMatchSchedule",
+      "file": "internal/repository/postgres/scheduling.go",
+      "line": 18,
+      "lines": 4,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/repository/postgres.(*Repository).HasParticipantScheduleConflict",
+      "file": "internal/repository/postgres/scheduling.go",
+      "line": 22,
+      "lines": 5,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/repository/postgres.(*Repository).HasScheduleDependencyConflict",
+      "file": "internal/repository/postgres/scheduling.go",
+      "line": 27,
+      "lines": 5,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/repository/postgres.(*Repository).ValidReferee",
+      "file": "internal/repository/postgres/scheduling.go",
+      "line": 32,
+      "lines": 5,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/repository/postgres.(*Repository).SetMatchReferee",
+      "file": "internal/repository/postgres/scheduling.go",
+      "line": 37,
+      "lines": 4,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/repository/postgres.scanTeam",
+      "file": "internal/repository/postgres/teams.go",
+      "line": 14,
+      "lines": 5,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/repository/postgres.(*Repository).LockUserNickname",
+      "file": "internal/repository/postgres/teams.go",
+      "line": 28,
+      "lines": 5,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/repository/postgres.(*Repository).PersonalTeam",
+      "file": "internal/repository/postgres/teams.go",
+      "line": 34,
+      "lines": 5,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/repository/postgres.(*Repository).CreateTeamRecord",
+      "file": "internal/repository/postgres/teams.go",
+      "line": 40,
+      "lines": 5,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/repository/postgres.(*Repository).AddTeamMember",
+      "file": "internal/repository/postgres/teams.go",
+      "line": 46,
+      "lines": 4,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/repository/postgres.(*Repository).UpdateTeamRecord",
+      "file": "internal/repository/postgres/teams.go",
+      "line": 72,
+      "lines": 4,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/repository/postgres.(*Repository).TeamHasActiveApplications",
+      "file": "internal/repository/postgres/teams.go",
+      "line": 77,
+      "lines": 5,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/repository/postgres.(*Repository).RevokeTeamInvitations",
+      "file": "internal/repository/postgres/teams.go",
+      "line": 91,
+      "lines": 4,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/repository/postgres.(*Repository).SoftDeleteTeam",
+      "file": "internal/repository/postgres/teams.go",
+      "line": 96,
+      "lines": 4,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/repository/postgres.(*Repository).DeleteTeamMember",
+      "file": "internal/repository/postgres/teams.go",
+      "line": 118,
+      "lines": 4,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/repository/postgres.(*Repository).BumpTeamVersion",
+      "file": "internal/repository/postgres/teams.go",
+      "line": 123,
+      "lines": 4,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/repository/postgres.(*Repository).ActiveTeamMember",
+      "file": "internal/repository/postgres/teams.go",
+      "line": 128,
+      "lines": 5,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/repository/postgres.(*Repository).TransferTeamCaptain",
+      "file": "internal/repository/postgres/teams.go",
+      "line": 134,
+      "lines": 4,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/repository/postgres.(*Repository).InviteeByNickname",
+      "file": "internal/repository/postgres/teams.go",
+      "line": 139,
+      "lines": 5,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/repository/postgres.(*Repository).IsTeamMember",
+      "file": "internal/repository/postgres/teams.go",
+      "line": 145,
+      "lines": 5,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/repository/postgres.(*Repository).CreateInvitationRecord",
+      "file": "internal/repository/postgres/teams.go",
+      "line": 151,
+      "lines": 5,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/repository/postgres.scanInvitation",
+      "file": "internal/repository/postgres/teams.go",
+      "line": 157,
+      "lines": 5,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/repository/postgres.(*Repository).InvitationTeam",
+      "file": "internal/repository/postgres/teams.go",
+      "line": 184,
+      "lines": 5,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/repository/postgres.(*Repository).LockInvitation",
+      "file": "internal/repository/postgres/teams.go",
+      "line": 190,
+      "lines": 6,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/repository/postgres.(*Repository).SetInvitationDecision",
+      "file": "internal/repository/postgres/teams.go",
+      "line": 197,
+      "lines": 4,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/repository/postgres.(*Repository).LockTeamInvitationStatus",
+      "file": "internal/repository/postgres/teams.go",
+      "line": 202,
+      "lines": 5,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/repository/postgres.(*Repository).RevokeInvitationRecord",
+      "file": "internal/repository/postgres/teams.go",
+      "line": 208,
+      "lines": 4,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/repository/postgres.(*Repository).TournamentVisible",
+      "file": "internal/repository/postgres/tournaments.go",
+      "line": 46,
+      "lines": 5,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/repository/postgres.(*Repository).ReadDisciplineRosterRules",
+      "file": "internal/repository/postgres/tournaments.go",
+      "line": 84,
+      "lines": 5,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/repository/postgres.(*Repository).ReadTournamentRosterRules",
+      "file": "internal/repository/postgres/tournaments.go",
+      "line": 90,
+      "lines": 5,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/repository/postgres.(*Repository).CreateTournamentRecord",
+      "file": "internal/repository/postgres/tournaments.go",
+      "line": 109,
+      "lines": 8,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/repository/postgres.(*Repository).UpdateTournamentRecord",
+      "file": "internal/repository/postgres/tournaments.go",
+      "line": 118,
+      "lines": 7,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/repository/postgres.(*Repository).TournamentRosterCompatible",
+      "file": "internal/repository/postgres/tournaments.go",
+      "line": 126,
+      "lines": 5,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/repository/postgres.(*Repository).BumpTournamentVersion",
+      "file": "internal/repository/postgres/tournaments.go",
+      "line": 132,
+      "lines": 4,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/repository/postgres.(*Repository).SetTournamentStatus",
+      "file": "internal/repository/postgres/tournaments.go",
+      "line": 137,
+      "lines": 4,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/repository/postgres.(*Repository).SetTournamentReferee",
+      "file": "internal/repository/postgres/tournaments.go",
+      "line": 142,
+      "lines": 4,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/service.(*Service).ListMyApplications",
+      "file": "internal/service/applications.go",
+      "line": 35,
+      "lines": 5,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/service.(*Service).ListDisciplines",
+      "file": "internal/service/catalog.go",
+      "line": 13,
+      "lines": 4,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/service.mergeDiscipline",
+      "file": "internal/service/catalog.go",
+      "line": 74,
+      "lines": 9,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/service.(*Service).ListRatings",
+      "file": "internal/service/catalog.go",
+      "line": 84,
+      "lines": 4,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/service.(*Service).ListNotifications",
+      "file": "internal/service/catalog.go",
+      "line": 97,
+      "lines": 4,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/service.matchCaptain",
+      "file": "internal/service/competition.go",
+      "line": 65,
+      "lines": 3,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/service.acceptedIDs",
+      "file": "internal/service/draw.go",
+      "line": 16,
+      "lines": 3,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/service.newStage",
+      "file": "internal/service/draw.go",
+      "line": 88,
+      "lines": 3,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/service.baseMatch",
+      "file": "internal/service/draw.go",
+      "line": 91,
+      "lines": 3,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/service.(*Service).ConfirmDraw",
+      "file": "internal/service/draw.go",
+      "line": 263,
+      "lines": 9,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/service.(*Service).Logout",
+      "file": "internal/service/identity.go",
+      "line": 183,
+      "lines": 3,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/service.(*Service).GetProfile",
+      "file": "internal/service/identity.go",
+      "line": 223,
+      "lines": 3,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/service.(*Service).SearchUsers",
+      "file": "internal/service/identity.go",
+      "line": 274,
+      "lines": 4,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/service.(*Service).TournamentVisible",
+      "file": "internal/service/resources.go",
+      "line": 95,
+      "lines": 3,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/service.(*Service).LatestEventID",
+      "file": "internal/service/resources.go",
+      "line": 98,
+      "lines": 4,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/service.(*Service).DisputeResult",
+      "file": "internal/service/results_disputes.go",
+      "line": 29,
+      "lines": 9,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/service.writeStanding",
+      "file": "internal/service/results_standings.go",
+      "line": 137,
+      "lines": 3,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/service.New",
+      "file": "internal/service/service.go",
+      "line": 27,
+      "lines": 3,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/service.currentUser",
+      "file": "internal/service/service.go",
+      "line": 36,
+      "lines": 1,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/service.hasRole",
+      "file": "internal/service/service.go",
+      "line": 37,
+      "lines": 1,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/service.invalid",
+      "file": "internal/service/service.go",
+      "line": 47,
+      "lines": 1,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/service.conflict",
+      "file": "internal/service/service.go",
+      "line": 48,
+      "lines": 1,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/service.notFound",
+      "file": "internal/service/service.go",
+      "line": 49,
+      "lines": 1,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/service.forbidden",
+      "file": "internal/service/service.go",
+      "line": 50,
+      "lines": 1,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/service.unauthorized",
+      "file": "internal/service/service.go",
+      "line": 51,
+      "lines": 1,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/service.rateLimited",
+      "file": "internal/service/service.go",
+      "line": 52,
+      "lines": 1,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/service.unavailable",
+      "file": "internal/service/service.go",
+      "line": 53,
+      "lines": 1,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/service.ignoreNoRows",
+      "file": "internal/service/service.go",
+      "line": 55,
+      "lines": 1,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/service.pagination",
+      "file": "internal/service/service.go",
+      "line": 56,
+      "lines": 1,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/service.(*Service).ListMyTeams",
+      "file": "internal/service/teams.go",
+      "line": 81,
+      "lines": 5,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/service.(*Service).GetTeam",
+      "file": "internal/service/teams.go",
+      "line": 87,
+      "lines": 3,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/service.invitationURL",
+      "file": "internal/service/teams.go",
+      "line": 249,
+      "lines": 3,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/service.(*Service).ListMyInvitations",
+      "file": "internal/service/teams.go",
+      "line": 303,
+      "lines": 4,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/service.(*Service).ListTournaments",
+      "file": "internal/service/tournaments.go",
+      "line": 32,
+      "lines": 3,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/service.(*Service).ListMyTournaments",
+      "file": "internal/service/tournaments.go",
+      "line": 36,
+      "lines": 4,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/service.tournamentRequest",
+      "file": "internal/service/tournaments.go",
+      "line": 144,
+      "lines": 3,
+      "cyclomatic": 1,
+      "cognitive": 0
+    },
+    {
+      "name": "internal/service.mergeTournament",
+      "file": "internal/service/tournaments.go",
+      "line": 160,
+      "lines": 15,
+      "cyclomatic": 1,
+      "cognitive": 0
+    }
+  ]
+}

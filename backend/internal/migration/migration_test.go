@@ -49,7 +49,11 @@ func TestMigrationLifecycleAndConstraints(t *testing.T) {
 		t.Fatalf("missing domain tables: %d", tableCount)
 	}
 	// Проверяем ограничения реальными SQL-запросами; каждую пробу откатываем.
-	for _, tc := range []struct{ name, sql, code string }{
+	for _, tc := range []struct {
+		name string
+		sql  string
+		code string
+	}{
 		{"file size", `INSERT INTO files(owner_id,purpose,storage_key,filename,content_type,size_bytes) VALUES ('00000000-0000-0000-0000-000000000001','match_protocol','oversize','test.pdf','application/pdf',5242881)`, "23514"},
 		{"duplicate nickname", `INSERT INTO users(id,email,password_hash,nickname,personal_data_consent_at) VALUES ('00000000-0000-0000-0000-000000000002','other@example.com','hash','PLAYER',now())`, "23505"},
 		{"captain outside team", `INSERT INTO teams(name,captain_id) VALUES ('orphan','00000000-0000-0000-0000-000000000001')`, "23503"},
@@ -125,7 +129,7 @@ SET CONSTRAINTS ALL IMMEDIATE;`
 		t.Fatal(err)
 	}
 	current, target, err := provider.GetVersions(ctx)
-	if err != nil || current != 6 || target != 6 {
+	if err != nil || current != 7 || target != 7 {
 		t.Fatal(fmt.Sprintf("versions %d/%d: %v", current, target, err))
 	}
 	if _, err := provider.DownTo(ctx, 0); err != nil {

@@ -8,31 +8,36 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/Radmila-Minnegalieva/TourneyHub/backend/internal/config"
 	contract "github.com/Radmila-Minnegalieva/TourneyHub/backend/pkg/api/v1"
 )
 
-type fakeDatabase struct{ err error }
+type fakeDatabase struct {
+	err error
+}
 
 func (db fakeDatabase) Ping(context.Context) error { return db.err }
 
-func TestServerContractAndScaffold(t *testing.T) {
-	server, err := NewServer(fakeDatabase{})
+func TestServerContractAndUnavailableDatabase(t *testing.T) {
+	server, err := NewServer(fakeDatabase{}, nil, config.Default().HTTP)
 	if err != nil {
 		t.Fatal(err)
 	}
 	for _, tc := range []struct {
-		method, path, body string
-		status             int
+		method string
+		path   string
+		body   string
+		status int
 	}{
 		{"GET", "/health/live", "", 200},
 		{"GET", "/health/ready", "", 200},
 		{"GET", "/openapi.yaml", "", 200},
-		{"GET", "/api/v1/tournaments", "", 501},
+		{"GET", "/api/v1/tournaments", "", 503},
 		{"GET", "/api/v1/tournaments?limit=101", "", 400},
 		{"GET", "/api/v1/matches/not-a-uuid", "", 400},
 		{"POST", "/api/v1/auth/register", `{"email":"invalid","password":"short","nickname":"a"}`, 400},
-		{"POST", "/api/v1/auth/login", `{"email":"player@example.com","password":"some-password"}`, 501},
-		{"GET", "/api/v1/users/me", "", 501},
+		{"POST", "/api/v1/auth/login", `{"email":"player@example.com","password":"some-password"}`, 503},
+		{"GET", "/api/v1/users/me", "", 401},
 		{"GET", "/api/v1/unknown", "", 404},
 	} {
 		t.Run(tc.method+tc.path, func(t *testing.T) {
@@ -40,7 +45,6 @@ func TestServerContractAndScaffold(t *testing.T) {
 			if tc.body != "" {
 				request.Header.Set("Content-Type", "application/json")
 			}
-			request.Header.Set("Authorization", "Bearer arbitrary-token")
 			recorder := httptest.NewRecorder()
 			server.ServeHTTP(recorder, request)
 			if recorder.Code != tc.status {
@@ -60,7 +64,7 @@ func TestServerContractAndScaffold(t *testing.T) {
 }
 
 func TestReadinessDetectsDatabaseFailure(t *testing.T) {
-	server, err := NewServer(fakeDatabase{err: errors.New("database stopped")})
+	server, err := NewServer(fakeDatabase{err: errors.New("database stopped")}, nil, config.Default().HTTP)
 	if err != nil {
 		t.Fatal(err)
 	}

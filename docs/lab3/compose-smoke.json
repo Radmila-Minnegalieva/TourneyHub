@@ -1,0 +1,13 @@
+{
+  "date": "2026-10-26",
+  "architecture": "api-service-repository",
+  "status": "passed",
+  "health": true,
+  "register": 202,
+  "background_smtp_delivery": true,
+  "verify_email": 204,
+  "login": 200,
+  "create_team": 201,
+  "refresh": 200,
+  "logout": 204
+}

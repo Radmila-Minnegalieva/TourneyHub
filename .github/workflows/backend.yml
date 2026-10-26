@@ -31,5 +31,9 @@ jobs:
           cache: true
           cache-dependency-path: backend/go.sum
       - run: make check build docs
-      - run: make migration-test
+      - run: make integration-test metrics
       - run: docker compose --env-file .env.example config --quiet
+      - uses: actions/upload-artifact@v4
+        with:
+          name: backend-code-metrics
+          path: backend/build/metrics/

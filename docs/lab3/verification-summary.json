@@ -1,0 +1,81 @@
+{
+  "date": "2026-10-26",
+  "base_commit": "aa536ebce4009e80a0e1594d1b8c93219af43e8b",
+  "go_version": "go1.27.2 darwin/arm64",
+  "docker_go_version": "go1.25.8 linux/arm64",
+  "postgres_version": "18.6 aarch64 Linux Alpine",
+  "commands": [
+    "make check build docs metrics",
+    "make generate-check && go test ./...",
+    "TEST_DATABASE_URL=<isolated DB> go test -tags=integration -race -count=1 -coverpkg=./internal/... -coverprofile=build/verification/layers-coverage.out -json ./...",
+    "docker compose --env-file .env.example build api migrate",
+    "docker compose --env-file .env.example up -d --wait api swagger"
+  ],
+  "packages_passed": 20,
+  "top_level_tests_passed": 71,
+  "tests_with_subtests_passed": 178,
+  "examples_passed": 1,
+  "tests_skipped": 0,
+  "tests_failed": 0,
+  "race_detector": "passed",
+  "source_before_sha256": "805f8c70ae94aecc01e806ccda1d306eca657446b0d8b3b1239239c6a6151d46",
+  "compose_smoke_description": "Сборка и health проходят; реальные register → SMTP Mailpit → verify → login → team → refresh → logout. CLI bootstrap проверен отдельно на временной БД",
+  "unverified": [
+    "Frontend browser integration",
+    "Load goals and production operational SLA"
+  ],
+  "reference_repository": "https://github.com/Aiinnur/transportgate",
+  "reference_commit": "0cd7707664ba7d10d42b7a13fdedc3ea8fa3171a",
+  "architecture": "api-service-repository",
+  "coverage_percent": {
+    "internal/api/v1": 59.7,
+    "internal/app": 0.0,
+    "internal/config": 95.2,
+    "internal/container": 0.0,
+    "internal/lib/apperror": 75.0,
+    "internal/lib/authctx": 100.0,
+    "internal/lib/csvutil": 100.0,
+    "internal/lib/fileutil": 89.5,
+    "internal/lib/pagination": 100.0,
+    "internal/lib/ptr": 80.0,
+    "internal/lib/security": 90.9,
+    "internal/lib/slice": 83.3,
+    "internal/lib/smtpclient": 77.3,
+    "internal/migration": 65.0,
+    "internal/model": 83.5,
+    "internal/repository/postgres": 76.5,
+    "internal/service": 71.0
+  },
+  "coverage_scope": "./internal/...; shared coverage across unit and integration test binaries",
+  "coverage_merge": "Duplicate full source locations are counted once; hit counts are summed",
+  "coverage_total_percent": 70.2,
+  "coverage_unique_blocks": 3245,
+  "architecture_checks": "passed: data access and dependencies; environment reads only in config",
+  "dto_generation_checks": "passed: reproducibility, enum/field/type drift, domain model preservation",
+  "recomputed_before_matching_sections": [
+    "summary",
+    "package_fan_out",
+    "files",
+    "functions"
+  ],
+  "recomputed_before_scope_metadata_note": "Current analyzer additionally excludes tools/; substantive sections match",
+  "metrics_after_source_hashes_verified": true,
+  "source_after_sha256": "7c4a3aeda222ef0f02e2986469d9f060dbd7f0248e44cbf82efc8a203896cb3d",
+  "test_log": "backend/build/verification/pr-tests.jsonl",
+  "coverage_profile": "backend/build/verification/pr-coverage.out",
+  "final_pr_verification": {
+    "status": "passed",
+    "branch": "backend/lab3-complete",
+    "commands": [
+      "make check build docs metrics",
+      "TEST_DATABASE_URL=<isolated DB> go test -tags=integration -race -count=1 -coverpkg=./internal/... -coverprofile=build/verification/pr-coverage.out -json ./...",
+      "docker compose --env-file .env.example build api migrate",
+      "docker compose --env-file .env.example up -d --wait api swagger",
+      "docker compose --env-file .env.example config --quiet"
+    ],
+    "regressions": "ResolveDispute rejects cancelled tournaments without side effects; corrections of completed tournaments remain allowed",
+    "docker_readiness": "passed",
+    "served_openapi_matches_source": true,
+    "documents": "Official report 4 pages; defense guide 13 pages; every page visually verified"
+  }
+}

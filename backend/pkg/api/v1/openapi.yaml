@@ -1953,8 +1953,9 @@ paths:
       tags:
       - Results
       summary: Оспорить результат
-      description: Капитан соперника до подтверждения/deadline. Один спор на матч; автоподтверждение прекращается.
-        Судья уведомляется.
+      description: Капитан соперника оспаривает ожидающий подтверждения или завершённый результат.
+        Один спор на матч; автоподтверждение прекращается. Судья уведомляется.
+        Изменение победителя после начала зависимого матча запрещено.
       responses:
         '201':
           description: Успешно
@@ -2265,13 +2266,27 @@ paths:
       tags:
       - Files
       summary: Скачать собственное/доступное вложение
-      description: 'Владелец или участник ресурса; публичные avatar/logo возвращаются через отдельный URL хранения.
+      security: []
+      description: 'Аватары и логотипы публичны. Протокол доступен владельцу, участнику ресурса, организатору,
+        назначенному судье или администратору после аутентификации.
         Content-Disposition: attachment, X-Content-Type-Options: nosniff.'
       responses:
         '200':
           description: Успешно
           content:
             application/octet-stream:
+              schema:
+                type: string
+                format: binary
+            image/png:
+              schema:
+                type: string
+                format: binary
+            image/jpeg:
+              schema:
+                type: string
+                format: binary
+            application/pdf:
               schema:
                 type: string
                 format: binary
@@ -2405,8 +2420,7 @@ paths:
       tags:
       - Tournaments
       summary: Экспорт итогов CSV
-      description: 'Только completed, видимый турнир. UTF-8; Content-Disposition: attachment. Нейтрализует формулы
-        CSV в пользовательских названиях.'
+      description: 'Только completed, видимый турнир. UTF-8; Content-Disposition: attachment. Строки standing содержат итоговые места и команды; строки match содержат идентификатор, участников, счёт и статус матча. Нейтрализует формулы CSV в названиях.'
       responses:
         '200':
           description: Успешно
@@ -2414,13 +2428,15 @@ paths:
             text/csv:
               schema:
                 type: string
-                example: 'place,team,match_id,home_score,away_score
+                example: 'row_type,place,team,match_id,home_team,away_team,home_score,away_score,status
 
                   '
         '400':
           $ref: '#/components/responses/400'
         '404':
           $ref: '#/components/responses/404'
+        '409':
+          $ref: '#/components/responses/409'
         '500':
           $ref: '#/components/responses/500'
       security: []
@@ -2968,7 +2984,7 @@ components:
       properties:
         code:
           type: string
-          example: not_implemented
+          example: bad_request
         message:
           type: string
           example: Операция ещё не реализована
@@ -3133,7 +3149,7 @@ components:
           type: string
         avatar_url:
           type: string
-          format: uri
+          format: uri-reference
           maxLength: 2048
     Profile:
       type: object
@@ -3161,7 +3177,7 @@ components:
           type: string
         avatar_url:
           type: string
-          format: uri
+          format: uri-reference
           maxLength: 2048
         timezone:
           type: string
@@ -3362,7 +3378,7 @@ components:
           type: string
         logo_url:
           type: string
-          format: uri
+          format: uri-reference
           maxLength: 2048
         captain_id:
           type: string
@@ -3445,11 +3461,11 @@ components:
       type: object
       additionalProperties: false
       required:
-      - token
       - decision
       properties:
         token:
           type: string
+          description: Обязателен для приглашения по ссылке. Адресное приглашение принимает только его получатель.
           minLength: 1
           maxLength: 512
         decision:
@@ -4134,7 +4150,7 @@ components:
           type: string
           format: uri
           maxLength: 2048
-      description: Нужна площадка или онлайн-ссылка; нельзя перенести завершённый матч.
+      description: Нужна площадка или онлайн-ссылка; нельзя перенести завершённый матч. Длительность слота 1 час; слот целиком находится внутри дат турнира. Зависимый матч начинается после предыдущего слота. При появлении участника конфликтующее время следующего матча сбрасывается с уведомлением.
     ScheduleRoundRequest:
       type: object
       additionalProperties: false

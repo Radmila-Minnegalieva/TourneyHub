@@ -1,0 +1,11 @@
+{
+  "date": "2026-10-26",
+  "architecture": "api-service-repository",
+  "status": "passed",
+  "first_admin_created": true,
+  "repeat_idempotent": true,
+  "different_admin_rejected": true,
+  "roles": 4,
+  "audit_entries": 1,
+  "test_database_removed": true
+}
