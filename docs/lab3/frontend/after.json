@@ -1,0 +1,8 @@
+{
+  "files": 51,
+  "nonblankLines": 1488,
+  "functions": 122,
+  "ternaries": 25,
+  "maxTernaryDepth": 2,
+  "logicalOperators": 20
+}

@@ -6,17 +6,27 @@ import { Badge } from '../../ui/Badge/Badge'
 import { Button } from '../../ui/Button/Button'
 import { Card } from '../../ui/Card/Card'
 
-const statusTone = { registration: 'success', running: 'warning', completed: 'neutral' } as const
+const statusView = {
+  registration: { tone: 'success', variant: 'primary', action: 'Подать заявку' },
+  running: { tone: 'warning', variant: 'secondary', action: 'Открыть' },
+  completed: { tone: 'neutral', variant: 'secondary', action: 'Открыть' },
+} as const
 
 export function TournamentCard({ tournament }: { tournament: Tournament }) {
   const navigate = useNavigate()
   const freePlaces = getFreePlaces(tournament.participants, tournament.capacity)
+  const view = statusView[tournament.status]
+  const hints = {
+    registration: `Осталось мест: ${freePlaces}`,
+    running: 'Смотреть сетку и результаты',
+    completed: 'Итоги опубликованы',
+  }
   const progress = Math.round((tournament.participants / tournament.capacity) * 100)
 
   return (
     <Card className="flex min-h-[285px] flex-col p-5">
       <div className="mb-4 flex items-center justify-between gap-3">
-        <Badge tone={statusTone[tournament.status]}>{tournamentStatusLabel[tournament.status]}</Badge>
+        <Badge tone={view.tone}>{tournamentStatusLabel[tournament.status]}</Badge>
         <Badge>{tournament.discipline}</Badge>
       </div>
       <h2 className="mb-4 text-xl font-extrabold leading-tight">{tournament.title}</h2>
@@ -30,14 +40,12 @@ export function TournamentCard({ tournament }: { tournament: Tournament }) {
         <div className="h-full bg-brand" style={{ width: `${progress}%` }} />
       </div>
       <div className="mt-auto flex items-center justify-between gap-3 pt-4 text-sm text-slate-500">
-        <span>
-          {tournament.status === 'registration' ? `Осталось мест: ${freePlaces}` : tournament.status === 'completed' ? 'Итоги опубликованы' : 'Смотреть сетку и результаты'}
-        </span>
+        <span>{hints[tournament.status]}</span>
         <Button
-          variant={tournament.status === 'registration' ? 'primary' : 'secondary'}
+          variant={view.variant}
           onClick={() => navigate(ROUTES.tournament(tournament.id, 'groups'))}
         >
-          {tournament.status === 'registration' ? 'Подать заявку' : 'Открыть'}
+          {view.action}
         </Button>
       </div>
     </Card>
