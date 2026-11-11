@@ -4,8 +4,9 @@ import { ROUTES } from '../constants/routes'
 import { useAuth } from '../hooks/useAuth'
 
 export function RequireAuth({ children }: PropsWithChildren) {
-  const { isAuthenticated } = useAuth()
+  const { isAuthenticated, loading } = useAuth()
   const location = useLocation()
-  if (!isAuthenticated) return <Navigate to={ROUTES.login} replace state={{ from: location.pathname }} />
+  if (loading) return <p role="status">Загрузка сессии…</p>
+  if (!isAuthenticated) return <Navigate to={ROUTES.login} replace state={{ from: location.pathname + location.search }} />
   return children
 }

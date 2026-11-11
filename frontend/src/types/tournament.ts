@@ -1,4 +1,4 @@
-export type TournamentStatus = 'registration' | 'running' | 'completed'
+export type TournamentStatus = 'draft' | 'registration' | 'running' | 'completed' | 'cancelled'
 export type TournamentFormat = 'single-elimination' | 'round-robin' | 'groups-playoff'
 
 export interface Tournament {

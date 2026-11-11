@@ -41,7 +41,7 @@ export function AppLayout() {
                   <span className="flex h-9 w-9 items-center justify-center rounded-full bg-indigo-500 text-sm font-extrabold">{user.name.split(' ').map((part) => part[0]).join('').slice(0, 2)}</span>
                   <span className="hidden text-left lg:block"><span className="block text-sm font-semibold">{user.name}</span><span className="block text-xs text-slate-400">@{user.nickname}</span></span>
                 </NavLink>
-                <Button variant="secondary" className="border-slate-700 bg-slate-900 text-white hover:bg-slate-800" onClick={logout}>{ru.nav.signOut}</Button>
+                <Button variant="secondary" className="border-slate-700 bg-slate-900 text-white hover:bg-slate-800" onClick={() => { void logout().catch(() => undefined) }}>{ru.nav.signOut}</Button>
               </>
             ) : <NavLink to={ROUTES.login}><Button>{ru.nav.signIn}</Button></NavLink>}
           </div>
@@ -50,7 +50,7 @@ export function AppLayout() {
         {mobileOpen ? (
           <div className="border-t border-slate-800 px-4 pb-4 md:hidden">
             <nav className="grid gap-1 pt-3" aria-label="Мобильная навигация">{links.map((link) => <NavLink key={link.to} to={link.to} end={link.end} onClick={() => setMobileOpen(false)} className={linkClass}>{link.label}</NavLink>)}</nav>
-            <div className="mt-3 border-t border-slate-800 pt-3">{isAuthenticated && user ? <div className="grid gap-2"><NavLink to={ROUTES.profile} onClick={() => setMobileOpen(false)} className={linkClass}>{ru.nav.profile} · @{user.nickname}</NavLink><Button variant="secondary" className="w-full border-slate-700 bg-slate-900 text-white" onClick={() => { logout(); setMobileOpen(false) }}>{ru.nav.signOut}</Button></div> : <NavLink to={ROUTES.login} onClick={() => setMobileOpen(false)} className={linkClass}>{ru.nav.signIn}</NavLink>}</div>
+            <div className="mt-3 border-t border-slate-800 pt-3">{isAuthenticated && user ? <div className="grid gap-2"><NavLink to={ROUTES.profile} onClick={() => setMobileOpen(false)} className={linkClass}>{ru.nav.profile} · @{user.nickname}</NavLink><Button variant="secondary" className="w-full border-slate-700 bg-slate-900 text-white" onClick={() => { void logout().catch(() => undefined); setMobileOpen(false) }}>{ru.nav.signOut}</Button></div> : <NavLink to={ROUTES.login} onClick={() => setMobileOpen(false)} className={linkClass}>{ru.nav.signIn}</NavLink>}</div>
           </div>
         ) : null}
       </header>

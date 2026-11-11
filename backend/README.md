@@ -2,23 +2,23 @@
 
 TourneyHub — платформа для организации и проведения турниров. Backend предоставляет REST API для аккаунтов, команд, турниров, заявок, жеребьёвки, расписания, результатов, споров, рейтингов и уведомлений. Фактический стек: Go 1.25+, Echo 4, pgx 5, PostgreSQL 18.6 и goose. HTTP-контракт: [OpenAPI 3.0.3](pkg/api/v1/openapi.yaml).
 
-Основной способ локального запуска — Docker Compose. Он запускает PostgreSQL, применяет миграции и поднимает API, Swagger UI и Mailpit для просмотра писем. Frontend запускается отдельно. Встроенного демонстрационного наполнения дисциплин и турниров нет: данные создаются через API.
+Основной способ локального запуска — Docker Compose. Он запускает PostgreSQL, применяет миграции и поднимает API, Swagger UI и Mailpit для просмотра писем. Frontend можно запустить отдельно через Vite или вместе со всеми сервисами командой `docker compose up -d --build` из корня репозитория; см. [инструкцию фронта](../frontend/README.md). Встроенного демонстрационного наполнения дисциплин и турниров нет: данные создаются через API.
 
 ## 1 Получить исходники и подготовить инструменты
 
 Для запуска целиком в контейнерах нужны Git, работающий Docker Desktop либо Docker Engine с **Compose v2**, Make и доступ к сети для загрузки образов. Для примеров запросов нужен curl; их можно выполнить и через Swagger UI. На Windows команды удобнее выполнять в WSL2 с включённой интеграцией Docker Desktop.
 
 ```sh
-git clone --branch backend/lab3-complete git@github.com:Radmila-Minnegalieva/TourneyHub.git
+git clone --branch main git@github.com:Radmila-Minnegalieva/TourneyHub.git
 cd TourneyHub/backend
 docker --version
 docker compose version
 make --version
 ```
 
-Команда использует SSH-доступ к GitHub. При подключении через HTTPS замените URL на `https://github.com/Radmila-Minnegalieva/TourneyHub.git`, сохранив `--branch backend/lab3-complete`. После слияния pull request можно клонировать обычную `main` без параметра `--branch`.
+Команда использует SSH-доступ к GitHub. При подключении через HTTPS замените URL на `https://github.com/Radmila-Minnegalieva/TourneyHub.git`, сохранив `--branch main`.
 
-Если репозиторий уже есть, сохраните свою работу, получите ветку backend и откройте каталог `backend/`. До слияния pull request используйте `backend/lab3-complete`, а не прежнюю версию `main`.
+Если репозиторий уже есть, сохраните свою работу, обновите ветку `main` и откройте каталог `backend/`.
 
 Все дальнейшие команды выполняются **из `TourneyHub/backend/`**, если явно не указан другой каталог. Команды Make можно вызывать и из корня TourneyHub: корневой Makefile перенаправляет их в backend. Для самостоятельных команд `docker compose` каталог backend обязателен.
 
@@ -121,7 +121,7 @@ curl -i -X POST "$API_BASE_URL/auth/register" \
   --data '{"email":"player@example.test","password":"DemoPassword_2026","nickname":"player_demo","personal_data_consent":true}'
 ```
 
-Ожидается **202 Accepted**. Затем откройте Mailpit на http://localhost:8025. Фоновый обработчик проверяет почту при старте и далее раз в минуту; письмо после регистрации может прийти не сразу. Скопируйте значение `token` из ссылки подтверждения. Пока соответствующего frontend-экрана нет, ссылка на порт 5173 сама аккаунт не подтверждает: вызовите API вручную.
+Ожидается **202 Accepted**. Затем откройте Mailpit на http://localhost:8025. Фоновый обработчик проверяет почту при старте и далее раз в минуту; письмо после регистрации может прийти не сразу. Откройте ссылку из письма в запущенном frontend и нажмите «Подтвердить email». Для проверки без интерфейса скопируйте значение `token` и вызовите API вручную:
 
 ```sh
 curl -i -X POST "$API_BASE_URL/auth/verify-email" \

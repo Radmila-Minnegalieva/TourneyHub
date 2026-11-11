@@ -4,12 +4,13 @@ import { Button } from '../../ui/Button/Button'
 import type { TournamentFilters as Filters } from '../../hooks/useTournaments'
 
 interface Props {
+  disciplines: { id: string; name: string }[]
   filters: Filters
   onChange: (filters: Filters) => void
   onReset: () => void
 }
 
-export function TournamentFilters({ filters, onChange, onReset }: Props) {
+export function TournamentFilters({ filters, onChange, onReset, disciplines }: Props) {
   return (
     <div className="grid gap-3 lg:grid-cols-[2fr_1fr_1fr_1fr_auto]">
       <label className="grid gap-1.5 text-sm font-semibold">
@@ -24,12 +25,7 @@ export function TournamentFilters({ filters, onChange, onReset }: Props) {
         Дисциплина
         <Select value={filters.discipline} onChange={(event) => onChange({ ...filters, discipline: event.target.value })}>
           <option value="">Все дисциплины</option>
-          <option>Мини-футбол</option>
-          <option>Волейбол</option>
-          <option>Шахматы</option>
-          <option>Баскетбол 3×3</option>
-          <option>Настольный теннис</option>
-          <option>Интеллектуальные игры</option>
+          {disciplines.map(d => <option key={d.id} value={d.id}>{d.name}</option>)}
         </Select>
       </label>
       <label className="grid gap-1.5 text-sm font-semibold">

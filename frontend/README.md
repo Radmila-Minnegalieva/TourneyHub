@@ -1,50 +1,59 @@
-# React + TypeScript + Vite
+# TourneyHub Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+React + TypeScript. Все страницы приложения работают с REST API backend; демонстрационные данные из `src/mocks` не используются.
 
-Currently, two official plugins are available:
+## Запуск разработки
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Нужен Node.js 24 LTS. Сначала поднимите backend по инструкции в `../backend/README.md`.
 
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
-
-- Configure the top-level `parserOptions` property like this:
-
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+```sh
+npm ci
+npm run dev
 ```
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+Откройте http://127.0.0.1:5173. Vite проксирует `/api` на `http://127.0.0.1:8080` — браузеру не нужен отдельный CORS-доступ. Для другого порта backend скопируйте `.env.example` в `.env.local` и измените `API_PROXY_TARGET`. Перезапустите Vite после изменения окружения.
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
+`VITE_API_BASE_URL` по умолчанию `/api/v1`. Для отдельного размещения API можно задать абсолютный URL; тогда backend должен разрешать origin фронта через `CORS_ALLOWED_ORIGINS`.
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
+## Запуск всего приложения в Docker
+
+Из корня репозитория (Docker Compose с поддержкой `include`):
+
+```sh
+# Только если backend/.env ещё отсутствует:
+cp backend/.env.example backend/.env
+docker compose up -d --build
 ```
+
+Фронт: http://localhost:5173, API: http://localhost:8080, Swagger: http://localhost:8081, Mailpit: http://localhost:8025. Nginx проксирует API и поддерживает прямое открытие вложенных маршрутов React. Не запускайте одновременно Vite и контейнер frontend на одном порту.
+
+Создание первого администратора описано в `../backend/README.md`. Обычная регистрация создаёт участника, а не организатора. Добавьте дисциплины через административный API; назначьте нужным аккаунтам роль organizer. Пустой каталог после первого запуска — нормальное состояние, приложение не подставляет демоданные.
+
+## Сценарии
+
+- Регистрация с согласием и паролем от 12 символов; подтверждение email по ссылке из Mailpit; вход и восстановление сессии; выход с отзывом refresh-токена.
+- Сброс пароля через письмо, профиль, часовой пояс, email-уведомления и загрузка аватара.
+- Создание команд, состав, адресные приглашения и одноразовые ссылки, принятие приглашений, передача капитанства и удаление участника.
+- Каталог и фильтры из справочника API; черновики организатора; создание, даты и публикация турнира.
+- Заявки с выбором состава, рассмотрение организатором, предпросмотр и подтверждение жеребьёвки, таблицы, сетка и расписание.
+- Назначение времени матча, результат Bo1/Bo3/Bo5, загрузка протокола, подтверждение и оспаривание результата капитаном, прямая фиксация назначенным судьёй/администратором.
+- Завершение турнира, итоговые места и CSV, рейтинг по дисциплинам.
+
+Сервер проверяет права и бизнес-ограничения. Например, сообщение результата возможно только после назначенного начала матча. Ошибки отображаются в интерфейсе; успех показывается после ответа API. Изменения передают `version`; при конфликте обновите страницу и повторите действие. Публичные страницы читают текущее состояние при открытии; для внешних изменений используйте обновление страницы.
+
+Администрирование ролей/дисциплин, назначение судей и разрешение споров остаются в Swagger/API. UI не заявляет сохранение настроек, отсутствующих в контракте (например, отдельных категорий уведомлений).
+
+## Проверки
+
+```sh
+npm run generate:api  # типы из backend/pkg/api/v1/openapi.yaml
+npm run build
+npm run lint
+npm test
+npx playwright install chromium
+npm run test:e2e
+```
+
+`src/api/schema.ts` генерируется и хранится в Git. CI проверяет его соответствие контракту. Unit-тесты проверяют ротацию токенов, повтор запросов и пагинацию. Playwright-тесты `app.spec.ts` проверяют интерфейс на контролируемых HTTP-ответах; они не заменяют проверку с настоящим PostgreSQL.
+
+Для сквозного теста с настоящими API, PostgreSQL и Mailpit задайте `TOURNEYHUB_LIVE=1`, `TEST_ADMIN_EMAIL` и `TEST_ADMIN_PASSWORD`, затем выполните `npx playwright test tests/live.spec.ts`. Тест создаёт отдельные аккаунты, дисциплину и турнир с уникальными именами; предназначен только для локального тестового стенда. Без переменных live-тест пропускается.

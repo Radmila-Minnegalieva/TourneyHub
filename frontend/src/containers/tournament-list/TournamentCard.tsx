@@ -7,6 +7,8 @@ import { Button } from '../../ui/Button/Button'
 import { Card } from '../../ui/Card/Card'
 
 const statusView = {
+  draft: { tone: 'neutral', variant: 'secondary', action: 'Открыть' },
+  cancelled: { tone: 'neutral', variant: 'secondary', action: 'Открыть' },
   registration: { tone: 'success', variant: 'primary', action: 'Подать заявку' },
   running: { tone: 'warning', variant: 'secondary', action: 'Открыть' },
   completed: { tone: 'neutral', variant: 'secondary', action: 'Открыть' },
@@ -17,6 +19,8 @@ export function TournamentCard({ tournament }: { tournament: Tournament }) {
   const freePlaces = getFreePlaces(tournament.participants, tournament.capacity)
   const view = statusView[tournament.status]
   const hints = {
+    draft: 'Ещё не опубликован',
+    cancelled: 'Турнир отменён',
     registration: `Осталось мест: ${freePlaces}`,
     running: 'Смотреть сетку и результаты',
     completed: 'Итоги опубликованы',

@@ -1,6 +1,8 @@
 import type { TournamentFormat, TournamentStatus } from '../types/tournament'
 
 export const tournamentStatusLabel: Record<TournamentStatus, string> = {
+  draft: 'Черновик',
+  cancelled: 'Отменён',
   registration: 'Регистрация открыта',
   running: 'Идёт',
   completed: 'Завершён',

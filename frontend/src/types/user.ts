@@ -9,6 +9,7 @@ export interface UserNotificationSettings {
 }
 
 export interface UserProfile {
+  version?: number
   id: string
   email: string
   nickname: string

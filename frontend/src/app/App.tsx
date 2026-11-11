@@ -1,3 +1,5 @@
+import { InvitationPage } from '../pages/team/InvitationPage'
+import { TokenPage } from '../pages/auth/TokenPage'
 import { Navigate, Route, Routes } from 'react-router-dom'
 import { AppLayout } from '../layout/AppLayout/AppLayout'
 import { ForgotPasswordPage } from '../pages/auth/ForgotPasswordPage'
@@ -30,6 +32,9 @@ function App() {
         <Route path="/auth/login" element={<LoginPage />} />
         <Route path="/auth/register" element={<RegisterPage />} />
         <Route path="/auth/forgot-password" element={<ForgotPasswordPage />} />
+        <Route path="/auth/verify-email" element={<TokenPage />} />
+        <Route path="/auth/reset-password" element={<TokenPage reset />} />
+        <Route path="/invitations/:invitationId" element={<RequireAuth><InvitationPage /></RequireAuth>} />
         <Route path="*" element={<NotFoundPage />} />
       </Route>
     </Routes>

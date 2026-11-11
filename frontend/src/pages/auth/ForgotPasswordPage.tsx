@@ -1,24 +1,45 @@
-import { useState, type FormEvent } from 'react'
-import { NavLink } from 'react-router-dom'
-import { AuthShell } from '../../containers/auth/AuthShell'
-import { ROUTES } from '../../constants/routes'
-import { ru } from '../../locales/ru'
-import { Button } from '../../ui/Button/Button'
-import { FormField } from '../../ui/FormField/FormField'
-import { Input } from '../../ui/Input/Input'
-
+import { useState, type FormEvent } from "react";
+import { Link } from "react-router-dom";
+import { AuthShell } from "../../containers/auth/AuthShell";
+import { api, errorMessage } from "../../api/client";
+import { Button } from "../../ui/Button/Button";
+import { Input } from "../../ui/Input/Input";
+import { Feedback } from "../../ui/Feedback";
 export function ForgotPasswordPage() {
-  const [sent, setSent] = useState(false)
-  const onSubmit = (event: FormEvent) => { event.preventDefault(); setSent(true) }
-
+  const [sent, setSent] = useState(false);
+  const [error, setError] = useState("");
+  const [busy, setBusy] = useState(false);
+  async function submit(e: FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    const f = new FormData(e.currentTarget);
+    setBusy(true);
+    setError("");
+    try {
+      await api(
+        "/auth/password-reset",
+        { method: "POST", body: { email: String(f.get("email")) } },
+        false,
+      );
+      setSent(true);
+    } catch (e) {
+      setError(errorMessage(e));
+    } finally {
+      setBusy(false);
+    }
+  }
   return (
-    <AuthShell title={ru.auth.forgotTitle} subtitle={ru.auth.forgotSubtitle}>
-      <form className="grid gap-4" onSubmit={onSubmit}>
-        <FormField label={ru.auth.email}><Input type="email" required /></FormField>
-        {sent ? <div className="rounded-xl bg-emerald-50 p-3 text-sm text-emerald-800">{ru.auth.resetSuccess}</div> : null}
-        <Button type="submit">{ru.common.send}</Button>
-        <NavLink className="text-center text-sm font-semibold text-brand" to={ROUTES.login}>Вернуться ко входу</NavLink>
+    <AuthShell title="Восстановление пароля" subtitle="Укажите email аккаунта">
+      <form onSubmit={submit} className="grid gap-4">
+        <Input aria-label="Email" name="email" type="email" required />
+        <Feedback error={error} />
+        {sent && (
+          <p role="status">
+            Если аккаунт существует, письмо со ссылкой отправлено.
+          </p>
+        )}
+        <Button disabled={busy}>Отправить</Button>
+        <Link to="/auth/login">Вернуться ко входу</Link>
       </form>
     </AuthShell>
-  )
+  );
 }
