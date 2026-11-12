@@ -1068,8 +1068,9 @@ type ListAdminUsersParams struct {
 
 // ListDisciplinesParams содержит параметры операции ListDisciplines.
 type ListDisciplinesParams struct {
-	Limit  *Limit  `form:"limit,omitempty" json:"limit,omitempty"`
-	Offset *Offset `form:"offset,omitempty" json:"offset,omitempty"`
+	Limit           *Limit  `form:"limit,omitempty" json:"limit,omitempty"`
+	Offset          *Offset `form:"offset,omitempty" json:"offset,omitempty"`
+	IncludeInactive *bool   `form:"include_inactive,omitempty" json:"include_inactive,omitempty"`
 }
 
 // ListAssignedDisputesParams содержит параметры операции ListAssignedDisputes.

@@ -12,7 +12,13 @@ import (
 
 func (s *Service) ListDisciplines(ctx context.Context, p model.ListDisciplinesParams) (model.DisciplinePage, error) {
 	limit, offset := pagination(p.Limit, p.Offset)
-	return s.repo.DisciplinePage(ctx, limit, offset)
+	includeInactive := p.IncludeInactive != nil && *p.IncludeInactive
+	if includeInactive {
+		if err := requireRole(ctx, model.Admin); err != nil {
+			return model.DisciplinePage{}, err
+		}
+	}
+	return s.repo.DisciplinePage(ctx, limit, offset, includeInactive)
 }
 
 func validateDiscipline(d model.DisciplineRequest) error {

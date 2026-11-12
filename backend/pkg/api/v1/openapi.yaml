@@ -342,8 +342,8 @@ paths:
       operationId: listDisciplines
       tags:
       - Disciplines
-      summary: Справочник активных дисциплин
-      description: Справочник активных дисциплин
+      summary: Справочник дисциплин
+      description: По умолчанию возвращает активные дисциплины. Администратор может включить архивные.
       responses:
         '200':
           description: Успешно
@@ -353,6 +353,10 @@ paths:
                 $ref: '#/components/schemas/DisciplinePage'
         '400':
           $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
         '404':
           $ref: '#/components/responses/404'
         '500':
@@ -361,6 +365,11 @@ paths:
       parameters:
       - $ref: '#/components/parameters/Limit'
       - $ref: '#/components/parameters/Offset'
+      - name: include_inactive
+        in: query
+        description: Включить архивные дисциплины. Доступно администратору.
+        schema:
+          type: boolean
   /teams:
     get:
       operationId: listTeams

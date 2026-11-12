@@ -18,6 +18,7 @@ export function AppLayout() {
     { to: ROUTES.rating, label: ru.nav.rating },
   ]
   const privateLinks: NavItem[] = isAuthenticated ? [{ to: ROUTES.teams, label: ru.nav.teams }] : []
+  if (user?.roles.includes('admin')) privateLinks.push({ to: '/admin', label: 'Администрирование' })
   const organizerLinks: NavItem[] = isOrganizer ? [{ to: ROUTES.createTournament, label: ru.nav.createTournament }] : []
   const links = [...publicLinks, ...privateLinks, ...organizerLinks]
 

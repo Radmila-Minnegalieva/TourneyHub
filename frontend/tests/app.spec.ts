@@ -37,6 +37,8 @@ const tournament = {
   timezone: "Europe/Moscow",
   rules: { best_of: 1 },
   status: "registration",
+  registration_opens_at: new Date(Date.now() - 3_600_000).toISOString(),
+  registration_closes_at: new Date(Date.now() + 3_600_000).toISOString(),
   hidden: false,
   accepted_count: 0,
   version: 1,

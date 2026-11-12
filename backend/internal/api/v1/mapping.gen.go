@@ -706,15 +706,17 @@ func fromModelListAuditParams(v model.ListAuditParams) contract.ListAuditParams 
 
 func toModelListDisciplinesParams(v contract.ListDisciplinesParams) model.ListDisciplinesParams {
 	return model.ListDisciplinesParams{
-		Limit:  ptr.Map(v.Limit, func(x contract.Limit) model.Limit { return toModelLimit(x) }),
-		Offset: ptr.Map(v.Offset, func(x contract.Offset) model.Offset { return toModelOffset(x) }),
+		Limit:           ptr.Map(v.Limit, func(x contract.Limit) model.Limit { return toModelLimit(x) }),
+		Offset:          ptr.Map(v.Offset, func(x contract.Offset) model.Offset { return toModelOffset(x) }),
+		IncludeInactive: v.IncludeInactive,
 	}
 }
 
 func fromModelListDisciplinesParams(v model.ListDisciplinesParams) contract.ListDisciplinesParams {
 	return contract.ListDisciplinesParams{
-		Limit:  ptr.Map(v.Limit, func(x model.Limit) contract.Limit { return fromModelLimit(x) }),
-		Offset: ptr.Map(v.Offset, func(x model.Offset) contract.Offset { return fromModelOffset(x) }),
+		Limit:           ptr.Map(v.Limit, func(x model.Limit) contract.Limit { return fromModelLimit(x) }),
+		Offset:          ptr.Map(v.Offset, func(x model.Offset) contract.Offset { return fromModelOffset(x) }),
+		IncludeInactive: v.IncludeInactive,
 	}
 }
 

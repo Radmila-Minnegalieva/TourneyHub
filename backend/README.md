@@ -52,6 +52,8 @@ PUBLIC_WEB_URL=http://localhost:5173
 
 ## 3 Запустить контейнеры
 
+Compose по умолчанию запускает PostgreSQL 16 с отдельным томом `*_postgres_data_v16`. Если стенд уже работал с PostgreSQL 18, сохраните старый том и перенесите данные через логическую выгрузку и восстановление. Для временного запуска со старым томом задайте `POSTGRES_IMAGE=postgres:18.6-alpine`, `POSTGRES_DATA_PATH=/var/lib/postgresql` и `POSTGRES_VOLUME_NAME` с именем прежнего тома.
+
 ```sh
 make up
 ```
@@ -251,7 +253,7 @@ docker run --rm -d --name tourneyhub-integration-postgres \
   -e POSTGRES_DB=tourneyhub_test \
   -e POSTGRES_USER=tourneyhub_test \
   -e POSTGRES_PASSWORD=integration_only_2026 \
-  -p 127.0.0.1:55433:5432 postgres:18.6-alpine
+  -p 127.0.0.1:55433:5432 postgres:16-alpine
 
 until docker exec tourneyhub-integration-postgres \
   pg_isready -U tourneyhub_test -d tourneyhub_test; do

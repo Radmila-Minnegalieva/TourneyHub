@@ -49,7 +49,7 @@ async function refresh() {
     });
   return refreshing;
 }
-type Options = Omit<RequestInit, "body"> & { body?: unknown };
+type Options = Omit<RequestInit, "body"> & { body?: unknown; responseType?: "blob" };
 export async function api<T = void>(
   path: string,
   options: Options = {},
@@ -107,6 +107,7 @@ export async function api<T = void>(
     );
   }
   if (response.status === 204 || response.status === 202) return undefined as T;
+  if (options.responseType === "blob") return (await response.blob()) as T;
   return response.json();
 }
 export async function allPages<T>(

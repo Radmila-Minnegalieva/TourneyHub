@@ -8,12 +8,12 @@ import (
 	"github.com/google/uuid"
 )
 
-func (r *Repository) DisciplinePage(ctx context.Context, limit, offset int) (model.DisciplinePage, error) {
+func (r *Repository) DisciplinePage(ctx context.Context, limit, offset int, includeInactive bool) (model.DisciplinePage, error) {
 	page := model.DisciplinePage{Limit: limit, Offset: offset}
-	if err := r.db.QueryRow(ctx, `SELECT count(*) FROM disciplines WHERE active`).Scan(&page.Total); err != nil {
+	if err := r.db.QueryRow(ctx, `SELECT count(*) FROM disciplines WHERE active OR $1`, includeInactive).Scan(&page.Total); err != nil {
 		return page, dbError(err)
 	}
-	items, err := jsonItems[model.Discipline](ctx, r.db, `SELECT to_jsonb(d) FROM disciplines d WHERE active ORDER BY lower(name),id LIMIT $1 OFFSET $2`, limit, offset)
+	items, err := jsonItems[model.Discipline](ctx, r.db, `SELECT to_jsonb(d) FROM disciplines d WHERE active OR $3 ORDER BY lower(name),id LIMIT $1 OFFSET $2`, limit, offset, includeInactive)
 	page.Items = items
 	return page, err
 }

@@ -1,9 +1,10 @@
-import { useState, type FormEvent } from "react";
+import { useEffect, useState, type FormEvent } from "react";
 import { Link, useParams } from "react-router-dom";
 import { api, allPages, errorMessage, type Schema } from "../../api/client";
 import { dateLabel, matchLabels } from "../../api/catalog";
 import { useResource } from "../../hooks/useResource";
 import { useAuth } from "../../hooks/useAuth";
+import { useTournamentEvents } from "../../hooks/useTournamentEvents";
 import { Button } from "../../ui/Button/Button";
 import { Card } from "../../ui/Card/Card";
 import { Input } from "../../ui/Input/Input";
@@ -36,11 +37,28 @@ export function MatchPage() {
       (owner ||
         referee ||
         sides.some((a) => a.players.some((p) => p.id === user.id)));
-    const reports = canRead
-      ? await api<Schema["ResultReport"][]>(`${base}/reports`)
-      : [];
-    return { m, t, participants, owner, referee, captain, reports };
+    const [reports, dispute] = await Promise.all([
+      canRead ? api<Schema["ResultReport"][]>(`${base}/reports`) : [],
+      referee && m.status === "disputed"
+        ? api<Schema["Dispute"]>(`${base}/dispute`)
+        : undefined,
+    ]);
+    return { m, t, participants, owner, referee, captain, reports, dispute };
   }, [matchId, user?.id]);
+  const [liveMatch, setLiveMatch] = useState<{
+    matchId: string;
+    tournamentId: string;
+  }>();
+  const tournamentId = r.data?.m.tournament_id;
+  useEffect(() => {
+    if (tournamentId) setLiveMatch({ matchId, tournamentId });
+  }, [matchId, tournamentId]);
+  useTournamentEvents(
+    liveMatch?.matchId === matchId
+      ? liveMatch.tournamentId
+      : undefined,
+    r.refresh,
+  );
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
   const [busy, setBusy] = useState(false);
@@ -59,6 +77,25 @@ export function MatchPage() {
     }
   }
   const d = r.data;
+  const resolving = d?.referee && d.dispute?.status === "open";
+  async function downloadEvidence(id: string) {
+    try {
+      const blob = await api<Blob>(`/files/${id}`, { responseType: "blob" });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      const extensions: Record<string, string> = {
+        "application/pdf": "pdf",
+        "image/png": "png",
+        "image/jpeg": "jpg",
+      };
+      link.download = `protocol-${id}.${extensions[blob.type] ?? "bin"}`;
+      link.click();
+      window.setTimeout(() => URL.revokeObjectURL(url), 1000);
+    } catch (e) {
+      setError(errorMessage(e));
+    }
+  }
   function report(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     if (!d) return;
@@ -78,28 +115,37 @@ export function MatchPage() {
       d.t.rules.best_of === 1
         ? games[0]?.away_score
         : games.filter((g) => g.away_score > g.home_score).length;
-    void action(async () => {
-      const file = f.get("evidence") as File;
-      const evidence_file_ids: string[] = [];
-      if (file?.size) {
-        const body = new FormData();
-        body.set("purpose", "match_protocol");
-        body.set("file", file);
-        evidence_file_ids.push(
-          (await api<Schema["File"]>("/files", { method: "POST", body })).id,
-        );
-      }
-      await api(`${base}/${d.referee ? "referee-result" : "reports"}`, {
-        method: d.referee ? "PUT" : "POST",
-        body: {
-          version: d.m.version,
-          home_score,
-          away_score,
-          games,
-          evidence_file_ids,
-        },
-      });
-    }, "Результат отправлен");
+    void action(
+      async () => {
+        const file = f.get("evidence") as File;
+        const evidence_file_ids: string[] = [];
+        if (file?.size) {
+          const body = new FormData();
+          body.set("purpose", "match_protocol");
+          body.set("file", file);
+          evidence_file_ids.push(
+            (await api<Schema["File"]>("/files", { method: "POST", body })).id,
+          );
+        }
+        const operation = resolving
+          ? "dispute/resolve"
+          : d.referee
+            ? "referee-result"
+            : "reports";
+        await api(`${base}/${operation}`, {
+          method: d.referee && !resolving ? "PUT" : "POST",
+          body: {
+            version: d.m.version,
+            home_score,
+            away_score,
+            games,
+            evidence_file_ids,
+            ...(resolving ? { reason: String(f.get("resolution")) } : {}),
+          },
+        });
+      },
+      resolving ? "Спор разрешён" : "Результат отправлен",
+    );
   }
   const name = (id?: string) =>
     d?.participants.find((a) => a.id === id)?.team.name ||
@@ -166,8 +212,25 @@ export function MatchPage() {
               </form>
             </Card>
           )}
-          {(d.captain || d.referee) && d.m.status === "scheduled" && (
+          {(((d.captain || d.referee) && d.m.status === "scheduled") ||
+            resolving) && (
             <Card className="mt-5 p-5">
+              {resolving && (
+                <div>
+                  <h2 className="text-xl font-bold">Разрешение спора</h2>
+                  <p>{d.dispute?.reason}</p>
+                  {d.dispute?.evidence_file_ids.map((id, index) => (
+                    <Button
+                      key={id}
+                      type="button"
+                      variant="secondary"
+                      onClick={() => void downloadEvidence(id)}
+                    >
+                      Скачать доказательство {index + 1}
+                    </Button>
+                  ))}
+                </div>
+              )}
               <h2 className="text-xl font-bold">
                 Сообщить результат · Bo{d.t.rules.best_of}
               </h2>
@@ -204,10 +267,18 @@ export function MatchPage() {
                     accept="application/pdf,image/png,image/jpeg"
                   />
                 </label>
+                {resolving && (
+                  <label>
+                    Обоснование решения
+                    <Input name="resolution" required maxLength={2000} />
+                  </label>
+                )}
                 <Button disabled={busy}>
-                  {d.referee
-                    ? "Зафиксировать результат судьёй"
-                    : "Отправить результат"}
+                  {resolving
+                    ? "Разрешить спор"
+                    : d.referee
+                      ? "Зафиксировать результат судьёй"
+                      : "Отправить результат"}
                 </Button>
               </form>
             </Card>
@@ -225,6 +296,16 @@ export function MatchPage() {
                     <p key={g.number}>
                       Партия {g.number}: {g.home_score} : {g.away_score}
                     </p>
+                  ))}
+                  {report.evidence_file_ids.map((id, index) => (
+                    <Button
+                      key={id}
+                      type="button"
+                      variant="secondary"
+                      onClick={() => void downloadEvidence(id)}
+                    >
+                      Скачать протокол {index + 1}
+                    </Button>
                   ))}
                   {report.status === "pending" && (
                     <p>

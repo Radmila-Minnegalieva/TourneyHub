@@ -6,6 +6,8 @@ export interface Tournament {
   title: string
   discipline: string
   status: TournamentStatus
+  statusLabel?: string
+  registrationOpen?: boolean
   format: TournamentFormat
   formatLabel: string
   organizer: string

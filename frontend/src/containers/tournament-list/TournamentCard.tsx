@@ -18,6 +18,7 @@ export function TournamentCard({ tournament }: { tournament: Tournament }) {
   const navigate = useNavigate()
   const freePlaces = getFreePlaces(tournament.participants, tournament.capacity)
   const view = statusView[tournament.status]
+  const registrationClosed = tournament.status === 'registration' && tournament.registrationOpen === false
   const hints = {
     draft: 'Ещё не опубликован',
     cancelled: 'Турнир отменён',
@@ -30,7 +31,7 @@ export function TournamentCard({ tournament }: { tournament: Tournament }) {
   return (
     <Card className="flex min-h-[285px] flex-col p-5">
       <div className="mb-4 flex items-center justify-between gap-3">
-        <Badge tone={view.tone}>{tournamentStatusLabel[tournament.status]}</Badge>
+        <Badge tone={registrationClosed ? 'neutral' : view.tone}>{tournament.statusLabel ?? tournamentStatusLabel[tournament.status]}</Badge>
         <Badge>{tournament.discipline}</Badge>
       </div>
       <h2 className="mb-4 text-xl font-extrabold leading-tight">{tournament.title}</h2>
@@ -44,12 +45,12 @@ export function TournamentCard({ tournament }: { tournament: Tournament }) {
         <div className="h-full bg-brand" style={{ width: `${progress}%` }} />
       </div>
       <div className="mt-auto flex items-center justify-between gap-3 pt-4 text-sm text-slate-500">
-        <span>{hints[tournament.status]}</span>
+        <span>{registrationClosed ? 'Смотреть сведения о турнире' : hints[tournament.status]}</span>
         <Button
-          variant={view.variant}
+          variant={registrationClosed ? 'secondary' : view.variant}
           onClick={() => navigate(ROUTES.tournament(tournament.id, 'groups'))}
         >
-          {view.action}
+          {registrationClosed ? 'Открыть' : view.action}
         </Button>
       </div>
     </Card>

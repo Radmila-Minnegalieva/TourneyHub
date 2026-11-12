@@ -1,0 +1,422 @@
+{
+  "version": 1,
+  "capturedAt": "2026-11-12T11:31:21.022111+00:00",
+  "counts": {
+    "users": 31,
+    "user_roles": 39,
+    "disciplines": 11,
+    "teams": 19,
+    "team_members": 33,
+    "invitations": 17,
+    "tournaments": 46,
+    "applications": 35,
+    "application_players": 53,
+    "tournament_player_claims": 49,
+    "stages": 11,
+    "tournament_groups": 2,
+    "group_participants": 8,
+    "matches": 30,
+    "result_reports": 12,
+    "report_games": 12,
+    "disputes": 3,
+    "standings": 13,
+    "ratings": 13,
+    "rating_changes": 16,
+    "notifications": 197,
+    "audit_entries": 252
+  },
+  "accounts": [
+    {
+      "id": "0467bbf2-a428-48ef-ae8d-8fda9687c0c2",
+      "email": "bootstrap-admin@example.test",
+      "nickname": "bootstrap_admin",
+      "roles": [
+        "admin",
+        "organizer",
+        "participant",
+        "referee"
+      ],
+      "verified": true,
+      "blocked": false
+    },
+    {
+      "id": "a2d6d84f-b8cd-4084-8f93-3d1bd33fbb13",
+      "email": "demo-4ce94783@example.test",
+      "nickname": "demo_4ce94783",
+      "roles": [
+        "participant"
+      ],
+      "verified": true,
+      "blocked": false
+    },
+    {
+      "id": "6454fc79-75f0-40a2-9270-abcf121a0ba6",
+      "email": "demo-76c2acc0@example.test",
+      "nickname": "demo_76c2acc0",
+      "roles": [
+        "participant"
+      ],
+      "verified": false,
+      "blocked": false
+    },
+    {
+      "id": "5ad2df2d-702b-4ebf-9d00-645b36343ff5",
+      "email": "player1794474238924@example.test",
+      "nickname": "p1794474238924",
+      "roles": [
+        "participant"
+      ],
+      "verified": true,
+      "blocked": false
+    },
+    {
+      "id": "a5aba112-d9f2-4d44-9926-de5c6132caf8",
+      "email": "player1794475291988@example.test",
+      "nickname": "p1794475291988",
+      "roles": [
+        "participant"
+      ],
+      "verified": true,
+      "blocked": false
+    },
+    {
+      "id": "aaf44129-e3bb-45ef-a44d-fefe5d82cdf5",
+      "email": "qa-8ea831-admin24@example.test",
+      "nickname": "qa_admin24_8ea831",
+      "roles": [
+        "admin",
+        "participant"
+      ],
+      "verified": true,
+      "blocked": false
+    },
+    {
+      "id": "6e5575e8-442c-456b-8bc8-7444d9e08516",
+      "email": "qa-8ea831-blocked22@example.test",
+      "nickname": "qa_blocked22_8ea831",
+      "roles": [
+        "participant"
+      ],
+      "verified": true,
+      "blocked": true
+    },
+    {
+      "id": "c7f16986-6805-4867-b281-88cc84904ec6",
+      "email": "qa-8ea831-captain10@example.test",
+      "nickname": "qa_captain10_8ea831",
+      "roles": [
+        "participant"
+      ],
+      "verified": true,
+      "blocked": false
+    },
+    {
+      "id": "62303c30-1040-4d63-8b69-02b962be2473",
+      "email": "qa-8ea831-captain11@example.test",
+      "nickname": "qa_captain11_8ea831",
+      "roles": [
+        "participant"
+      ],
+      "verified": true,
+      "blocked": false
+    },
+    {
+      "id": "f4df996c-de41-4830-8c96-d0a8c3dd65f3",
+      "email": "qa-8ea831-captain12@example.test",
+      "nickname": "qa_captain12_8ea831",
+      "roles": [
+        "participant"
+      ],
+      "verified": true,
+      "blocked": false
+    },
+    {
+      "id": "0cdacec8-87c5-4f22-ac4d-b0710976ecfa",
+      "email": "qa-8ea831-captain5@example.test",
+      "nickname": "qa_captain5_8ea831",
+      "roles": [
+        "participant"
+      ],
+      "verified": true,
+      "blocked": false
+    },
+    {
+      "id": "3f29c841-e171-411b-a7ac-ce9b613bc5df",
+      "email": "qa-8ea831-captain6@example.test",
+      "nickname": "qa_captain6_8ea831",
+      "roles": [
+        "participant"
+      ],
+      "verified": true,
+      "blocked": false
+    },
+    {
+      "id": "352ffab6-2a0f-4e1e-b133-4d176a01dfa7",
+      "email": "qa-8ea831-captain7@example.test",
+      "nickname": "qa_captain7_8ea831",
+      "roles": [
+        "participant"
+      ],
+      "verified": true,
+      "blocked": false
+    },
+    {
+      "id": "e6ed33da-8dae-485a-a120-17a04fbefa74",
+      "email": "qa-8ea831-captain8@example.test",
+      "nickname": "qa_captain8_8ea831",
+      "roles": [
+        "participant"
+      ],
+      "verified": true,
+      "blocked": false
+    },
+    {
+      "id": "a3735c8f-d69d-4298-b952-16c541aaf9d0",
+      "email": "qa-8ea831-captain9@example.test",
+      "nickname": "qa_captain9_8ea831",
+      "roles": [
+        "participant"
+      ],
+      "verified": true,
+      "blocked": false
+    },
+    {
+      "id": "f5969e7f-5855-41ba-a771-282a5f73f1a6",
+      "email": "qa-8ea831-observer21@example.test",
+      "nickname": "qa_observer21_8ea831",
+      "roles": [
+        "participant"
+      ],
+      "verified": true,
+      "blocked": false
+    },
+    {
+      "id": "3417de5f-9932-4778-a420-9fd3d613c1ca",
+      "email": "qa-8ea831-organizer1@example.test",
+      "nickname": "qa_organizer1_8ea831",
+      "roles": [
+        "organizer",
+        "participant"
+      ],
+      "verified": true,
+      "blocked": false
+    },
+    {
+      "id": "931d54c5-1ca5-41c5-99a9-dab306d0f233",
+      "email": "qa-8ea831-organizer2@example.test",
+      "nickname": "qa_organizer2_8ea831",
+      "roles": [
+        "organizer",
+        "participant"
+      ],
+      "verified": true,
+      "blocked": false
+    },
+    {
+      "id": "fc9d6992-8360-4d84-9cf2-4a7d9a1dd69b",
+      "email": "qa-8ea831-player13@example.test",
+      "nickname": "qa_player13_8ea831",
+      "roles": [
+        "participant"
+      ],
+      "verified": true,
+      "blocked": false
+    },
+    {
+      "id": "ae0126f6-a2c7-47c1-a859-82c2d5ab3adc",
+      "email": "qa-8ea831-player14@example.test",
+      "nickname": "qa_player14_8ea831",
+      "roles": [
+        "participant"
+      ],
+      "verified": true,
+      "blocked": false
+    },
+    {
+      "id": "3ac3a10a-a4aa-4dca-84d1-c480d7867c53",
+      "email": "qa-8ea831-player15@example.test",
+      "nickname": "qa_player15_8ea831",
+      "roles": [
+        "participant"
+      ],
+      "verified": true,
+      "blocked": false
+    },
+    {
+      "id": "023dfad3-ee89-4338-9419-fd2d79a537ca",
+      "email": "qa-8ea831-player16@example.test",
+      "nickname": "qa_player16_8ea831",
+      "roles": [
+        "participant"
+      ],
+      "verified": true,
+      "blocked": false
+    },
+    {
+      "id": "1f1ea6ff-e7bb-45e4-946f-a99bcafd440e",
+      "email": "qa-8ea831-player17@example.test",
+      "nickname": "qa_player17_8ea831",
+      "roles": [
+        "participant"
+      ],
+      "verified": true,
+      "blocked": false
+    },
+    {
+      "id": "f3e4863e-7852-4dd6-9f73-d46d4fd1c486",
+      "email": "qa-8ea831-player18@example.test",
+      "nickname": "qa_player18_8ea831",
+      "roles": [
+        "participant"
+      ],
+      "verified": true,
+      "blocked": false
+    },
+    {
+      "id": "63fdb4d2-7cbb-4f2e-aa1b-5cdf022ceaa4",
+      "email": "qa-8ea831-player19@example.test",
+      "nickname": "qa_player19_8ea831",
+      "roles": [
+        "participant"
+      ],
+      "verified": true,
+      "blocked": false
+    },
+    {
+      "id": "18df4510-0b74-45c8-badc-53263484857a",
+      "email": "qa-8ea831-player20@example.test",
+      "nickname": "qa_player20_8ea831",
+      "roles": [
+        "participant"
+      ],
+      "verified": true,
+      "blocked": false
+    },
+    {
+      "id": "35daecbf-5356-497b-82a7-2b2ea0dfa3fe",
+      "email": "qa-8ea831-referee3@example.test",
+      "nickname": "qa_referee3_8ea831",
+      "roles": [
+        "participant",
+        "referee"
+      ],
+      "verified": true,
+      "blocked": false
+    },
+    {
+      "id": "955f2a07-2604-4e86-aaaf-6018aefc365a",
+      "email": "qa-8ea831-referee4@example.test",
+      "nickname": "qa_referee4_8ea831",
+      "roles": [
+        "participant",
+        "referee"
+      ],
+      "verified": true,
+      "blocked": false
+    },
+    {
+      "id": "599f553b-eeff-48f6-a84b-97d7a8f82875",
+      "email": "qa-8ea831-unverified23@example.test",
+      "nickname": "qa_unverified23_8ea831",
+      "roles": [
+        "participant"
+      ],
+      "verified": false,
+      "blocked": false
+    },
+    {
+      "id": "89677c9f-6a56-48bc-9c18-883a57794995",
+      "email": "qa-manual-1211@example.test",
+      "nickname": "qa_manual_1211",
+      "roles": [
+        "participant"
+      ],
+      "verified": true,
+      "blocked": false
+    },
+    {
+      "id": "67170647-7221-4272-954a-63b945689b54",
+      "email": "qa-manual-1267@example.test",
+      "nickname": "qa_manual_1267",
+      "roles": [
+        "participant"
+      ],
+      "verified": true,
+      "blocked": false
+    }
+  ],
+  "scenarios": {
+    "tournament": {
+      "applications": "acd55cc5-2b2b-4d53-ba23-dd2ffe1f87ca",
+      "running": "5332782a-4e01-4b19-abba-dfff7b23887e",
+      "groups": "55b98b21-9baa-4b86-8e95-7c41f74ba025",
+      "completed": "877c5c03-ab35-40da-ac45-91541e9f1aaf",
+      "future": "d9d1ff21-f929-4d37-9b27-3a2beea29406",
+      "draft": "7a80c0d8-9b97-4959-8566-ed72c6e35e1a",
+      "hidden": "9d5d44b7-959a-4154-b97d-29a4959fb55a",
+      "cancelled": "5ffb83c3-2c49-405d-b7e8-2bb37c661dba"
+    },
+    "personal": "c91f4e75-fc3e-4cee-9c97-0b29fba8d55b",
+    "pending": {
+      "id": "e4f27307-66f7-4dea-be25-770ee5019674",
+      "tournament": "b408278e-3bad-4e4c-a3c6-309aeb223383",
+      "status": "awaiting_confirmation",
+      "home": "qa-8ea831-captain5@example.test",
+      "away": "qa-8ea831-captain6@example.test",
+      "referee": "qa-8ea831-referee3@example.test"
+    },
+    "disputed": {
+      "id": "01c4d934-9194-4ea1-b3f7-4af33f24d855",
+      "tournament": "7f54d001-72cb-4300-b589-e78ac56c691d",
+      "status": "disputed",
+      "home": "qa-8ea831-captain5@example.test",
+      "away": "qa-8ea831-captain6@example.test",
+      "referee": "qa-8ea831-referee3@example.test"
+    },
+    "reportMatch": {
+      "id": "5449f09a-791c-4939-be78-1dcc6c7c66dc",
+      "tournament": "5332782a-4e01-4b19-abba-dfff7b23887e",
+      "status": "scheduled",
+      "home": "qa-8ea831-captain7@example.test",
+      "away": "qa-8ea831-captain8@example.test",
+      "referee": "qa-8ea831-referee3@example.test"
+    },
+    "refereeMatch": {
+      "id": "4e3347dd-4447-4be5-8815-303ed7ce83cd",
+      "tournament": "5332782a-4e01-4b19-abba-dfff7b23887e",
+      "status": "scheduled",
+      "home": "qa-8ea831-captain9@example.test",
+      "away": "qa-8ea831-captain5@example.test",
+      "referee": "qa-8ea831-referee3@example.test"
+    },
+    "teams": [
+      {
+        "id": "e956caf7-7476-462f-8f98-f13c3adeb31e",
+        "name": "Demo Team",
+        "members": [
+          "demo_4ce94783",
+          "qa_player13_8ea831",
+          "qa_player14_8ea831",
+          "qa_player15_8ea831"
+        ]
+      },
+      {
+        "id": "c58ff18e-f94f-497e-a96b-38464114dcfc",
+        "name": "Демо · Волейбол",
+        "members": [
+          "demo_4ce94783",
+          "qa_player13_8ea831"
+        ]
+      },
+      {
+        "id": "6f516648-490c-4414-9c33-d68378243d32",
+        "name": "Демо · Футбол",
+        "members": [
+          "demo_4ce94783",
+          "qa_player14_8ea831",
+          "qa_player15_8ea831"
+        ]
+      }
+    ]
+  }
+}

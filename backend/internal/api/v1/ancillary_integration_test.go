@@ -62,6 +62,14 @@ func TestAdminRolesBlockingAndDisciplineIntegration(t *testing.T) {
 	if page.Total != 0 {
 		t.Fatal("inactive discipline is still in the public catalog")
 	}
+	archivePath := BaseURL + "/disciplines?include_inactive=true"
+	integrationRequest(t, server, "GET", archivePath, "", "", 401)
+	_, participant := seedIntegrationUser(t, db, "archiveReader", contract.Participant)
+	integrationRequest(t, server, "GET", archivePath, "", participant.AccessToken, 403)
+	archive := integrationDecode[contract.DisciplinePage](t, integrationRequest(t, server, "GET", archivePath, "", admin.AccessToken, 200))
+	if archive.Total != 1 || len(archive.Items) != 1 || archive.Items[0].Id != discipline.Id || archive.Items[0].Active {
+		t.Fatalf("archived discipline is absent from the administrative catalog: %+v", archive)
+	}
 	auditResponse := integrationRequest(t, server, "GET", BaseURL+"/admin/audit?entity_id="+userID.String(), "", admin.AccessToken, 200)
 	if page := integrationDecode[contract.AuditEntryPage](t, auditResponse); page.Total < 4 {
 		t.Fatalf("audit lost administrative changes: %+v", page)

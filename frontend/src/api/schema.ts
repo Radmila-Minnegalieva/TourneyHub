@@ -196,8 +196,8 @@ export interface paths {
             cookie?: never;
         };
         /**
-         * Справочник активных дисциплин
-         * @description Справочник активных дисциплин
+         * Справочник дисциплин
+         * @description По умолчанию возвращает активные дисциплины. Администратор может включить архивные.
          */
         get: operations["listDisciplines"];
         put?: never;
@@ -2457,6 +2457,8 @@ export interface operations {
             query?: {
                 limit?: components["parameters"]["Limit"];
                 offset?: components["parameters"]["Offset"];
+                /** @description Включить архивные дисциплины. Доступно администратору. */
+                include_inactive?: boolean;
             };
             header?: never;
             path?: never;
@@ -2474,6 +2476,8 @@ export interface operations {
                 };
             };
             400: components["responses"]["400"];
+            401: components["responses"]["401"];
+            403: components["responses"]["403"];
             404: components["responses"]["404"];
             500: components["responses"]["500"];
         };

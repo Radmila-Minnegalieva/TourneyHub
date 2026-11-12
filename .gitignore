@@ -1,4 +1,5 @@
 .env
+tests/.qa/
 bin/
 build/
 .DS_Store

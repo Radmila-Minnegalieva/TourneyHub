@@ -11,11 +11,13 @@ import {
 import {
   disciplines,
   dateLabel,
-  statusLabels,
+  registrationOpen,
+  tournamentStatus,
   matchLabels,
 } from "../../api/catalog";
 import { useResource } from "../../hooks/useResource";
 import { useAuth } from "../../hooks/useAuth";
+import { useTournamentEvents } from "../../hooks/useTournamentEvents";
 import { Button } from "../../ui/Button/Button";
 import { Card } from "../../ui/Card/Card";
 import { Input } from "../../ui/Input/Input";
@@ -61,6 +63,8 @@ export function TournamentPage() {
     ]);
     return { t, ds, owner, applications, bracket, standings };
   }, [tournamentId, user?.id]);
+  const visible = r.data && !r.data.t.hidden && r.data.t.status !== "draft";
+  useTournamentEvents(visible ? tournamentId : undefined, r.refresh);
   const teams = useResource(
     () =>
       user ? allPages<Schema["Team"]>("/users/me/teams") : Promise.resolve([]),
@@ -78,6 +82,7 @@ export function TournamentPage() {
   const [message, setMessage] = useState("");
   const [busy, setBusy] = useState(false);
   const [preview, setPreview] = useState<Schema["DrawPreview"]>();
+  const [manualOrder, setManualOrder] = useState<string[]>();
   async function action(work: () => Promise<unknown>, success: string) {
     setBusy(true);
     setError("");
@@ -108,6 +113,44 @@ export function TournamentPage() {
     );
   }
   const data = r.data;
+  const accepted =
+    data?.applications.filter((a) => a.status === "accepted") ?? [];
+  const canDraw =
+    data?.t.status === "registration" ||
+    (data?.t.status === "in_progress" &&
+      data.bracket?.matches.every(
+        (m) =>
+          m.status === "bye" ||
+          (m.status === "scheduled" &&
+            (!m.starts_at || Date.parse(m.starts_at) > Date.now())),
+      ));
+  const rounds = new Map<string, Schema["Match"]>();
+  const unavailableRounds = new Set<string>();
+  for (const match of data?.bracket?.matches ?? []) {
+    const key = `${match.stage_id}/${match.round}`;
+    if (match.status === "scheduled") rounds.set(key, match);
+    else if (match.status !== "bye") unavailableRounds.add(key);
+  }
+  for (const key of unavailableRounds) rounds.delete(key);
+  function previewDraw(
+    method: Schema["SeedingRequest"]["method"],
+    applicationIds?: string[],
+  ) {
+    if (!data) return;
+    setPreview(undefined);
+    void action(async () => {
+      setPreview(
+        await api<Schema["DrawPreview"]>(`${base}/draw-previews`, {
+          method: "POST",
+          body: {
+            version: data.t.version,
+            method,
+            ...(applicationIds ? { application_ids: applicationIds } : {}),
+          },
+        }),
+      );
+    }, "Предпросмотр жеребьёвки готов");
+  }
   const tabs = [
     ["groups", "Таблицы"],
     ["playoff", "Сетка"],
@@ -131,7 +174,7 @@ export function TournamentPage() {
         <>
           <h1 className="text-3xl font-extrabold">{data.t.name}</h1>
           <p className="mt-2 text-slate-500">
-            {statusLabels[data.t.status]} ·{" "}
+            {tournamentStatus(data.t)} ·{" "}
             {data.ds.find((d) => d.id === data.t.discipline_id)?.name} ·
             Организатор: {data.t.organizer.name || data.t.organizer.nickname}
           </p>
@@ -203,26 +246,66 @@ export function TournamentPage() {
                   </Button>
                 </>
               )}
-              {data.t.status === "registration" && (
+              {canDraw && (
                 <>
-                  <Button
-                    disabled={busy}
-                    onClick={() =>
-                      void action(async () => {
-                        setPreview(
-                          await api<Schema["DrawPreview"]>(
-                            `${base}/draw-previews`,
-                            {
-                              method: "POST",
-                              body: { version: data.t.version, method: "elo" },
-                            },
-                          ),
-                        );
-                      }, "Предпросмотр жеребьёвки готов")
-                    }
-                  >
+                  <Button disabled={busy} onClick={() => previewDraw("elo")}>
                     Предпросмотр жеребьёвки по Эло
                   </Button>
+                  <Button
+                    disabled={busy}
+                    variant="secondary"
+                    onClick={() => previewDraw("random")}
+                  >
+                    Предпросмотр случайной жеребьёвки
+                  </Button>
+                  <Button
+                    disabled={busy || accepted.length < 2}
+                    variant="secondary"
+                    onClick={() =>
+                      setManualOrder(
+                        preview?.seeds.map((s) => s.application_id) ??
+                          accepted.map((a) => a.id),
+                      )
+                    }
+                  >
+                    Настроить посев вручную
+                  </Button>
+                  {manualOrder && (
+                    <div>
+                      <ol className="list-decimal space-y-2 pl-5">
+                        {manualOrder.map((id, index) => (
+                          <li key={id}>
+                            <div className="flex items-center gap-2">
+                              <span className="flex-1">{name(id)}</span>
+                              <Button
+                                type="button"
+                                variant="secondary"
+                                disabled={index === 0}
+                                aria-label={`Поднять ${name(id)}`}
+                                onClick={() => {
+                                  const next = [...manualOrder];
+                                  [next[index - 1], next[index]] = [
+                                    next[index],
+                                    next[index - 1],
+                                  ];
+                                  setManualOrder(next);
+                                  setPreview(undefined);
+                                }}
+                              >
+                                Выше
+                              </Button>
+                            </div>
+                          </li>
+                        ))}
+                      </ol>
+                      <Button
+                        disabled={busy}
+                        onClick={() => previewDraw("manual", manualOrder)}
+                      >
+                        Предпросмотр ручного посева
+                      </Button>
+                    </div>
+                  )}
                   {preview && (
                     <div>
                       <p>
@@ -236,9 +319,34 @@ export function TournamentPage() {
                           </li>
                         ))}
                       </ol>
+                      {preview.groups.map((g) => (
+                        <p key={g.id}>
+                          {g.name} ·{" "}
+                          {
+                            preview.matches.filter((m) => m.group_id === g.id)
+                              .length
+                          }{" "}
+                          матчей
+                        </p>
+                      ))}
+                      <ul className="max-h-48 overflow-auto">
+                        {preview.matches.map((m) => (
+                          <li key={m.id}>
+                            Раунд {m.round}: {name(m.home_application_id)} —{" "}
+                            {name(m.away_application_id)}
+                          </li>
+                        ))}
+                      </ul>
                       <Button
                         disabled={busy}
-                        onClick={() =>
+                        onClick={() => {
+                          if (
+                            data.t.status === "in_progress" &&
+                            !window.confirm(
+                              "Пересобрать сетку и заменить текущее расписание?",
+                            )
+                          )
+                            return;
                           void action(async () => {
                             await api(`${base}/draw`, {
                               method: "PUT",
@@ -248,8 +356,9 @@ export function TournamentPage() {
                               },
                             });
                             setPreview(undefined);
-                          }, "Жеребьёвка подтверждена")
-                        }
+                            setManualOrder(undefined);
+                          }, "Жеребьёвка подтверждена");
+                        }}
                       >
                         Подтвердить жеребьёвку
                       </Button>
@@ -276,7 +385,7 @@ export function TournamentPage() {
               )}
             </Card>
           )}
-          {data.t.status === "registration" && user && (
+          {registrationOpen(data.t) && user && (
             <Card className="my-5 p-5">
               <h2 className="text-xl font-bold">Подать заявку</h2>
               <Feedback error={teams.error || members.error} />
@@ -310,11 +419,93 @@ export function TournamentPage() {
             </Card>
           )}
           <Tabs items={tabs} />
+          {tab === "schedule" &&
+            data.owner &&
+            data.t.status === "in_progress" &&
+            rounds.size > 0 && (
+              <Card className="mt-5 p-5">
+                <h2 className="mb-3 font-bold">Назначить расписание тура</h2>
+                <form
+                  className="grid gap-3 sm:grid-cols-2"
+                  onSubmit={(event) => {
+                    event.preventDefault();
+                    const fields = new FormData(event.currentTarget);
+                    const selected = rounds.get(String(fields.get("round")));
+                    if (!selected) return;
+                    void action(
+                      () =>
+                        api(`${base}/schedule-round`, {
+                          method: "POST",
+                          body: {
+                            version: data.t.version,
+                            stage_id: selected.stage_id,
+                            round: selected.round,
+                            starts_at: new Date(
+                              String(fields.get("roundStartsAt")),
+                            ).toISOString(),
+                            venue: String(fields.get("roundVenue")),
+                            interval_minutes: Number(
+                              fields.get("intervalMinutes"),
+                            ),
+                          },
+                        }),
+                      "Расписание тура сохранено",
+                    );
+                  }}
+                >
+                  <label>
+                    Тур
+                    <Select name="round" required>
+                      {[...rounds].map(([key, m]) => (
+                        <option key={key} value={key}>
+                          Этап{" "}
+                          {
+                            data.bracket?.stages.find(
+                              (s) => s.id === m.stage_id,
+                            )?.position
+                          }
+                          , тур {m.round}
+                        </option>
+                      ))}
+                    </Select>
+                  </label>
+                  <label>
+                    Первый матч
+                    <Input
+                      name="roundStartsAt"
+                      type="datetime-local"
+                      required
+                    />
+                  </label>
+                  <label>
+                    Площадка
+                    <Input name="roundVenue" maxLength={200} required />
+                  </label>
+                  <label>
+                    Интервал между матчами, минут
+                    <Input
+                      name="intervalMinutes"
+                      type="number"
+                      min={0}
+                      max={1440}
+                      defaultValue={60}
+                      required
+                    />
+                  </label>
+                  <Button disabled={busy}>Назначить тур</Button>
+                </form>
+              </Card>
+            )}
           {tab === "participants" || tab === "results" ? (
             <Card className="mt-5 p-5">
               {!data.applications.length && <p>Участников пока нет.</p>}
               {data.applications
                 .filter((a) => tab !== "results" || a.status === "accepted")
+                .sort((a, b) =>
+                  tab === "results"
+                    ? (a.final_place ?? Infinity) - (b.final_place ?? Infinity)
+                    : 0,
+                )
                 .map((a) => (
                   <div
                     key={a.id}
@@ -423,6 +614,9 @@ export function TournamentPage() {
                         <th>В</th>
                         <th>Н</th>
                         <th>П</th>
+                        <th>Забито</th>
+                        <th>Пропущено</th>
+                        <th>Разница</th>
                         <th>Очки</th>
                       </tr>
                     </thead>
@@ -435,6 +629,9 @@ export function TournamentPage() {
                           <td>{row.wins}</td>
                           <td>{row.draws}</td>
                           <td>{row.losses}</td>
+                          <td>{row.score_for}</td>
+                          <td>{row.score_against}</td>
+                          <td>{row.score_difference}</td>
                           <td>{row.points}</td>
                         </tr>
                       ))}

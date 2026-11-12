@@ -15,6 +15,7 @@ import { TournamentCreatePage } from '../pages/tournament-create/TournamentCreat
 import { TournamentPage } from '../pages/tournament/TournamentPage'
 import { TournamentsPage } from '../pages/tournaments/TournamentsPage'
 import { RequireAuth } from './RequireAuth'
+import { AdminPage } from '../pages/admin/AdminPage'
 
 function App() {
   return (
@@ -29,6 +30,7 @@ function App() {
         <Route path="/teams" element={<RequireAuth><TeamsPage /></RequireAuth>} />
         <Route path="/teams/:teamId" element={<RequireAuth><TeamPage /></RequireAuth>} />
         <Route path="/profile" element={<RequireAuth><ProfilePage /></RequireAuth>} />
+        <Route path="/admin" element={<RequireAuth><AdminPage /></RequireAuth>} />
         <Route path="/auth/login" element={<LoginPage />} />
         <Route path="/auth/register" element={<RegisterPage />} />
         <Route path="/auth/forgot-password" element={<ForgotPasswordPage />} />

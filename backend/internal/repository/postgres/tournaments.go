@@ -30,10 +30,15 @@ const tournamentJSON = `jsonb_build_object(
  'wildcard_count',t.wildcard_count,'wildcard_place',t.wildcard_place) END))`
 
 func (r *Repository) ReadTournament(ctx context.Context, id uuid.UUID, lock bool) (model.Tournament, error) {
-	query := `SELECT ` + tournamentJSON + ` FROM tournaments t JOIN users u ON u.id=t.organizer_id WHERE t.id=$1 AND t.deleted_at IS NULL`
 	if lock {
-		query += ` FOR UPDATE OF t`
+		// Read derived values in a new statement after acquiring the lock. A
+		// statement that waits for the lock retains its old snapshot for subqueries.
+		var lockedID uuid.UUID
+		if err := r.db.QueryRow(ctx, `SELECT id FROM tournaments WHERE id=$1 AND deleted_at IS NULL FOR UPDATE`, id).Scan(&lockedID); err != nil {
+			return model.Tournament{}, dbError(err)
+		}
 	}
+	query := `SELECT ` + tournamentJSON + ` FROM tournaments t JOIN users u ON u.id=t.organizer_id WHERE t.id=$1 AND t.deleted_at IS NULL`
 	var raw []byte
 	var tournament model.Tournament
 	if err := r.db.QueryRow(ctx, query, id).Scan(&raw); err != nil {

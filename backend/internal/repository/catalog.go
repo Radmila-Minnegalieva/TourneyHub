@@ -18,7 +18,7 @@ type AdminCatalog interface {
 	SetTournamentVisibility(context.Context, uuid.UUID, bool) error
 	SoftDeleteTournamentRecord(context.Context, uuid.UUID) error
 	AuditPage(context.Context, model.ListAuditParams) (model.AuditEntryPage, error)
-	DisciplinePage(context.Context, int, int) (model.DisciplinePage, error)
+	DisciplinePage(context.Context, int, int, bool) (model.DisciplinePage, error)
 	CreateDisciplineRecord(context.Context, model.DisciplineRequest) (model.Discipline, error)
 	Discipline(context.Context, uuid.UUID, bool) (model.Discipline, error)
 	UpdateDisciplineRecord(context.Context, uuid.UUID, model.Discipline) (model.Discipline, error)

@@ -24,6 +24,25 @@ export const matchLabels: Record<Schema["MatchStatus"], string> = {
 };
 export const dateLabel = (s?: string) =>
   s ? new Date(s).toLocaleString("ru-RU") : "Не назначено";
+export function registrationOpen(t: Schema["Tournament"], now = Date.now()) {
+  return (
+    t.status === "registration" &&
+    !!t.registration_opens_at &&
+    !!t.registration_closes_at &&
+    Date.parse(t.registration_opens_at) <= now &&
+    now < Date.parse(t.registration_closes_at)
+  );
+}
+export function tournamentStatus(t: Schema["Tournament"]) {
+  if (t.status !== "registration" || registrationOpen(t))
+    return statusLabels[t.status];
+  if (
+    t.registration_opens_at &&
+    Date.parse(t.registration_opens_at) > Date.now()
+  )
+    return `Регистрация откроется ${dateLabel(t.registration_opens_at)}`;
+  return "Регистрация закрыта";
+}
 export function tournamentView(
   t: Schema["Tournament"],
   ds: Schema["Discipline"][],
@@ -35,6 +54,8 @@ export function tournamentView(
     discipline:
       ds.find((d) => d.id === t.discipline_id)?.name || "Дисциплина недоступна",
     status: t.status === "in_progress" ? "running" : t.status,
+    statusLabel: tournamentStatus(t),
+    registrationOpen: registrationOpen(t),
     format,
     formatLabel: tournamentFormatLabel[format],
     organizer: t.organizer.name || t.organizer.nickname,
